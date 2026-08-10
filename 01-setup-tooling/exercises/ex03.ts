@@ -26,17 +26,17 @@ export const quiz: Record<'q1' | 'q2' | 'q3' | 'q4' | 'q5', StrictFlag> = {
   q1: 'noImplicitAny', // (this one is a freebie — it's correct)
 
   // q2: `const city: string = null` — which flag rejects this?
-  q2: 'noImplicitAny', // TODO
+  q2: 'strictNullChecks', // TODO
 
   // q3: `const first = list[0]; first.toUpperCase()` — list might be
   //     empty. Which flag makes `list[0]` include `undefined`?
-  q3: 'noImplicitAny', // TODO
+  q3: 'noUncheckedIndexedAccess', // TODO
 
   // q4: `catch (e) { console.log(e.message) }` — which flag types `e`
   //     as `unknown` instead of `any`?
-  q4: 'noImplicitAny', // TODO
+  q4: 'useUnknownInCatchVariables', // TODO
 
   // q5: `const cfg: { retries?: number } = { retries: undefined }` —
   //     which flag says "optional means ABSENT, not undefined"?
-  q5: 'noImplicitAny', // TODO
+  q5: 'exactOptionalPropertyTypes', // TODO
 }
