@@ -45,43 +45,43 @@ preparation, everything after it is application.*
 
 ### 05 — Unions & Narrowing
 - [ ] Lesson read
-- [ ] Exercises
+- [ ] Exercises ex01–ex08
 - [ ] ✦ Checkpoint 5 passed
 
 ### 06 — Classes
 - [ ] Lesson read
-- [ ] Exercises
+- [ ] Exercises ex01–ex07
 - [ ] ✦ Checkpoint 6 passed
 
 ### 07 — Generics
 - [ ] Lesson read
-- [ ] Exercises
+- [ ] Exercises ex01–ex08
 - [ ] ✦ Checkpoint 7 passed
 
 ### 08 — Type System Deep-Dive
 - [ ] Lesson read
-- [ ] Exercises
+- [ ] Exercises ex01–ex12
 - [ ] Type-challenges puzzle set
 - [ ] ✦ Checkpoint 8 passed
 
 ### 09 — Modules & Organization
 - [ ] Lesson read
-- [ ] Exercises
+- [ ] Exercises ex01–ex06
 - [ ] ✦ Checkpoint 9 passed
 
 ### 10 — Async & Error Handling
 - [ ] Lesson read
-- [ ] Exercises
+- [ ] Exercises ex01–ex07
 - [ ] ✦ Checkpoint 10 passed
 
 ### 11 — Advanced Patterns
 - [ ] Lesson read
-- [ ] Exercises
+- [ ] Exercises ex01–ex07
 - [ ] ✦ Checkpoint 11 passed
 
 ### 12 — Real-World TypeScript
 - [ ] Lesson read
-- [ ] Exercises
+- [ ] Exercises ex01–ex06
 - [ ] ✦ Checkpoint 12 passed
 
 ### 13 — Capstone Projects
