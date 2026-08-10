@@ -19,7 +19,12 @@
 //   {"id":1,"name":"Ada","tags":["math","code"],"active":true}
 
 // TODO: describe the shape.
-export type User = unknown
+export type User = {
+  id: number;
+  name: string;
+  tags: string[];
+  active: boolean;
+}
 
 export function parseUser(json: string): User {
   return JSON.parse(json)
