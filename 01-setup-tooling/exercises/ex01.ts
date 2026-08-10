@@ -13,21 +13,21 @@
 
 // TODO: annotate both parameters (the return type can be inferred — but
 // try writing it explicitly once to see what it looks like).
-export function add(a: any, b: any) {
+export function add(a: number, b: number) {
   return a + b
 }
 
 // TODO: annotate the parameter.
-export function shout(word: any) {
+export function shout(word: string) {
   return word.toUpperCase() + '!'
 }
 
 // TODO: annotate both parameters.
-export function repeat(word: any, times: any) {
+export function repeat(word: string, times: number) {
   return Array(times).fill(word).join(' ')
 }
 
 // TODO: annotate both parameters. What should this return?
-export function isLong(word: any, minLength: any) {
+export function isLong(word: string, minLength: number): boolean {
   return word.length >= minLength
 }
