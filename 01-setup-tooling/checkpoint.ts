@@ -10,10 +10,16 @@
  * Passing `npm test -- 01` (all of it) completes this module. 🎉
  */
 
+import { number } from "zod";
+
 // One log entry: when it was taken, how warm it was, and (optionally)
 // which sensor reported it.
 //   Shape: { time: string; celsius: number; sensor?: string }
-export type Reading = unknown
+export type Reading = {
+  time: string;
+  celsius: number;
+  sensor?: string;
+}
 
 // The sensor sends temperatures as TEXT. Convert one reading to a number.
 // Bad input returns null, so the caller knows parsing failed.
@@ -24,7 +30,15 @@ export type Reading = unknown
 // "Bad input" = anything Number() turns into NaN, and empty/whitespace
 // strings (careful: Number('') is 0, not NaN!).
 //   Signature: (raw: string) => number | null
-export function parseCelsius(raw: any): any {
+export function parseCelsius(raw: string): number | null {
+  if (!raw) {
+    return null;
+  }
+  const celsiusNum = parseFloat(raw)
+  if (Number.isNaN(celsiusNum)) {
+    return null;
+  }
+  return celsiusNum;
   throw new Error('TODO: implement parseCelsius')
 }
 
@@ -33,7 +47,8 @@ export function parseCelsius(raw: any): any {
 //   readingAt([1, 2, 3], 1) -> 2
 //   readingAt([1], 9)       -> undefined
 //   Signature: (temps: number[], index: number) => number | undefined
-export function readingAt(temps: any, index: any): any {
+export function readingAt(temps: number[], index: number): number | undefined {
+  return temps?.[index];
   throw new Error('TODO: implement readingAt')
 }
 
@@ -42,6 +57,9 @@ export function readingAt(temps: any, index: any): any {
 //   average([10, 20, 30]) -> 20
 //   average([])           -> 0
 //   Signature: (temps: number[]) => number
-export function average(temps: any): any {
-  throw new Error('TODO: implement average')
+export function average(temps: number[]): number {
+  if (!temps.length){
+    return 0;
+  }
+  return temps.reduce((acc, cur) => acc + cur, 0) / temps.length;
 }
