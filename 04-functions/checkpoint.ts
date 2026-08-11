@@ -3,38 +3,41 @@
  *
  * A tiny text-utility library. Combines: defaults, rest params,
  * overloads, void callbacks, and closures.
- *
- * 1. pad(text, width, char = ' '): left-pad `text` to `width` with `char`.
- *      pad('7', 3)        -> '  7'
- *      pad('7', 3, '0')   -> '007'
- *    (Text already >= width comes back unchanged.)
- * 2. joinWith(separator, ...parts): join any number of strings.
- * 3. firstOf — OVERLOADED:
- *      firstOf('abc')       -> 'a'          type: string
- *      firstOf([1, 2, 3])   -> 1            type: number | undefined
- *      firstOf([])          -> undefined
- * 4. once(fn): a wrapper that calls fn only the FIRST time; later calls
- *    do nothing. fn takes nothing, returns void.
+ * Each declaration below explains its own job.
  *
  * Passing `npm test -- 04` completes this module. 🎉
  */
 
-// TODO: give char a default, then implement.
+// Left-pad `text` to `width` using `char` (default: a space).
+// Text already >= width comes back unchanged.
+//   pad('7', 3)      -> '  7'
+//   pad('7', 3, '0') -> '007'
 export function pad(text: string, width: number, char: any): string {
   throw new Error('TODO: implement pad')
 }
 
-// TODO: rest params, then implement.
+// Join any number of strings with `separator` — rest params.
+//   joinWith('-', 'a', 'b', 'c') -> 'a-b-c'
+//   joinWith('-')                -> ''
 export function joinWith(separator: string, ...parts: any): string {
   throw new Error('TODO: implement joinWith')
 }
 
-// TODO: write the two overload signatures, then implement.
+// The first element of a string or a number array — OVERLOADED, so each
+// input shape gets its own precise return type:
+//   firstOf('abc')     -> 'a'          type: string
+//   firstOf([1, 2, 3]) -> 1            type: number | undefined
+//   firstOf([])        -> undefined
+// Write the two overload signatures above one implementation.
 export function firstOf(x: string | number[]): string | number | undefined {
   throw new Error('TODO: implement firstOf')
 }
 
-// TODO: fix types, then implement with a closure flag.
+// Wrap `fn` so it only runs the FIRST time the wrapper is called; every
+// later call does nothing. fn takes nothing and returns void.
+//   const boom = once(() => count++)
+//   boom(); boom(); boom()   // count is 1
+// Hint: remember "already called?" in a closure flag.
 export function once(fn: any): any {
   throw new Error('TODO: implement once')
 }

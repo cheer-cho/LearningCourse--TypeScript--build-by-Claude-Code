@@ -3,41 +3,39 @@
  *
  * A tiny shape catalog. Combines: mixed value + type-only imports across
  * files, a type-only barrel re-export, and a namespace merged onto a
- * function (callable + properties).
+ * function (callable + properties). Each declaration below explains its
+ * own job.
  *
  * Reuses two DO-NOT-EDIT helpers from ex02: ./exercises/ex02-circle and
  * ./exercises/ex02-square (each exports a `Circle`/`Square` interface and
  * an `area` function).
  *
- * 1. Mark Circle and Square as TYPE-ONLY in the imports below (keep the
- *    `area` value imports as-is), then export Shape as their union — a
- *    type-only barrel.
- * 2. catalog(shape): Shape -> number — routes to the matching `area`
- *    function by `shape.kind` and returns the result.
- * 3. Merge a namespace onto catalog:
- *      - catalog.count: number of times catalog() has been called
- *        (starts at 0, increments on every call)
- *      - catalog.reset(): void — zeroes the count
- *
  * Passing `npm test -- 09` completes this module. 🎉
  */
 
+// Circle and Square are only used as TYPES here — mark them type-only
+// (keep the `area` value imports as-is).
 import { area as circleArea, Circle } from './exercises/ex02-circle'
 import { area as squareArea, Square } from './exercises/ex02-square'
 
-// TODO 1: mark Circle and Square as type-only imports above, then define
-// Shape as their union.
+// The union of Circle and Square — a type-only barrel re-export.
 export type Shape = unknown
 
-// TODO 2 & 3: precise types, then implement catalog + its merged
-// namespace.
+// Compute the area of any shape: route to the matching `area` function
+// by `shape.kind` and return the result.
+//   Signature: (shape: Shape) => number
+// Also (below): a NAMESPACE merged onto catalog, so callers can write
+// catalog(c) AND read catalog.count.
 export function catalog(shape: any): any {
   throw new Error('TODO: implement catalog')
 }
 
 export namespace catalog {
+  // How many times catalog() has been called. Starts at 0; catalog()
+  // increments it on every call.
   export let count: any = 0
 
+  // Zero the counter.
   export function reset(): any {
     throw new Error('TODO: implement catalog.reset')
   }

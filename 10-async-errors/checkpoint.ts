@@ -4,32 +4,15 @@
  * A resilient fetch pipeline. Combines: custom error classes (ex05),
  * withTimeout (ex03), retrying failed attempts, and the Result pattern
  * (ex06) so the pipeline never throws — callers get a typed outcome.
- *
- * 1. TimeoutError: a custom Error subclass.
- *      - readonly ms: number
- *      - message must be `timed out after ${ms}ms`
- *      - name must be 'TimeoutError'
- * 2. withTimeout<T>(promise, ms): resolves/rejects with `promise` if it
- *    settles within ms, otherwise rejects with a TimeoutError(ms).
- *    Hint: Promise.race against a rejecting Promise<never>, like ex03 —
- *    but reject with `new TimeoutError(ms)` instead of a plain Error.
- * 3. Ok<T> / Err<E> / Result<T, E> — same shape as ex06.
- *    ok(value) / err(error) — the constructors.
- * 4. fetchResilient<T>(fn, options): options is
- *      { attempts: number; timeoutMs: number }
- *    Call fn(), wrapped in withTimeout(., timeoutMs), up to `attempts`
- *    times. Resolve with ok(value) on the FIRST success. If every
- *    attempt fails — throws OR times out — resolve with err(lastError),
- *    normalizing any non-Error throw to `new Error(String(e))`.
- *    fetchResilient must NEVER reject — every outcome is a Result.
- * 5. describeResult(result): format a Result<T, Error> as
- *      ok  -> `success: ${JSON.stringify(value)}`
- *      err -> `failure: ${error.message}`
+ * Each declaration below explains its own job.
  *
  * Passing `npm test -- 10` completes this module. 🎉
  */
 
-// TODO: readonly ms: number, message `timed out after ${ms}ms`, name 'TimeoutError'.
+// A custom Error subclass for timeouts.
+//   - readonly ms: number
+//   - message must be `timed out after ${ms}ms`
+//   - name must be 'TimeoutError'
 export class TimeoutError extends Error {
   readonly ms: any
 
@@ -40,36 +23,50 @@ export class TimeoutError extends Error {
   }
 }
 
-// TODO: make this generic in T, then implement with Promise.race.
+// Resolve/reject with `promise` if it settles within `ms` milliseconds;
+// otherwise reject with a TimeoutError(ms). Generic in T.
+//   Signature: (promise: Promise<T>, ms: number) => Promise<T>
+// Hint: Promise.race against a rejecting Promise<never>, like ex03 —
+// but reject with `new TimeoutError(ms)` instead of a plain Error.
 export function withTimeout(promise: any, ms: any): any {
   throw new Error('TODO: implement withTimeout')
 }
 
-// TODO: { ok: true; value: T }
+// The success case: { ok: true; value: T }
 export type Ok<T> = unknown
 
-// TODO: { ok: false; error: E }
+// The failure case: { ok: false; error: E }
 export type Err<E> = unknown
 
 // Already correct once Ok and Err are.
 export type Result<T, E> = Ok<T> | Err<E>
 
-// TODO: make it generic — ok(value) builds an Ok<T>.
+// Build the success case — generic: ok(value) builds an Ok<T>.
 export function ok(value: any): any {
   throw new Error('TODO: implement ok')
 }
 
-// TODO: make it generic — err(error) builds an Err<E>.
+// Build the failure case — generic: err(error) builds an Err<E>.
 export function err(error: any): any {
   throw new Error('TODO: implement err')
 }
 
-// TODO: generic in T; fix the options type; implement the retry+timeout loop.
+// The pipeline. Call fn(), wrapped in withTimeout(., timeoutMs), up to
+// `attempts` times. Resolve with ok(value) on the FIRST success. If
+// every attempt fails — throws OR times out — resolve with
+// err(lastError), normalizing any non-Error throw to
+// `new Error(String(e))`.
+// fetchResilient must NEVER reject — every outcome is a Result.
+//   Signature: <T>(fn: () => Promise<T>,
+//                  options: { attempts: number; timeoutMs: number })
+//                => Promise<Result<T, Error>>
 export async function fetchResilient(fn: any, options: any): Promise<any> {
   throw new Error('TODO: implement fetchResilient')
 }
 
-// TODO: generic in T; narrow on .ok before formatting.
+// Format a Result<T, Error> for humans — narrow on .ok first.
+//   ok  -> `success: ${JSON.stringify(value)}`
+//   err -> `failure: ${error.message}`
 export function describeResult(result: any): any {
   throw new Error('TODO: implement describeResult')
 }
