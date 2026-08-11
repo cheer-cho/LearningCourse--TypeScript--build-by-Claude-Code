@@ -12,4 +12,11 @@ quizzes and reviews. Format:
 
 ---
 
-*(No entries yet — this fills up as you learn.)*
+## 2026-08-10 — 01/ex02
+**Mistake:** Used `||` to supply a fallback for possibly-missing values
+(`items[0] || fallback`, `text?.length || 0`). `||` falls back on *any*
+falsy value (`''`, `0`, `false`), not just `null`/`undefined`.
+**Correction:** Use `??` (nullish coalescing) when the intent is "only if
+null or undefined". `[''][0] || 'x'` returns `'x'` — a wrong answer;
+`[''][0] ?? 'x'` returns `''` — correct.
+**Status:** open
