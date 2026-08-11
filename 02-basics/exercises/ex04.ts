@@ -12,14 +12,25 @@
 // TODO: add Published and Archived.
 export enum Status {
   Draft,
+  Published,
+  Archived
 }
 
 // TODO: add Info = 'INFO' and Error = 'ERROR'.
 export enum LogLevel {
   Debug = 'DEBUG',
+  Info = 'INFO',
+  Error = 'ERROR'
 }
 
 // Return 'draft' | 'published' | 'archived' for the matching status.
-export function statusLabel(status: Status): string {
-  throw new Error('TODO: implement statusLabel')
+export function statusLabel(status: Status): 'draft' | 'published' | 'archived' {
+  switch (status) {
+    case Status.Draft:
+      return 'draft';
+    case Status.Archived:
+      return 'archived';
+    case Status.Published:
+      return 'published'
+  }
 }
