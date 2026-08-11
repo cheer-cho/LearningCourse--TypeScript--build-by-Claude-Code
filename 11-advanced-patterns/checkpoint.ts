@@ -4,48 +4,33 @@
  * A tiny typed task store, combining three patterns from this module:
  * branded ids (ex01), an event map with typed on/emit (ex04), and an
  * exhaustive Record<State, handler> reducer instead of a switch (ex07).
+ * Each declaration below explains its own job.
  *
- * 1. TaskId: Brand<string, 'TaskId'>. taskId(raw) does the one cast.
- * 2. TaskState: 'todo' | 'doing' | 'done'.
- * 3. TaskEvent: 'start' | 'complete' | 'reopen'.
- * 4. TASK_TRANSITIONS: Record<TaskState, (event: TaskEvent) => TaskState>,
- *    exhaustive by construction:
- *      todo:  start    -> doing,  else stays todo
- *      doing: complete -> done,   reopen -> todo, else stays doing
- *      done:  reopen   -> todo,   else stays done
- * 5. StoreEvents: { changed: { id: TaskId; from: TaskState; to: TaskState } }
- * 6. TaskStore:
- *      - addTask(title: string): Task — fresh TaskId, state starts 'todo'.
- *      - getTask(id: TaskId): Task | undefined
- *      - send(id: TaskId, event: TaskEvent): Task — looks the task up, runs
- *        it through TASK_TRANSITIONS, updates its state, and emits
- *        'changed' ONLY when the state actually changed. Throws
- *        `Error('unknown task: ' + id)` for an unknown id.
- *      - on<K extends keyof StoreEvents>(event: K, cb: (payload: StoreEvents[K]) => void): void
- *
- *    const store = new TaskStore()
- *    const t = store.addTask('write tests')        // { state: 'todo', ... }
- *    store.on('changed', (p) => console.log(p.from, '->', p.to))
- *    store.send(t.id, 'start')                      // -> 'doing', emits changed
- *    store.send(t.id, 'start')                      // no-op, no event
+ *   const store = new TaskStore()
+ *   const t = store.addTask('write tests')        // { state: 'todo', ... }
+ *   store.on('changed', (p) => console.log(p.from, '->', p.to))
+ *   store.send(t.id, 'start')                      // -> 'doing', emits changed
+ *   store.send(t.id, 'start')                      // no-op, no event
  *
  * Passing `npm test -- 11` completes this module. 🎉
  */
 
 export type Brand<T, B extends string> = T & { readonly __brand: B }
 
-// TODO: Brand<string, 'TaskId'>
+// A branded string, so plain strings can't be passed where an id is
+// expected: Brand<string, 'TaskId'>
 export type TaskId = unknown
 
-// TODO: cast the raw string once.
+// The ONE place a raw string becomes a TaskId — a single cast.
+//   Signature: (raw: string) => TaskId
 export function taskId(raw: any): any {
   throw new Error('TODO: implement taskId')
 }
 
-// TODO: 'todo' | 'doing' | 'done'
+// Where a task can be: 'todo' | 'doing' | 'done'
 export type TaskState = unknown
 
-// TODO: 'start' | 'complete' | 'reopen'
+// What can happen to a task: 'start' | 'complete' | 'reopen'
 export type TaskEvent = unknown
 
 export interface Task {
@@ -54,9 +39,16 @@ export interface Task {
   state: unknown // TODO: TaskState
 }
 
-// TODO: Record<TaskState, (event: TaskEvent) => TaskState>, exhaustive.
+// The state machine as data — one handler per state, exhaustive BY
+// CONSTRUCTION (a missing state is a compile error):
+//   Record<TaskState, (event: TaskEvent) => TaskState>
+//     todo:  start    -> doing,  else stays todo
+//     doing: complete -> done,   reopen -> todo, else stays doing
+//     done:  reopen   -> todo,   else stays done
 export const TASK_TRANSITIONS: Record<string, (event: any) => any> = {}
 
+// The store's event map: one 'changed' event whose payload says which
+// task moved, from where, to where. TODO: TaskId / TaskState.
 export interface StoreEvents {
   changed: { id: unknown; from: unknown; to: unknown } // TODO: TaskId / TaskState
 }
@@ -64,22 +56,29 @@ export interface StoreEvents {
 export class TaskStore {
   // TODO: internal state — a map of tasks, a listener store, an id counter.
 
-  // TODO: implement.
+  // Create a task with a fresh TaskId; state starts at 'todo'.
+  //   Signature: (title: string) => Task
   addTask(title: any): any {
     throw new Error('TODO: implement addTask')
   }
 
-  // TODO: implement.
+  // Look a task up by id.
+  //   Signature: (id: TaskId) => Task | undefined
   getTask(id: any): any {
     throw new Error('TODO: implement getTask')
   }
 
-  // TODO: implement.
+  // Advance a task: look it up, run it through TASK_TRANSITIONS, update
+  // its state, and emit 'changed' ONLY when the state actually changed.
+  // Throws Error('unknown task: ' + id) for an unknown id.
+  //   Signature: (id: TaskId, event: TaskEvent) => Task
   send(id: any, event: any): any {
     throw new Error('TODO: implement send')
   }
 
-  // TODO: generic signature, then implement.
+  // Subscribe to a store event — typed per key:
+  //   on<K extends keyof StoreEvents>(event: K,
+  //      cb: (payload: StoreEvents[K]) => void): void
   on(event: any, cb: any): void {
     throw new Error('TODO: implement on')
   }

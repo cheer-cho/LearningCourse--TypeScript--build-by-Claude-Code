@@ -3,34 +3,26 @@
  *
  * A typed event bus. Combines: mapped types, key remapping with
  * template literals, conditional types with infer, and satisfies.
- *
- * 1. ListenerMap<T>: for every event key K in T, the handler signature
- *      (payload: T[K]) => void
- *      ListenerMap<{ login: string }> -> { login: (payload: string) => void }
- * 2. OnEventName<K>: template literal key remap — 'login' -> 'onLogin'.
- * 3. PayloadOf<H>: extract the payload type from a handler function
- *    type via infer.
- *      PayloadOf<(payload: number) => void> -> number
- * 4. class EventBus<T extends EventMap>:
- *    - on(event, handler): registers a handler for that event (many
- *      handlers per event are allowed).
- *    - emit(event, payload): calls every handler registered for that
- *      event, in registration order, with the given payload.
- * 5. EVENT_NAMES: validate the event name list against Events' keys
- *    with `satisfies`, keeping its literal tuple shape (see ex11).
+ * Each declaration below explains its own job.
  *
  * Passing `npm test -- 08` completes this module. 🎉
  */
 
 export type EventMap = Record<string, unknown>
 
-// TODO
+// A MAPPED TYPE: for every event key K in T, the handler signature
+// (payload: T[K]) => void.
+//   ListenerMap<{ login: string }> -> { login: (payload: string) => void }
 export type ListenerMap<T extends EventMap> = unknown
 
-// TODO
+// Remap an event name to its handler-prop name with a TEMPLATE LITERAL
+// type: 'login' -> 'onLogin'.
+//   Hint: Capitalize<K>.
 export type OnEventName<K extends string> = unknown
 
-// TODO
+// Extract the payload type out of a handler function type — a
+// CONDITIONAL TYPE with infer.
+//   PayloadOf<(payload: number) => void> -> number
 export type PayloadOf<H> = unknown
 
 export type Events = {
@@ -38,10 +30,16 @@ export type Events = {
   logout: undefined
 }
 
-// TODO: add `as const satisfies readonly (keyof Events)[]`.
+// The list of event names, validated against Events' keys WITHOUT
+// losing its literal tuple shape (see ex11).
+//   Add: as const satisfies readonly (keyof Events)[]
 export const EVENT_NAMES = ['login', 'logout']
 
-// TODO: constrain T, add private storage, implement both methods.
+// The bus itself. Constrain T (extends EventMap), add private storage.
+//   - on(event, handler): registers a handler for that event — many
+//     handlers per event are allowed.
+//   - emit(event, payload): calls every handler registered for that
+//     event, in registration order, with the given payload.
 export class EventBus<T> {
   on(event: any, handler: any): void {
     throw new Error('TODO: implement on')

@@ -3,34 +3,36 @@
  *
  * A traffic-light controller. Combines: literal unions, as const,
  * tuples, exhaustive switches with never, and arrays.
- *
- * 1. Define Light as the union 'red' | 'green' | 'yellow'.
- * 2. Make LIGHTS a readonly tuple of exactly those literals (as const).
- * 3. DURATIONS is a tuple: seconds for red, green, yellow (in that order).
- * 4. next: red -> green -> yellow -> red. Exhaustive switch — if a new
- *    light is ever added to the union, next() must FAIL TO COMPILE until
- *    it's handled (use the assertNever pattern from ex07).
- * 5. simulate(start, steps): the sequence of the next `steps` states.
- *      simulate('red', 3) -> ['green', 'yellow', 'red']
+ * Each declaration below explains its own job.
  *
  * Passing `npm test -- 02` completes this module. 🎉
  */
 
-// TODO
+// The three states a traffic light can be in.
+//   Define as the union: 'red' | 'green' | 'yellow'
 export type Light = unknown
 
-// TODO: as const
+// All lights, in order — as a READONLY tuple of exactly those literals.
+//   Hint: as const.
 export const LIGHTS = ['red', 'green', 'yellow']
 
-// TODO: type this as a tuple of three numbers.
+// How long each light stays on, in seconds — red, green, yellow, in
+// that order. Type it as a tuple of exactly three numbers.
 export const DURATIONS: any = [30, 25, 5]
 
-// TODO: fix the types, then implement (exhaustively!).
+// The state after this one: red -> green -> yellow -> red.
+// Use an EXHAUSTIVE switch — if a new light is ever added to the union,
+// next() must FAIL TO COMPILE until it's handled (assertNever, ex07).
+//   next('red') -> 'green'
+//   Signature: (light: Light) => Light
 export function next(light: any): any {
   throw new Error('TODO: implement next')
 }
 
-// TODO: fix the types, then implement.
+// Run the light forward: the sequence of the next `steps` states,
+// starting from (but not including) `start`.
+//   simulate('red', 3) -> ['green', 'yellow', 'red']
+//   Signature: (start: Light, steps: number) => Light[]
 export function simulate(start: any, steps: any): any {
   throw new Error('TODO: implement simulate')
 }

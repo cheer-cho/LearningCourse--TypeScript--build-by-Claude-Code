@@ -64,6 +64,12 @@ reading long documents.
     question self-quiz.
   - checkpoint.ts — a graded checkpoint exercise combining everything
     in the module. Passing its tests = module complete.
+- In every stub file (exercises and checkpoints), each declaration
+  carries its own plain-English comment directly above it: what the
+  thing does, its inputs and outputs, edge cases, and 1–3 input ->
+  output examples. The file header stays short (scenario + concepts +
+  how to run the tests) — never a numbered spec the reader must map
+  back to declarations by hand.
 
 ## Curriculum (cover ALL of TypeScript — expand as needed, but at minimum)
 1. Setup & tooling: tsc, tsconfig deep-dive (strict flags explained
