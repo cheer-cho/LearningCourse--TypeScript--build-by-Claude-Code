@@ -10,6 +10,8 @@
  * Passing `npm test -- 01` (all of it) completes this module. 🎉
  */
 
+import { number } from "zod";
+
 // One log entry: when it was taken, how warm it was, and (optionally)
 // which sensor reported it.
 //   Shape: { time: string; celsius: number; sensor?: string }
@@ -56,5 +58,8 @@ export function readingAt(temps: number[], index: number): number | undefined {
 //   average([])           -> 0
 //   Signature: (temps: number[]) => number
 export function average(temps: number[]): number {
-  return temps.reduce((acc, cur) => acc + cur, 0) / temps.length
+  if (!temps.length){
+    return 0;
+  }
+  return temps.reduce((acc, cur) => acc + cur, 0) / temps.length;
 }
