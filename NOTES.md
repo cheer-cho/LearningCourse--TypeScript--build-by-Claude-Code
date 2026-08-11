@@ -12,6 +12,17 @@ quizzes and reviews. Format:
 
 ---
 
+## 2026-08-11 — 02/ex05
+**Mistake:** Used `as Direction` on each value of a lookup map to make the
+return type fit. `as` is an *assertion* — it tells the compiler to trust
+you and widens the literal to the whole union, so a wrong mapping
+(`north: 'north' as Direction`) compiles silently.
+**Correction:** Prefer letting the compiler *check* instead of asserting:
+`as const` keeps the values as literal types, and literals are verified
+assignable to the union at the return site. Rule of thumb: `as const`
+narrows and stays checked; `as SomeType` overrides the checker.
+**Status:** open
+
 ## 2026-08-10 — 01/ex02
 **Mistake:** Used `||` to supply a fallback for possibly-missing values
 (`items[0] || fallback`, `text?.length || 0`). `||` falls back on *any*

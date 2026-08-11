@@ -15,15 +15,22 @@
  */
 
 // TODO: 'north' | 'south' | 'east' | 'west'
-export type Direction = unknown
+export type Direction = 'north' | 'south' | 'east' | 'west';
 
-// TODO: type the parameter and return as Direction, then implement.
-export function opposite(dir: any): any {
-  throw new Error('TODO: implement opposite')
+// TODO: type the parameter and return, then implement.
+export function opposite(dir: Direction): Direction {
+  const oppositeOf = {
+    north: 'south',
+    south: 'north',
+    east: 'west',
+    west: 'east'
+  } as const
+
+  return oppositeOf[dir];
 }
 
 // TODO: keep the 0s literal and readonly.
-export const ORIGIN = { x: 0, y: 0 }
+export const ORIGIN = { x: 0, y: 0 } as const
 
 // TODO: this should stay type 'dark' (assignable later ONLY to 'dark').
-export let mode = 'dark'
+export let mode: 'dark' = 'dark'
