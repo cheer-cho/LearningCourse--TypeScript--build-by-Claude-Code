@@ -21,5 +21,17 @@
  */
 
 export function describeValue(value: unknown): string {
-  throw new Error('TODO: implement describeValue')
+  switch (typeof value) {
+    case 'string':
+      return `string of length ${value.length}`;
+    case 'number':
+    case 'boolean':
+      return typeof value;
+    default:
+      if (Array.isArray(value)) {
+        return `array of ${value.length} items`;
+      }
+      return 'other';
+  };
+  // throw new Error('TODO: implement describeValue')
 }
