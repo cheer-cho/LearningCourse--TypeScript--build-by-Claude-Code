@@ -24,10 +24,20 @@ export function assertNever(value: never): never {
 
 // circle -> 0, square -> 4, triangle -> 3. Exhaustive switch + assertNever.
 export function sides(shape: Shape): number {
-  throw new Error('TODO: implement sides')
+  switch(shape) {
+    case 'circle':
+      return 0;
+    case 'square':
+      return 4;
+    case 'triangle':
+      return 3;
+    default:
+      return assertNever(shape)
+  }
 }
 
 // Call every function in order. Returns void.
 export function runAll(fns: Array<() => void>): void {
-  throw new Error('TODO: implement runAll')
+  fns.forEach(fn => fn());
+  // throw new Error('TODO: implement runAll')
 }
