@@ -21,6 +21,11 @@ you and widens the literal to the whole union, so a wrong mapping
 `as const` keeps the values as literal types, and literals are verified
 assignable to the union at the return site. Rule of thumb: `as const`
 narrows and stays checked; `as SomeType` overrides the checker.
+**Recurred 2026-08-22 — 02/ex08:** first attempt annotated or cast every
+line (`: string`, `: readonly [1,2,3]`, `as {...}[]`) in an exercise that
+forbids annotations. Corrected quickly once prompted: `let` to widen,
+`as const` to narrow, drop return annotations and let the body infer.
+Quiz target: "inputs are annotated, outputs are inferred."
 **Status:** open
 
 ## 2026-08-10 — 01/ex02
