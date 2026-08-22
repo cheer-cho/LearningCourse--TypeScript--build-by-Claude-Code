@@ -29,9 +29,9 @@ preparation, everything after it is application.*
 - [ ] ✦ Checkpoint 1 passed
 
 ### 02 — Basics
-- [ ] Lesson read
-- [ ] Exercises ex01–ex08
-- [ ] ✦ Checkpoint 2 passed
+- [x] Lesson read
+- [x] Exercises ex01–ex08
+- [x] ✦ Checkpoint 2 passed
 
 ### 03 — Objects & Interfaces
 - [ ] Lesson read
