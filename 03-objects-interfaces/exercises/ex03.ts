@@ -14,14 +14,22 @@
  */
 
 // TODO: any string key -> number.
-export type WordCount = unknown
+export type WordCount = {
+  [word: string]: number;
+};
 
 // TODO: implement. Ignore empty strings from splitting.
 export function countWords(text: string): WordCount {
-  throw new Error('TODO: implement countWords')
+  const wordCount: WordCount = {};
+  const words = text.split(/\s+/).filter(Boolean);
+  words.forEach((chunk) => {
+    wordCount[chunk] = (wordCount[chunk] ?? 0) + 1;
+  });
+  return wordCount;
 }
 
 // TODO: implement — 0 for words never seen.
 export function getCount(counts: WordCount, word: string): number {
-  throw new Error('TODO: implement getCount')
+  const count = counts[word];
+  return count ?? 0;
 }
