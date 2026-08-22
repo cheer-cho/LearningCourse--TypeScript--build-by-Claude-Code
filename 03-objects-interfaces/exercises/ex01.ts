@@ -10,9 +10,13 @@
  */
 
 // TODO: define the shape.
-export type Book = unknown
+export type Book = {
+  title: string;
+  pages: number;
+  author?: string;
+}
 
 // TODO: type the parameter as Book, then implement.
-export function describeBook(book: any): string {
-  throw new Error('TODO: implement describeBook')
+export function describeBook(book: Book): string {
+  return `${book.title} (${book.pages}p) by ${book.author || 'unknown'}`
 }
