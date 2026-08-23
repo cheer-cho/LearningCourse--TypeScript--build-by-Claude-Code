@@ -18,8 +18,14 @@ export interface AppGlobals {
 }
 
 // TODO: declare AppGlobals AGAIN here, adding version: string.
+export interface AppGlobals {
+  version: string
+}
 
-export function makeGlobals(): AppGlobals {
+export function makeGlobals (): AppGlobals {
   // TODO: once merged, this object must also provide `version`.
-  return { appName: 'mastery' }
+  return {
+    appName: 'mastery',
+    version: '0.0.1-beta'
+  }
 }
