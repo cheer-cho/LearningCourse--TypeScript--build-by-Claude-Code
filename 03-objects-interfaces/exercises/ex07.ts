@@ -17,19 +17,23 @@
 export type Named = { name: string }
 
 // TODO: implement -> 'Hello, <name>!'
-export function greet(entity: Named): string {
-  throw new Error('TODO: implement greet')
+export function greet (entity: Named): string {
+  return `Hello, ${entity.name}!`
 }
 
 export const robot = { name: 'R2-D2', wheels: 3 }
 
 // TODO: replace with greet(robot).
-export const robotGreeting: string = 'TODO'
+export const robotGreeting: string = greet(robot)
 
 // Quiz — does each line compile? Answer 'yes' or 'no'.
 //   q1:  greet({ name: 'Ada', age: 36 })     // inline literal with extra
 //   q2:  const p = { name: 'Ada', age: 36 }; greet(p)   // via variable
 export const quiz: { q1: 'yes' | 'no'; q2: 'yes' | 'no' } = {
-  q1: 'yes', // TODO
-  q2: 'no', // TODO
+  q1: 'no',
+  // the greet({ name: 'Ada', age: 36 }) is not working because, it is an inline iteral
+  // Therefore, it is treated as typo
+  q2: 'yes'
+  // the greet({ name: 'Ada', age: 36 }) is complied because, it is infer,
+  // the object has required fields which satisfies the function argument
 }
