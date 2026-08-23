@@ -15,16 +15,28 @@
 
 // TODO: as an interface.
 export interface PointI {
-  // TODO
+  x: number;
+  y: number;
 }
 
 // TODO: the same shape, as a type alias.
-export type PointT = unknown
+export type PointT = {
+  x: number;
+  y: number;
+};
 
 // TODO: the union (try writing it as an interface — it's impossible).
-export type Shape = unknown
+type Circle = { kind: 'circle'; radius: number; };
+type Square = { kind: 'square'; size: number; };
+export type Shape = Circle | Square;
+
 
 // TODO: type the parameter as Shape, then implement.
-export function area(shape: any): number {
-  throw new Error('TODO: implement area')
+export function area(shape: Shape): number {
+  switch (shape.kind) {
+    case 'circle':
+      return Math.PI * (shape.radius ** 2);
+    case 'square':
+      return shape.size ** 2;
+  }
 }
