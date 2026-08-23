@@ -13,20 +13,26 @@
  */
 
 export interface Animal {
-  name: string
+  name: string;
 }
 
 // TODO: extends Animal, adds owner: string
 export interface Pet extends Animal {
-  // TODO
+  owner: string;
 }
 
 // TODO: extends Pet, adds breed: string and bark(): string
 export interface Dog extends Pet {
-  // TODO
+  breed: string;
+  bark(): string;
 }
 
 // TODO: fix the parameter/return types, then implement.
-export function makeDog(name: any, owner: any, breed: any): any {
-  throw new Error('TODO: implement makeDog')
+export function makeDog(name: string, owner: string, breed: string): Dog {
+  return {
+    name,
+    owner,
+    breed,
+    bark: () => 'Woof!'
+  };
 }
