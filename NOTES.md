@@ -35,4 +35,5 @@ falsy value (`''`, `0`, `false`), not just `null`/`undefined`.
 **Correction:** Use `??` (nullish coalescing) when the intent is "only if
 null or undefined". `[''][0] || 'x'` returns `'x'` — a wrong answer;
 `[''][0] ?? 'x'` returns `''` — correct.
+**Recurred 2026-08-26 — 03/checkpoint:** proposed `...(overrides.debug && { debug: overrides.debug })` to guard a spread. `&&` short-circuits on `false`, so `{ debug: false }` was silently ignored. Same root idea: *falsy ≠ missing*. Guard on presence (`!== undefined` / `in`), not truthiness.
 **Status:** open
