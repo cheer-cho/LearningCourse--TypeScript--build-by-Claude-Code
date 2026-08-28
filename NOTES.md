@@ -12,6 +12,20 @@ quizzes and reviews. Format:
 
 ---
 
+## 2026-08-28 — 04/ex01
+**Mistake:** To give `applyOp` the type `ApplyOp`, wrote
+`function applyOp<ApplyOp>(a, b, op)`. Read the angle brackets as "this
+function has type `ApplyOp`". They do the opposite: `<T>` *declares* a new
+generic type parameter, which shadowed the alias of the same name and left
+every parameter implicitly `any`. Also assumed `op` was a `string` to
+`switch` on, rather than the function itself.
+**Correction:** A function type alias annotates a **value**, so it lives on
+a `const`, a parameter, or a return type — `const applyOp: ApplyOp = ...`.
+There is no syntax to hang an alias on a `function` declaration; those
+annotate each parameter inline. Angle brackets after a name always mean
+"introduce a type variable" (module 07), never "apply a type".
+**Status:** open
+
 ## 2026-08-11 — 02/ex05
 **Mistake:** Used `as Direction` on each value of a lookup map to make the
 return type fit. `as` is an *assertion* — it tells the compiler to trust
