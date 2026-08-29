@@ -18,13 +18,27 @@
  */
 
 // TODO: add the two overload signatures above this implementation.
-export function toArray(x: string | number): string[] | number[] {
+export function toArray(x: string): string[]
+export function toArray(x: number): number[]
+export function toArray (x: string | number): string[] | number[] {
   if (typeof x === 'string') return x.split('')
   return [...String(x)].map(Number)
 }
 
 // TODO: add the two overload signatures, fix the implementation types,
 // then implement.
-export function makeDate(a: any, b?: any, c?: any): Date {
-  throw new Error('TODO: implement makeDate')
+export function makeDate(a: string): Date
+export function makeDate(a: number, b: number, c: number): Date
+export function makeDate (a: string | number, b?: number, c?: number): Date {
+  if (typeof a === 'string') {
+    return new Date()
+    // return new Date(`${a}T00:00:00`) // force local
+    // return new Date(Date.UTC(a, b, c)) // force UTC
+  }
+  if (b === undefined || c === undefined) {
+    throw new Error(`
+      makeDate(number) requires year, month and day; got (${a}, ${b}, ${c})
+    `)
+  }
+  return new Date(a, b, c) // local
 }
