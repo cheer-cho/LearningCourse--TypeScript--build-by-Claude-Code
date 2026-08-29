@@ -17,11 +17,16 @@
  */
 
 export interface Counter {
-  count: number
+  count: number;
   // TODO: declare increment with a `this: Counter` parameter, returning number.
-  increment(): number
+  increment(this: Counter): number;
 }
 
 export function makeCounter(): Counter {
-  throw new Error('TODO: implement makeCounter')
+  return {
+    count: 0,
+    increment() {
+      return ++this.count;
+    }
+  };
 }
