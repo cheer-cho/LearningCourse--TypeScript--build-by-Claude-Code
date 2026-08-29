@@ -8,6 +8,7 @@ describe('ex08/ex08 — recursive types', () => {
   })
 
   it('DeepReadonly freezes every nested level', () => {
+    expectTypeOf<DeepReadonly<number>>().toEqualTypeOf<number>()  // primitives pass through
     expectTypeOf<DeepReadonly<{ a: { b: number[] } }>>().toEqualTypeOf<{
       readonly a: { readonly b: readonly number[] }
     }>()
@@ -16,5 +17,6 @@ describe('ex08/ex08 — recursive types', () => {
   it('Split breaks a string literal into a tuple of parts', () => {
     expectTypeOf<Split<'a.b.c', '.'>>().toEqualTypeOf<['a', 'b', 'c']>()
     expectTypeOf<Split<'a', '.'>>().toEqualTypeOf<['a']>()
+    expectTypeOf<Split<'', '.'>>().toEqualTypeOf<['']>()   // no separator: one empty part
   })
 })

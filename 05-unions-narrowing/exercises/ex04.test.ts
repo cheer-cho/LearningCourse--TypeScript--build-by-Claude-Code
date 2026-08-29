@@ -23,6 +23,8 @@ describe('ex05/ex04 — in and instanceof narrowing', () => {
     expect(sizeOf(['a', 'b'])).toBe(2)
     expect(sizeOf(new Set(['a', 'b', 'c']))).toBe(3)
     expect(sizeOf(new Set<string>())).toBe(0)
+    expect(sizeOf([])).toBe(0)             // empty array takes the array branch
+    expect(sizeOf(new Set(['a', 'a']))).toBe(1)  // a Set dedupes; an array would not
     expectTypeOf(sizeOf).toEqualTypeOf<(collection: string[] | Set<string>) => number>()
   })
 })

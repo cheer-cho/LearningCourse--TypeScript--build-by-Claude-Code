@@ -16,6 +16,7 @@ describe('ex11/ex03 — pipe composition', () => {
   it('two functions: output of the first feeds the second', () => {
     const p = pipe(toLen, double)
     expect(p('abcd')).toBe(8)
+    expect(p('')).toBe(0)   // a falsy intermediate must keep flowing
     expectTypeOf(p).toEqualTypeOf<(a: string) => number>()
   })
 

@@ -23,6 +23,14 @@ describe('✦ checkpoint 3 — objects & interfaces', () => {
     const result = withOverrides(base, { env: 'prod', debug: true })
     expect(result).toEqual({ host: 'x', port: 80, env: 'prod', debug: true })
     expect(base).toEqual({ host: 'x', port: 80, env: 'dev' })
+
+    // an empty override changes nothing
+    expect(withOverrides(base, {})).toEqual({ host: 'x', port: 80, env: 'dev' })
+    // a FALSY override still wins — `&&`-guarded spreads drop this silently
+    const debugOn = withOverrides(base, { debug: true })
+    expect(withOverrides(debugOn, { debug: false }).debug).toBe(false)
+    // overriding one key leaves the other alone
+    expect(withOverrides(base, { debug: true }).env).toBe('dev')
     expectTypeOf(withOverrides).toEqualTypeOf<(base: ServerConfig, overrides: Overrides) => ServerConfig>()
   })
 
@@ -35,6 +43,9 @@ describe('✦ checkpoint 3 — objects & interfaces', () => {
     const result = withHeader(headers, 'authorization', 'Bearer x')
     expect(result).toEqual({ accept: 'application/json', authorization: 'Bearer x' })
     expect(headers).toEqual({ accept: 'application/json' })
+    // setting an existing name replaces it; an empty value is still a value
+    expect(withHeader(headers, 'accept', 'text/plain')).toEqual({ accept: 'text/plain' })
+    expect(withHeader(headers, 'x-trace', '')).toEqual({ accept: 'application/json', 'x-trace': '' })
     expectTypeOf(withHeader).toEqualTypeOf<(headers: HeaderMap, name: string, value: string) => HeaderMap>()
   })
 })

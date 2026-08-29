@@ -10,6 +10,7 @@ describe('ex06/ex06 — generic classes & override', () => {
     s.push(3)
     expect(s.size).toBe(3)
     expect(s.peek()).toBe(3)
+    expect(s.size).toBe(3)        // peek must NOT remove
     expect(s.pop()).toBe(3)
     expect(s.pop()).toBe(2)
     expect(s.size).toBe(1)
@@ -20,6 +21,14 @@ describe('ex06/ex06 — generic classes & override', () => {
     const s = new Stack<string>()
     expect(s.pop()).toBeUndefined()
     expect(s.peek()).toBeUndefined()
+    expect(s.isEmpty()).toBe(true)
+    // a stack holding 0 is NOT empty — falsy items are still items
+    const zeros = new Stack<number>()
+    zeros.push(0)
+    expect(zeros.isEmpty()).toBe(false)
+    expect(zeros.peek()).toBe(0)
+    expect(zeros.pop()).toBe(0)
+    expect(zeros.isEmpty()).toBe(true)
   })
 
   it('Stack<T> is precisely typed per instantiation', () => {
@@ -37,6 +46,10 @@ describe('ex06/ex06 — generic classes & override', () => {
     s.push('b')
     expect(s.pop()).toBe('b')
     expect(s.log).toEqual(['push', 'push', 'pop'])
+    // popping empty still logs and still returns undefined
+    const empty = new LoggingStack<number>()
+    expect(empty.pop()).toBeUndefined()
+    expect(empty.log).toEqual(['pop'])
     expect(s.size).toBe(1)
   })
 

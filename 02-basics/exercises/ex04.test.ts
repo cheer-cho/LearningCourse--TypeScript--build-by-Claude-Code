@@ -10,12 +10,17 @@ describe('ex02/ex04 — enums', () => {
 
   it('numeric enums have reverse mappings at runtime', () => {
     expect(Status[2]).toBe('Archived')
+    expect(Status[0]).toBe('Draft')
+    expect(Status[1]).toBe('Published')
   })
 
   it('LogLevel is a string enum (no reverse mapping)', () => {
     expect(LogLevel.Debug).toBe('DEBUG')
     expect(LogLevel.Info).toBe('INFO')
     expect(LogLevel.Error).toBe('ERROR')
+    // the point of the test name: string enums have NO reverse mapping
+    expect((LogLevel as Record<string, string | undefined>)['DEBUG']).toBeUndefined()
+    expect((LogLevel as Record<string, string | undefined>)['ERROR']).toBeUndefined()
   })
 
   it('statusLabel covers every member', () => {

@@ -17,6 +17,7 @@ describe('ex02/ex07 — never and void', () => {
     const calls: number[] = []
     const result = runAll([() => calls.push(1), () => calls.push(2), () => calls.push(3)])
     expect(calls).toEqual([1, 2, 3])
+    expect(runAll([])).toBeUndefined()   // empty list is a no-op, not an error
     expect(result).toBeUndefined()
     expectTypeOf(runAll).returns.toEqualTypeOf<void>()
   })

@@ -42,6 +42,12 @@ describe('ex11/ex04 — typed event emitter', () => {
   it('emitting an event nobody listens to is a no-op', () => {
     const emitter = new TypedEmitter<AppEvents>()
     expect(() => emitter.emit('logout', { reason: 'quit' })).not.toThrow()
+    // off on an unregistered callback, or an event with no listeners, is also a no-op
+    expect(() => emitter.off('logout', () => {})).not.toThrow()
+    const noop = (p: { userId: string }) => p
+    emitter.on('login', noop)
+    expect(() => emitter.off('login', () => {})).not.toThrow()
+    expect(() => emitter.emit('login', { userId: 'u9' })).not.toThrow()
   })
 
   it('wrong payloads and unknown events do not compile', () => {

@@ -17,6 +17,7 @@ describe('✦ checkpoint 10 — async & error handling', () => {
     expect(e.message).toBe('timed out after 50ms')
     expect(e.name).toBe('TimeoutError')
     expect(e.ms).toBe(50)
+    expect(new TimeoutError(0).message).toBe('timed out after 0ms')
     expect(e).toBeInstanceOf(Error)
     expectTypeOf(e.ms).toEqualTypeOf<number>()
     expectTypeOf(TimeoutError).constructorParameters.toEqualTypeOf<[ms: number]>()
@@ -54,6 +55,17 @@ describe('✦ checkpoint 10 — async & error handling', () => {
     const result = await fetchResilient(succeed, { attempts: 3, timeoutMs: 20 })
     expect(result).toEqual({ ok: true, value: 'data' })
     expect(calls).toBe(1)
+    // a falsy value is a success — do not retry past it
+    let zeroCalls = 0
+    const zero = async () => {
+      zeroCalls += 1
+      return 0
+    }
+    await expect(fetchResilient(zero, { attempts: 3, timeoutMs: 20 })).resolves.toEqual({
+      ok: true,
+      value: 0,
+    })
+    expect(zeroCalls).toBe(1)
     expectTypeOf(result).toEqualTypeOf<Result<string, Error>>()
   })
 
@@ -113,6 +125,9 @@ describe('✦ checkpoint 10 — async & error handling', () => {
     const failure = err(new Error('boom')) as Result<number, Error>
     expect(describeResult(success)).toBe('success: 7')
     expect(describeResult(failure)).toBe('failure: boom')
+    expect(describeResult(ok(0) as Result<number, Error>)).toBe('success: 0')
+    expect(describeResult(ok('') as Result<string, Error>)).toBe('success: ""')
+    expect(describeResult(err(new Error('')) as Result<number, Error>)).toBe('failure: ')
     expectTypeOf(describeResult(success)).toEqualTypeOf<string>()
   })
 })

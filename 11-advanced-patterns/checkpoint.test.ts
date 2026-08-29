@@ -28,6 +28,10 @@ describe('✦ checkpoint 11 — advanced patterns', () => {
     expect(task.title).toBe('write tests')
     expect(task.state).toBe('todo')
     expectTypeOf(task).toEqualTypeOf<Task>()
+    // an empty title is still a title, and ids stay distinct
+    const blank = store.addTask('')
+    expect(blank.title).toBe('')
+    expect(blank.id).not.toBe(task.id)
   })
 
   it('getTask finds tasks by id, and returns undefined otherwise', () => {
@@ -43,6 +47,8 @@ describe('✦ checkpoint 11 — advanced patterns', () => {
     expect(store.send(task.id, 'start').state).toBe('doing')
     expect(store.send(task.id, 'complete').state).toBe('done')
     expect(store.send(task.id, 'reopen').state).toBe('todo')
+    // the stored task is updated, not just the returned copy
+    expect(store.getTask(task.id)?.state).toBe('todo')
   })
 
   it('send is a no-op when the event does not apply to the current state', () => {

@@ -13,5 +13,6 @@ describe('ex08/ex06 — key remapping with as', () => {
   it('PickByType filters properties by their value type', () => {
     expectTypeOf<PickByType<Task, string>>().toEqualTypeOf<{ title: string }>()
     expectTypeOf<PickByType<Task, number | boolean>>().toEqualTypeOf<{ id: number; done: boolean }>()
+    expectTypeOf<PickByType<Task, never>>().toEqualTypeOf<{}>()  // nothing matches
   })
 })

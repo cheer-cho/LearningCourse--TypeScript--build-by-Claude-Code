@@ -22,6 +22,7 @@ describe('✦ checkpoint 5 — unions & narrowing', () => {
   it('isChat is a type predicate for the chat variant', () => {
     expect(isChat({ type: 'chat', user: 'ada', text: 'hi' })).toBe(true)
     expect(isChat({ type: 'join', user: 'ada' })).toBe(false)
+    expect(isChat({ type: 'chat', user: '', text: '' })).toBe(true)  // tag decides
     expectTypeOf(isChat).toEqualTypeOf<(msg: Incoming) => msg is ChatMessage>()
   })
 
@@ -35,6 +36,10 @@ describe('✦ checkpoint 5 — unions & narrowing', () => {
     expect(() => assertIncoming({ type: 'chat', user: 'ada' })).toThrow()
     expect(() => assertIncoming({ type: 'join', user: 42 })).toThrow()
     expect(() => assertIncoming({ type: 'ping', sentAt: 'now' })).toThrow()
+    // falsy-but-well-typed payloads are VALID messages
+    expect(() => assertIncoming({ type: 'ping', sentAt: 0 })).not.toThrow()
+    expect(() => assertIncoming({ type: 'chat', user: '', text: '' })).not.toThrow()
+    expect(() => assertIncoming({ type: 'join', user: '' })).not.toThrow()
     expectTypeOf(assertIncoming).toEqualTypeOf<(value: unknown) => asserts value is Incoming>()
   })
 
@@ -54,6 +59,8 @@ describe('✦ checkpoint 5 — unions & narrowing', () => {
     expect(handle({ type: 'chat', user: 'ada', text: 'hi' })).toBe('ada: hi')
     expect(handle({ type: 'leave', user: 'ada' })).toBe('ada left')
     expect(handle({ type: 'ping', sentAt: 99 })).toBe('pong 99')
+    expect(handle({ type: 'ping', sentAt: 0 })).toBe('pong 0')
+    expect(handle({ type: 'chat', user: 'ada', text: '' })).toBe('ada: ')
     expectTypeOf(handle).toEqualTypeOf<(msg: Incoming) => string>()
   })
 
@@ -67,6 +74,9 @@ describe('✦ checkpoint 5 — unions & narrowing', () => {
     ]
     expect(transcript(msgs)).toEqual(['ada: hi', 'bob: yo'])
     expect(transcript([])).toEqual([])
+    // an empty chat line is still a chat line
+    expect(transcript([{ type: 'chat', user: 'ada', text: '' }])).toEqual(['ada: '])
+    expect(transcript([{ type: 'ping', sentAt: 1 }])).toEqual([])
     expectTypeOf(transcript).toEqualTypeOf<(msgs: Incoming[]) => string[]>()
   })
 })

@@ -12,6 +12,7 @@ describe('ex09/ex01 — type-only imports', () => {
   it('describeTheme falls back to the default theme', () => {
     expect(describeTheme({ fontSize: 14 })).toBe('light @ 14px')
     expect(describeTheme({ theme: 'dark', fontSize: 16 })).toBe('dark @ 16px')
+    expect(describeTheme({ fontSize: 0 })).toBe('light @ 0px')
     expectTypeOf(describeTheme).toEqualTypeOf<(prefs: Prefs) => string>()
   })
 

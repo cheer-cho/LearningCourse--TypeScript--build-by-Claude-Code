@@ -63,6 +63,9 @@ describe('capstone-b — request infers a precise response type per key', () => 
     expect(result).toEqual({ ok: true, value: [{ id: '1', name: 'Ada' }] })
     expect(fetchImpl).toHaveBeenCalledWith('/users', { method: 'GET' })
     expectTypeOf(result).toEqualTypeOf<Result<UserT[], ApiError>>()
+    // an EMPTY list is a valid successful response, not a miss
+    const emptyClient = apiClient(schema, mockFetch(200, []))
+    await expect(emptyClient.request('GET /users', {})).resolves.toEqual({ ok: true, value: [] })
   })
 
   it('GET /users/:id substitutes the param and resolves to one user', async () => {
@@ -80,6 +83,10 @@ describe('capstone-b — request infers a precise response type per key', () => 
     const result = await client.request('POST /users', { body: { name: 'Ada' } })
     expect(result).toEqual({ ok: true, value: { id: '9', name: 'Ada' } })
     expect(fetchImpl).toHaveBeenCalledWith('/users', { method: 'POST', body: JSON.stringify({ name: 'Ada' }) })
+    // a falsy body field must still be sent, not dropped
+    const blank = mockFetch(201, { id: '0', name: '' })
+    await apiClient(schema, blank).request('POST /users', { body: { name: '' } })
+    expect(blank).toHaveBeenCalledWith('/users', { method: 'POST', body: JSON.stringify({ name: '' }) })
     expectTypeOf(result).toEqualTypeOf<Result<UserT, ApiError>>()
   })
 })
@@ -90,6 +97,11 @@ describe('capstone-b — errors are typed values, never thrown', () => {
     const client = apiClient(schema, fetchImpl)
     const result = await client.request('GET /users/:id', { params: { id: 'ghost' } })
     expect(result).toEqual({ ok: false, error: { kind: 'http', status: 404 } })
+    const server = apiClient(schema, mockFetch(500, {}))
+    await expect(server.request('GET /users', {})).resolves.toEqual({
+      ok: false,
+      error: { kind: 'http', status: 500 },
+    })
   })
 
   it('a body that fails validation becomes err({ kind: "validation" })', async () => {

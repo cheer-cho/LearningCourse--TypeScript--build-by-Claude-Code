@@ -31,9 +31,14 @@ describe('ex12/ex04 — JSON: recursive type and safe parse', () => {
     expect(safeJsonParse('42')).toEqual({ ok: true, value: 42 })
     expect(safeJsonParse('"hello"')).toEqual({ ok: true, value: 'hello' })
     expect(safeJsonParse('null')).toEqual({ ok: true, value: null })
+    // every falsy JSON value is a successful parse, not a failure
+    expect(safeJsonParse('0')).toEqual({ ok: true, value: 0 })
+    expect(safeJsonParse('false')).toEqual({ ok: true, value: false })
+    expect(safeJsonParse('""')).toEqual({ ok: true, value: '' })
   })
 
   it('safeJsonParse returns a non-empty error string on invalid JSON, never throws', () => {
+    expect(safeJsonParse('').ok).toBe(false)   // empty text is not valid JSON
     const attempt = () => safeJsonParse('{not valid')
     expect(attempt).not.toThrow()
     const r = safeJsonParse('{not valid')

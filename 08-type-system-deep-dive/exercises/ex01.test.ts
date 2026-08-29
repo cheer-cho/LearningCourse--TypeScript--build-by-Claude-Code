@@ -21,6 +21,7 @@ describe('ex08/ex01 — keyof, typeof, indexed access', () => {
 
   it('keysOf returns the keys, precisely typed', () => {
     expect(keysOf(point).sort()).toEqual(['label', 'x', 'y'])
+    expect(keysOf({})).toEqual([])
     expectTypeOf(keysOf(point)).toEqualTypeOf<PointKey[]>()
   })
 })

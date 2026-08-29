@@ -25,6 +25,13 @@ describe('ex12/ex06 — declaration-driven: paginated list fetcher', () => {
   it('fetchAllPages stops after a single page when nextCursor is null', async () => {
     const fetchPage = makeFetcher([{ items: [9], nextCursor: null }])
     await expect(fetchAllPages(fetchPage)).resolves.toEqual([9])
+    // an empty MIDDLE page must not end the walk
+    const withGap = makeFetcher([
+      { items: [1], nextCursor: '1' },
+      { items: [], nextCursor: '2' },
+      { items: [2], nextCursor: null },
+    ])
+    await expect(fetchAllPages(withGap)).resolves.toEqual([1, 2])
   })
 
   it('fetchAllPages returns [] for a first page with no items and no next', async () => {
@@ -56,5 +63,11 @@ describe('ex12/ex06 — declaration-driven: paginated list fetcher', () => {
       { items: [3], nextCursor: null },
     ])
     await expect(takeUntil(fetchPage, (n: number) => n > 100)).resolves.toEqual([1, 2, 3])
+    // matching a FALSY item still stops the walk
+    const zeros = makeFetcher([
+      { items: [0, 1], nextCursor: '1' },
+      { items: [2], nextCursor: null },
+    ])
+    await expect(takeUntil(zeros, (n: number) => n === 0)).resolves.toEqual([0])
   })
 })

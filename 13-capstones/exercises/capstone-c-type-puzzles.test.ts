@@ -21,12 +21,14 @@ describe('capstone-c — Split / Join', () => {
     expectTypeOf<Split<'a.b.c', '.'>>().toEqualTypeOf<['a', 'b', 'c']>()
     expectTypeOf<Split<'a', '.'>>().toEqualTypeOf<['a']>()
     expectTypeOf<Split<'one-two-three', '-'>>().toEqualTypeOf<['one', 'two', 'three']>()
+    expectTypeOf<Split<'', '.'>>().toEqualTypeOf<['']>()
   })
 
   it('Join is the inverse of Split', () => {
     expectTypeOf<Join<['a', 'b', 'c'], '.'>>().toEqualTypeOf<'a.b.c'>()
     expectTypeOf<Join<['a'], '.'>>().toEqualTypeOf<'a'>()
     expectTypeOf<Join<[], '.'>>().toEqualTypeOf<''>()
+    expectTypeOf<Join<['a', 'b'], ''>>().toEqualTypeOf<'ab'>()
   })
 })
 
@@ -35,6 +37,7 @@ describe('capstone-c — CamelCase', () => {
     expectTypeOf<CamelCase<'hello_world'>>().toEqualTypeOf<'helloWorld'>()
     expectTypeOf<CamelCase<'foo-bar-baz'>>().toEqualTypeOf<'fooBarBaz'>()
     expectTypeOf<CamelCase<'already'>>().toEqualTypeOf<'already'>()
+    expectTypeOf<CamelCase<'a_b_c'>>().toEqualTypeOf<'aBC'>()  // single-letter segments
   })
 })
 
@@ -53,6 +56,10 @@ describe('capstone-c — ObjectPaths / GetByPath', () => {
     const value = getByPath(nested, 'a.b.c')
     expect(value).toBe(42)
     expectTypeOf(value).toEqualTypeOf<number>()
+
+    const branch = getByPath(nested, 'a.b')
+    expect(branch).toEqual({ c: 42 })
+    expectTypeOf(branch).toEqualTypeOf<{ c: number }>()
 
     const leaf = getByPath(nested, 'd')
     expect(leaf).toBe('hi')
@@ -81,6 +88,8 @@ describe('capstone-c — Zip', () => {
 
   it('stops at the shorter tuple, at the type level', () => {
     expectTypeOf<Zip<[1, 2], ['a', 'b', 'c']>>().toEqualTypeOf<[[1, 'a'], [2, 'b']]>()
+    expectTypeOf<Zip<[], []>>().toEqualTypeOf<[]>()
+    expectTypeOf<Zip<[1], []>>().toEqualTypeOf<[]>()
   })
 
   it('zip (runtime) pairs elements and stops at the shorter array', () => {
@@ -93,6 +102,8 @@ describe('capstone-c — Zip', () => {
       [1, 'a'],
       [2, 'b'],
     ])
+    expect(zip([], [])).toEqual([])
+    expect(zip([0], [''])).toEqual([[0, '']])   // falsy values still pair
     expectTypeOf(zip([1, 2], ['a', 'b'])).toEqualTypeOf<ReadonlyArray<readonly [number, string]>>()
   })
 })
@@ -101,11 +112,16 @@ describe('capstone-c — Flatten', () => {
   it('fully flattens an arbitrarily nested tuple type', () => {
     expectTypeOf<Flatten<[1, [2, 3], [4, [5, 6]]]>>().toEqualTypeOf<[1, 2, 3, 4, 5, 6]>()
     expectTypeOf<Flatten<[1, 2, 3]>>().toEqualTypeOf<[1, 2, 3]>()
+    expectTypeOf<Flatten<[]>>().toEqualTypeOf<[]>()
+    expectTypeOf<Flatten<[[[1]]]>>().toEqualTypeOf<[1]>()
   })
 
   it('flatten (runtime) deep-flattens a nested array', () => {
     expect(flatten([1, [2, 3], [4, [5, 6]]])).toEqual([1, 2, 3, 4, 5, 6])
     expect(flatten([1, 2, 3])).toEqual([1, 2, 3])
+    expect(flatten([])).toEqual([])
+    expect(flatten([[], []])).toEqual([])
+    expect(flatten([0, [0, [0]]])).toEqual([0, 0, 0])   // falsy leaves survive
   })
 })
 

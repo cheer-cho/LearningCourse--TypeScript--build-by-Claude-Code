@@ -5,6 +5,8 @@ describe('ex09/ex03 — namespaces & function merging', () => {
   it('greet is callable with an optional options object', () => {
     expect(greet('Ada')).toBe('Hello, Ada!')
     expect(greet('Ada', { punctuation: '?!' })).toBe('Hello, Ada?!')
+    expect(greet('Ada', {})).toBe('Hello, Ada!')       // absent -> default '!'
+    expect(greet('Ada', { punctuation: '' })).toBe('Hello, Ada')  // '' is a CHOICE
     expectTypeOf(greet).parameter(0).toEqualTypeOf<string>()
     expectTypeOf(greet).parameter(1).toEqualTypeOf<greet.Options | undefined>()
     expectTypeOf(greet).returns.toEqualTypeOf<string>()

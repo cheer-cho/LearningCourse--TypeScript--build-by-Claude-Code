@@ -10,6 +10,12 @@ describe('ex12/ex02 — Node typing', () => {
   it('requireEnv returns the value or throws with the exact message', () => {
     expect(requireEnv('APP_MODE', { APP_MODE: 'dev' })).toBe('dev')
     expect(() => requireEnv('NOPE', {})).toThrowError('Missing required env var: NOPE')
+    // an env var SET to the empty string is present — only undefined is missing
+    expect(requireEnv('EMPTY', { EMPTY: '' })).toBe('')
+    expect(requireEnv('ZERO', { ZERO: '0' })).toBe('0')
+    expect(() => requireEnv('UNSET', { UNSET: undefined })).toThrowError(
+      'Missing required env var: UNSET',
+    )
     expectTypeOf(requireEnv).toEqualTypeOf<
       (name: string, env?: Record<string, string | undefined>) => string
     >()
@@ -38,6 +44,8 @@ describe('ex12/ex02 — Node typing', () => {
     }
     await expect(loadLines('notes.txt', fake)).resolves.toEqual(['alpha', 'beta', 'gamma'])
     expect(calls).toEqual(['notes.txt'])
+    await expect(loadLines('empty.txt', async () => '')).resolves.toEqual([])
+    await expect(loadLines('blank.txt', async () => '\n  \n\n')).resolves.toEqual([])
     expectTypeOf(loadLines).toEqualTypeOf<
       (path: string, readTextFile: ReadTextFile) => Promise<string[]>
     >()

@@ -18,6 +18,9 @@ describe('ex06/ex05 — abstract classes & implements', () => {
     const b = new Bike('Trek', 21)
     expect(b.topSpeed()).toBe(168)
     expect(b.describe()).toBe('Trek tops out at 168 km/h')
+    // describe() must call the SUBCLASS topSpeed, even when it is 0
+    expect(new Bike('Fixie', 0).topSpeed()).toBe(0)
+    expect(new Bike('Fixie', 0).describe()).toBe('Fixie tops out at 0 km/h')
   })
 
   it('make is public and readonly on Vehicle', () => {

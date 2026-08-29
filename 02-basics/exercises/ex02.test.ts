@@ -21,6 +21,10 @@ describe('ex02/ex02 — arrays', () => {
     const input = [1, 2, 3, 4]
     expect(sumAll(input)).toBe(10)
     expect(sumAll([])).toBe(0)
+    expect(sumAll([0, 0])).toBe(0)
+    expect(sumAll([-5, 5])).toBe(0)     // 0 from real data, not the empty case
+    expect(sumAll([-1, -2])).toBe(-3)
+    expect(sumAll([1.5, 2.5])).toBe(4)
     expect(input).toEqual([1, 2, 3, 4])
     expectTypeOf(sumAll).parameter(0).toEqualTypeOf<readonly number[]>()
   })

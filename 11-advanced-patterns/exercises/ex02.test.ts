@@ -21,6 +21,9 @@ describe('ex11/ex02 — type-state builder', () => {
   it('order does not matter, only completeness', () => {
     const config = createBuilder().withProtocol('http').withPort(3000).withHost('api.dev').build()
     expect(config).toEqual({ host: 'api.dev', port: 3000, protocol: 'http' })
+    // falsy field values must survive the chain
+    const falsy = createBuilder().withHost('').withPort(0).withProtocol('http').build()
+    expect(falsy).toEqual({ host: '', port: 0, protocol: 'http' })
   })
 
   it('build refuses to compile until every field is supplied', () => {

@@ -14,6 +14,9 @@ describe('ex12/ex01 — React types without JSX', () => {
   it('Avatar is a typed function component', () => {
     expect(Avatar({ name: 'Ada' })).toBe('Ada (32px)')
     expect(Avatar({ name: 'Grace', size: 48 })).toBe('Grace (48px)')
+    // size 0 was PASSED — only an absent size falls back to 32
+    expect(Avatar({ name: 'Zero', size: 0 })).toBe('Zero (0px)')
+    expect(Avatar({ name: '' })).toBe(' (32px)')
     const onSelect = vi.fn()
     expect(Avatar({ name: 'Lin', size: 20, onSelect })).toBe('Lin (20px)')
     expect(onSelect).not.toHaveBeenCalled()
@@ -32,6 +35,9 @@ describe('ex12/ex01 — React types without JSX', () => {
     const [value, setValue] = useValue<number>(10)
     expect(value).toBe(10)
     expect(setValue(11)).toBe(11)
+    const [zero, setZero] = useValue<number>(0)
+    expect(zero).toBe(0)
+    expect(setZero(0)).toBe(0)
     expectTypeOf(useValue<number>).toEqualTypeOf<
       (initial: number) => [number, (next: number) => number]
     >()
@@ -42,6 +48,9 @@ describe('ex12/ex01 — React types without JSX', () => {
     expect(on).toBe(false)
     expect(toggle()).toBe(true)
     expect(toggle()).toBe(false)
+    const [onStart, toggleFromTrue] = useToggle(true)
+    expect(onStart).toBe(true)
+    expect(toggleFromTrue()).toBe(false)
     expectTypeOf(useToggle).parameter(0).toEqualTypeOf<boolean>()
     expectTypeOf(useToggle).returns.toEqualTypeOf<readonly [boolean, () => boolean]>()
   })

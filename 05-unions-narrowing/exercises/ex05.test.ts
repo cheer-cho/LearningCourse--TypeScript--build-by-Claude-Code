@@ -16,6 +16,8 @@ describe('ex05/ex05 — discriminated unions', () => {
     expect(describeState({ status: 'loading', startedAt: 5 })).toBe('loading since 5')
     expect(describeState({ status: 'success', data: 'payload' })).toBe('got: payload')
     expect(describeState({ status: 'error', message: 'boom' })).toBe('error: boom')
+    expect(describeState({ status: 'loading', startedAt: 0 })).toBe('loading since 0')
+    expect(describeState({ status: 'success', data: '' })).toBe('got: ')
     expectTypeOf(describeState).toEqualTypeOf<(state: RequestState) => string>()
   })
 
@@ -23,6 +25,9 @@ describe('ex05/ex05 — discriminated unions', () => {
     expect(dataOrDefault({ status: 'success', data: 'payload' }, 'n/a')).toBe('payload')
     expect(dataOrDefault({ status: 'idle' }, 'n/a')).toBe('n/a')
     expect(dataOrDefault({ status: 'error', message: 'boom' }, 'n/a')).toBe('n/a')
+    // empty data is still SUCCESS data — the tag decides, not the payload
+    expect(dataOrDefault({ status: 'success', data: '' }, 'n/a')).toBe('')
+    expect(dataOrDefault({ status: 'loading', startedAt: 0 }, 'n/a')).toBe('n/a')
     expectTypeOf(dataOrDefault).toEqualTypeOf<(state: RequestState, fallback: string) => string>()
   })
 })
