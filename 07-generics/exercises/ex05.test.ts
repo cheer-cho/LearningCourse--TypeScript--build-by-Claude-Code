@@ -13,6 +13,8 @@ describe('ex07/ex05 — generic classes', () => {
     expect(stack.pop()).toBe('b')
     expect(stack.pop()).toBe('a')
     expect(stack.pop()).toBeUndefined()
+    expect(stack.peek()).toBeUndefined()
+    expect(stack.size).toBe(0)
   })
 
   it('the whole instance is specialized to T', () => {
@@ -23,5 +25,11 @@ describe('ex07/ex05 — generic classes', () => {
     stack.push(1)
     stack.push(2)
     expect(stack.pop()).toBe(2)
+    // a stack holding 0 must not read as empty
+    const zeros = new Stack<number>()
+    zeros.push(0)
+    expect(zeros.size).toBe(1)
+    expect(zeros.peek()).toBe(0)
+    expect(zeros.pop()).toBe(0)
   })
 })

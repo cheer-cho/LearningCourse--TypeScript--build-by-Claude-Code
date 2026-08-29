@@ -28,6 +28,10 @@ describe('✦ checkpoint 7 — generics', () => {
     expect(found).toEqual({ ok: true, value: 8 })
     expectTypeOf(found).toEqualTypeOf<Result<number>>()
     expect(firstWhere([1, 2], (n) => n > 10)).toEqual({ ok: false, error: 'not found' })
+    expect(firstWhere([], () => true)).toEqual({ ok: false, error: 'not found' })
+    // finding 0 is a HIT, not a miss
+    expect(firstWhere([0, 1], (n) => n === 0)).toEqual({ ok: true, value: 0 })
+    expect(firstWhere([''], (s) => s === '')).toEqual({ ok: true, value: '' })
 
     const frozen: readonly string[] = ['a', 'bb']
     expect(firstWhere(frozen, (s) => s.length === 2)).toEqual({ ok: true, value: 'bb' })
@@ -42,6 +46,10 @@ describe('✦ checkpoint 7 — generics', () => {
 
     expect(store.get(1)).toEqual({ ok: true, value: { id: 1, title: 'Tea', price: 4 } })
     expect(store.get(99)).toEqual({ ok: false, error: 'not found' })
+    // id 0 is a real id
+    const zeroStore = new Store<Product>()
+    zeroStore.add({ id: 0, title: 'Zero', price: 0 })
+    expect(zeroStore.get(0)).toEqual({ ok: true, value: { id: 0, title: 'Zero', price: 0 } })
     expectTypeOf(store.get(2)).toEqualTypeOf<Result<Product>>()
   })
 
@@ -60,6 +68,9 @@ describe('✦ checkpoint 7 — generics', () => {
     expect(titles).toEqual(['Tea', 'Coffee'])
     expectTypeOf(titles).toEqualTypeOf<string[]>()
     expect(store.pluck('price')).toEqual([4, 6])
+    const empty = new Store<Product>()
+    expect(empty.getAll()).toEqual([])
+    expect(empty.pluck('title')).toEqual([])
   })
 
   it('Store rejects item types without a numeric id', () => {

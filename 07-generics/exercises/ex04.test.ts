@@ -23,6 +23,9 @@ describe('ex07/ex04 — generic type aliases & interfaces', () => {
   it('safeDivide reports division by zero as a Result', () => {
     expect(safeDivide(10, 2)).toEqual({ ok: true, value: 5 })
     expect(safeDivide(1, 0)).toEqual({ ok: false, error: 'division by zero' })
+    // 0 is a perfectly good RESULT — only a zero DIVISOR is an error
+    expect(safeDivide(0, 5)).toEqual({ ok: true, value: 0 })
+    expect(safeDivide(0, 0)).toEqual({ ok: false, error: 'division by zero' })
     expectTypeOf(safeDivide).toEqualTypeOf<(a: number, b: number) => Result<number, string>>()
   })
 
@@ -31,5 +34,8 @@ describe('ex07/ex04 — generic type aliases & interfaces', () => {
     expect(value).toBe(3)
     expectTypeOf(value).toEqualTypeOf<number>()
     expect(unwrapOr(safeDivide(1, 0), -1)).toBe(-1)
+    // the ok FLAG decides, not the value's truthiness
+    expect(unwrapOr(safeDivide(0, 5), -1)).toBe(0)
+    expect(unwrapOr({ ok: true, value: '' } as const, 'fallback')).toBe('')
   })
 })

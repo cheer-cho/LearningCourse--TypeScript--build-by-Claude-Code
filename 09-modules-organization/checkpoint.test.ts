@@ -21,6 +21,9 @@ describe('✦ checkpoint 9 — modules & organization', () => {
     catalog({ kind: 'circle', radius: 1 })
     catalog({ kind: 'square', side: 1 })
     expect(catalog.count).toBe(2)
+    // a zero-area shape is still a call
+    expect(catalog({ kind: 'square', side: 0 })).toBe(0)
+    expect(catalog.count).toBe(3)
     catalog.reset()
     expect(catalog.count).toBe(0)
     expectTypeOf(catalog.count).toEqualTypeOf<number>()

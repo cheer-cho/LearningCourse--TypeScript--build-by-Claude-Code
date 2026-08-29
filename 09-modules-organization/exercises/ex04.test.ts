@@ -13,6 +13,11 @@ describe('ex09/ex04 — authoring a .d.ts', () => {
     expect(clamp(5, 0, 10)).toBe(5)
     expect(clamp(-5, 0, 10)).toBe(0)
     expect(clamp(15, 0, 10)).toBe(10)
+    // the boundaries themselves pass through untouched
+    expect(clamp(0, 0, 10)).toBe(0)
+    expect(clamp(10, 0, 10)).toBe(10)
+    expect(clamp(0, -5, 5)).toBe(0)
+    expect(clamp(-1, -5, 5)).toBe(-1)
     expectTypeOf(clamp).toEqualTypeOf<(value: number, min: number, max: number) => number>()
   })
 

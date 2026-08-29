@@ -20,6 +20,9 @@ describe('ex11/ex06 — type-safe API client', () => {
     expect(fetcher).toHaveBeenCalledWith('/users/7')
     await request(fetcher, '/users/:userId/posts/:postId', { userId: '7', postId: '42' })
     expect(fetcher).toHaveBeenCalledWith('/users/7/posts/42')
+    // a path with no params is passed through unchanged
+    await request(fetcher, '/health', {})
+    expect(fetcher).toHaveBeenCalledWith('/health')
   })
 
   it('the response type is inferred from the route key', async () => {

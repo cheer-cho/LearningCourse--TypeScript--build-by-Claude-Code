@@ -16,6 +16,7 @@ describe('ex10/ex05 — custom error classes & cause', () => {
   it('HttpError builds its message and name, and is a real Error', () => {
     const err = new HttpError(404, '/users/1')
     expect(err.message).toBe('HTTP 404 for /users/1')
+    expect(new HttpError(0, '').message).toBe('HTTP 0 for ')
     expect(err.name).toBe('HttpError')
     expect(err).toBeInstanceOf(Error)
     expect(err).toBeInstanceOf(HttpError)
@@ -43,6 +44,8 @@ describe('ex10/ex05 — custom error classes & cause', () => {
     expect(messageChain(chain)).toEqual(['HTTP 500 for /report', 'db down', 'socket closed'])
     expect(messageChain(new Error('single'))).toEqual(['single'])
     expect(messageChain('not an error')).toEqual([])
+    expect(messageChain(null)).toEqual([])
+    expect(messageChain(new Error(''))).toEqual([''])  // empty message still counts
     expectTypeOf(messageChain).toEqualTypeOf<(e: unknown) => string[]>()
   })
 })

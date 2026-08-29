@@ -26,6 +26,8 @@ describe('ex11/ex01 — branded types', () => {
 
   it('constructors brand the raw value (identity at runtime)', () => {
     expect(userId('u1')).toBe('u1')
+    expect(userId('')).toBe('')
+    expect(meters(0)).toBe(0)
     expect(meters(100)).toBe(100)
     expect(seconds(20)).toBe(20)
     expectTypeOf(userId).toEqualTypeOf<(raw: string) => UserId>()
@@ -36,6 +38,7 @@ describe('ex11/ex01 — branded types', () => {
   it('speed only accepts (Meters, Seconds) and returns plain number', () => {
     expect(speed(meters(100), seconds(20))).toBe(5)
     expect(speed(meters(9), seconds(3))).toBe(3)
+    expect(speed(meters(0), seconds(5))).toBe(0)   // branding is erased at runtime
     expectTypeOf(speed).parameters.toEqualTypeOf<[Meters, Seconds]>()
     expectTypeOf(speed).returns.toEqualTypeOf<number>()
     const swapped = () => {

@@ -12,6 +12,7 @@ describe('ex09/ex05 — augmenting a module you own', () => {
 
   it('emitKeypress emits the merged event', () => {
     expect(emitKeypress('Enter')).toEqual({ key: 'Enter' })
+    expect(emitKeypress('')).toEqual({ key: '' })
     expectTypeOf(emitKeypress).toEqualTypeOf<(key: string) => { key: string }>()
   })
 })

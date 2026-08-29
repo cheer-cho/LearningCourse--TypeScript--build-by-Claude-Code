@@ -20,6 +20,9 @@ describe('ex02/ex03 — tuples', () => {
   it('distance works on [x, y] tuples', () => {
     expect(distance([0, 0], [3, 4])).toBe(5)
     expect(distance([1, 1], [1, 1])).toBe(0)
+    expect(distance([3, 4], [0, 0])).toBe(5)      // order must not matter
+    expect(distance([-3, -4], [0, 0])).toBe(5)    // negatives: squaring, not summing
+    expect(distance([0, 0], [0, 5])).toBe(5)      // one axis only
     expectTypeOf(distance).toEqualTypeOf<(a: [x: number, y: number], b: [x: number, y: number]) => number>()
   })
 })

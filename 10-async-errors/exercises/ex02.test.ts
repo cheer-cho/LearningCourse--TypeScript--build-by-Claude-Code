@@ -23,6 +23,9 @@ describe('ex10/ex02 — Promise.all & Promise.allSettled', () => {
       rejected('boom'),
     ])
     expect(result).toEqual({ values: [1, 3], errors: ['Error: x', 'boom'] })
+    await expect(partition([])).resolves.toEqual({ values: [], errors: [] })
+    // a resolved 0 is a VALUE, not a failure
+    await expect(partition([Promise.resolve(0)])).resolves.toEqual({ values: [0], errors: [] })
   })
 
   it('partition never rejects and is fully typed', async () => {

@@ -24,6 +24,7 @@ describe('ex10/ex07 — async iteration', () => {
       values.push(n)
     }
     expect(values).toEqual([])
+    await expect(collect(countdown(-1))).resolves.toEqual([])
   })
 
   it('collect drains a number source into number[]', async () => {
@@ -46,6 +47,8 @@ describe('ex10/ex07 — async iteration', () => {
       values.push(n)
     }
     expect(values).toEqual([30, 20, 10])
+    // a mapped value of 0 must still be yielded
+    await expect(collect(mapStream(countdown(2), (x) => x - 1))).resolves.toEqual([1, 0])
   })
 
   it('mapStream can change the element type from T to U', async () => {

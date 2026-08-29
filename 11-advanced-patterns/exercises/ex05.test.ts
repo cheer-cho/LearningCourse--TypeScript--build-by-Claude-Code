@@ -64,6 +64,12 @@ describe('ex11/ex05 — DeepReadonly & DeepPartial', () => {
     const defaults: AppConfig = { retries: 3, tags: ['core'], ui: { theme: 'light', fontSize: 14 } }
     const merged = mergeDefaults(defaults, { retries: 5, tags: ['x', 'y'] })
     expect(merged).toEqual({ retries: 5, tags: ['x', 'y'], ui: { theme: 'light', fontSize: 14 } })
+    // an empty patch changes nothing
+    expect(mergeDefaults(defaults, {})).toEqual(defaults)
+    // a FALSY override still wins at every depth
+    expect(mergeDefaults(defaults, { retries: 0 }).retries).toBe(0)
+    expect(mergeDefaults(defaults, { ui: { fontSize: 0 } }).ui).toEqual({ theme: 'light', fontSize: 0 })
+    expect(mergeDefaults(defaults, { tags: [] }).tags).toEqual([])
   })
 
   it('a patch with unknown keys or wrong shapes does not compile', () => {

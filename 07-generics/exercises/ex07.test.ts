@@ -25,6 +25,9 @@ describe('ex07/ex07 — defaults & explicit type arguments', () => {
 
     const user = parseAs<{ id: number }>('{"id":7}')
     expect(user).toEqual({ id: 7 })
+    expect(parseAs<number>('0')).toBe(0)
+    expect(parseAs('null')).toBeNull()
+    expect(parseAs<string>('""')).toBe('')
     expectTypeOf(user).toEqualTypeOf<{ id: number }>()
   })
 })

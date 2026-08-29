@@ -19,6 +19,7 @@ class Widget {
 describe('ex08/ex10 — reimplementing conditional & infer utilities', () => {
   it('MyExclude removes assignable union members', () => {
     expectTypeOf<MyExclude<'a' | 'b' | 'c', 'a'>>().toEqualTypeOf<'b' | 'c'>()
+    expectTypeOf<MyExclude<'a', 'a'>>().toEqualTypeOf<never>()  // excluding everything
   })
 
   it('MyExtract keeps only assignable union members', () => {
@@ -44,5 +45,7 @@ describe('ex08/ex10 — reimplementing conditional & infer utilities', () => {
   it('MyAwaited unwraps nested Promises recursively', () => {
     expectTypeOf<MyAwaited<Promise<Promise<string>>>>().toEqualTypeOf<string>()
     expectTypeOf<MyAwaited<number>>().toEqualTypeOf<number>()
+    // recurses ALL the way down, unlike ex04's single-level UnwrapPromise
+    expectTypeOf<MyAwaited<Promise<Promise<Promise<number>>>>>().toEqualTypeOf<number>()
   })
 })

@@ -17,6 +17,9 @@ describe('ex03/ex05 — interface vs type alias', () => {
   it('area computes both kinds', () => {
     expect(area({ kind: 'circle', radius: 1 })).toBeCloseTo(Math.PI)
     expect(area({ kind: 'square', size: 3 })).toBe(9)
+    expect(area({ kind: 'circle', radius: 2 })).toBeCloseTo(4 * Math.PI)
+    expect(area({ kind: 'circle', radius: 0 })).toBe(0)
+    expect(area({ kind: 'square', size: 0 })).toBe(0)
     expectTypeOf(area).parameter(0).toEqualTypeOf<Shape>()
   })
 })

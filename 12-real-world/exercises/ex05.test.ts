@@ -36,6 +36,7 @@ describe('ex12/ex05 — migrating JS to TS', () => {
     const cancelled: Order = { id: 'b2', status: 'cancelled', trackingCode: null }
     expect(advanceStatus(delivered)).toEqual(delivered)
     expect(advanceStatus(cancelled)).toEqual(cancelled)
+    expect(advanceStatus(delivered)).toBe(delivered)   // terminal: returned as-is
   })
 
   it('describeOrder reports "not yet shipped" for a null tracking code', () => {
@@ -46,6 +47,9 @@ describe('ex12/ex05 — migrating JS to TS', () => {
   it('describeOrder reports the tracking code once shipped', () => {
     const order: Order = { id: 'a1', status: 'shipped', trackingCode: 'TRK-A1' }
     expect(describeOrder(order)).toBe('Order a1: shipped (TRK-A1)')
+    // an EMPTY tracking code is still a code — only null means "not yet shipped"
+    const blank: Order = { id: 'a1', status: 'shipped', trackingCode: '' }
+    expect(describeOrder(blank)).toBe('Order a1: shipped ()')
   })
 
   it('an invalid status does not compile against the tightened Order type', () => {

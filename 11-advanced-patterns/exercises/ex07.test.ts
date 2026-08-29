@@ -27,6 +27,8 @@ describe('ex11/ex07 — exhaustive handler maps', () => {
   it('terminal states ignore every event', () => {
     expect(reduceOrder('delivered', 'pay')).toBe('delivered')
     expect(reduceOrder('cancelled', 'ship')).toBe('cancelled')
+    expect(reduceOrder('delivered', 'cancel')).toBe('delivered')
+    expect(reduceOrder('cancelled', 'cancel')).toBe('cancelled')
   })
 
   it('an event that does not apply leaves the state unchanged', () => {

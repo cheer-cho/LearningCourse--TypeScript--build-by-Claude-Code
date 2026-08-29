@@ -6,6 +6,8 @@ describe('ex05/ex03 — typeof, truthiness, equality narrowing', () => {
     expect(padLeft('hi', 4)).toBe('    hi')
     expect(padLeft('hi', 0)).toBe('hi')
     expect(padLeft('hi', '>>')).toBe('>>hi')
+    expect(padLeft('', 3)).toBe('   ')
+    expect(padLeft('hi', '')).toBe('hi')   // '' is a padding string, not a miss
     expectTypeOf(padLeft).toEqualTypeOf<(value: string, padding: string | number) => string>()
   })
 
@@ -14,6 +16,8 @@ describe('ex05/ex03 — typeof, truthiness, equality narrowing', () => {
     expect(toLines('a')).toEqual(['a'])
     expect(toLines('')).toEqual([''])
     expect(toLines(['a', 'b'])).toEqual(['a', 'b'])
+    expect(toLines([])).toEqual([])        // empty array, not the null branch
+    expect(toLines([''])).toEqual([''])
     expectTypeOf(toLines).toEqualTypeOf<(input: string | string[] | null) => string[]>()
   })
 
@@ -21,6 +25,9 @@ describe('ex05/ex03 — typeof, truthiness, equality narrowing', () => {
     expect(concatIfBothStrings('ab', 'ab')).toBe('ABAB')
     expect(concatIfBothStrings(7, 'x')).toBe('7/x')
     expect(concatIfBothStrings('a', true)).toBe('a/true')
+    expect(concatIfBothStrings('', '')).toBe('')       // equal empties still narrow
+    expect(concatIfBothStrings(0, 'x')).toBe('0/x')    // falsy number, not equal
+    expect(concatIfBothStrings(0, false)).toBe('0/false')  // === is strict
     expectTypeOf(concatIfBothStrings).toEqualTypeOf<
       (x: string | number, y: string | boolean) => string
     >()

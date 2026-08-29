@@ -16,6 +16,8 @@ describe('ex07/ex01 — generic functions & inference', () => {
   it('firstItem infers the element type from the array', () => {
     expect(firstItem([1, 2, 3])).toBe(1)
     expect(firstItem([])).toBeUndefined()
+    expect(firstItem([0, 1])).toBe(0)      // 0 is a real first item
+    expect(firstItem([''])).toBe('')
     const first = firstItem(['a', 'b'])
     expect(first).toBe('a')
     expectTypeOf(first).toEqualTypeOf<string | undefined>()
@@ -23,6 +25,8 @@ describe('ex07/ex01 — generic functions & inference', () => {
 
   it('wrapInArray produces a typed one-element array', () => {
     expect(wrapInArray(5)).toEqual([5])
+    expect(wrapInArray(0)).toEqual([0])
+    expect(wrapInArray(null)).toEqual([null])
     const flag = Math.random() < 2 // always true, but typed boolean
     const flags = wrapInArray(flag)
     expect(flags).toEqual([true])

@@ -37,6 +37,10 @@ describe('ex10/ex06 — the Result pattern', () => {
     })
     const failure = err(msg) as Result<number, string>
     expect(map(failure, (value: number) => value * 2)).toBe(failure)
+    expect(map(ok(0) as Result<number, string>, (value: number) => value * 2)).toEqual({
+      ok: true,
+      value: 0,
+    })
     const mapped = map(ok(n) as Result<number, string>, (value: number) => String(value))
     expectTypeOf(mapped).toEqualTypeOf<Result<string, string>>()
   })
@@ -45,6 +49,9 @@ describe('ex10/ex06 — the Result pattern', () => {
     const unwrapped = unwrapOr(ok(n) as Result<number, string>, 0)
     expect(unwrapped).toBe(2)
     expect(unwrapOr(err(msg) as Result<number, string>, 0)).toBe(0)
+    // the ok FLAG decides, not the value's truthiness
+    expect(unwrapOr(ok(0) as Result<number, string>, -1)).toBe(0)
+    expect(unwrapOr(ok('') as Result<string, string>, 'fallback')).toBe('')
     expectTypeOf(unwrapped).toEqualTypeOf<number>()
   })
 
@@ -52,6 +59,8 @@ describe('ex10/ex06 — the Result pattern', () => {
     const success = fromPromise(Promise.resolve(7))
     expectTypeOf(success).toEqualTypeOf<Promise<Result<number, Error>>>()
     await expect(success).resolves.toEqual({ ok: true, value: 7 })
+    // resolving to 0 is still a success
+    await expect(fromPromise(Promise.resolve(0))).resolves.toEqual({ ok: true, value: 0 })
     await expect(fromPromise(rejectedWith<number>(new Error('nope')))).resolves.toEqual({
       ok: false,
       error: new Error('nope'),

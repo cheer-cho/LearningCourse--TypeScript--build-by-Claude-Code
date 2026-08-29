@@ -103,6 +103,8 @@ describe('capstone-a — pure operations never mutate', () => {
     if (doneOnce.ok) {
       const doneTwice = completeTask(doneOnce.value, task.id, 2)
       expect(doneTwice.ok).toBe(false)
+      // a DIFFERENT error than "not found" — the two paths must not blur
+      expect(doneTwice).toEqual({ ok: false, error: `task already done: ${task.id}` })
     }
     expectTypeOf(completeTask).returns.toEqualTypeOf<Result<TaskState, string>>()
   })
@@ -155,6 +157,13 @@ describe('capstone-a — filter and sort', () => {
     const sorted = sortTasks(state.tasks, 'createdAt')
     expect(sorted.map((t) => t.createdAt)).toEqual([1, 2, 3])
   })
+
+  it('sortTasks orders by status — the third SortKey', () => {
+    const state = buildSortState()
+    const sorted = sortTasks(state.tasks, 'status')
+    expect(sorted.map((t) => t.status)).toEqual(['done', 'pending', 'pending'])
+    expect(filterTasks([], 'done')).toEqual([])
+  })
 })
 
 describe('capstone-a — parseCommand', () => {
@@ -165,11 +174,17 @@ describe('capstone-a — parseCommand', () => {
   it('rejects add with no title', () => {
     const r = parseCommand(['add'])
     expect(r).toEqual({ ok: false, error: 'add requires a title' })
+    // whitespace-only is no title either — the trim must happen before the check
+    expect(parseCommand(['add', '   '])).toEqual({ ok: false, error: 'add requires a title' })
   })
 
   it('parses list with and without a status filter', () => {
     expect(parseCommand(['list'])).toEqual({ ok: true, value: { type: 'list' } })
     expect(parseCommand(['list', 'done'])).toEqual({ ok: true, value: { type: 'list', status: 'done' } })
+    expect(parseCommand(['list', 'pending'])).toEqual({
+      ok: true,
+      value: { type: 'list', status: 'pending' },
+    })
     expect(parseCommand(['list', 'bogus']).ok).toBe(false)
   })
 
@@ -202,6 +217,10 @@ describe('capstone-a — execute reducer', () => {
     const { state, messages } = execute(s1, { type: 'list' }, 2)
     expect(state).toBe(s1)
     expect(messages).toEqual([{ kind: 'listed', tasks: s1.tasks }])
+    // a filtered list still leaves state alone
+    const filtered = execute(s1, { type: 'list', status: 'done' }, 3)
+    expect(filtered.state).toBe(s1)
+    expect(filtered.messages).toEqual([{ kind: 'listed', tasks: [] }])
   })
 
   it('done completes a task and reports an error for a bad id', () => {

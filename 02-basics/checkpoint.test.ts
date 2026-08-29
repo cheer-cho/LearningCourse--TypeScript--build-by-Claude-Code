@@ -27,6 +27,9 @@ describe('✦ checkpoint 2 — basics', () => {
     expect(simulate('red', 3)).toEqual(['green', 'yellow', 'red'])
     expect(simulate('green', 1)).toEqual(['yellow'])
     expect(simulate('yellow', 0)).toEqual([])
+    // the cycle wraps: 4 steps from red comes back around
+    expect(simulate('red', 4)).toEqual(['green', 'yellow', 'red', 'green'])
+    expect(simulate('red', 3)[2]).toBe('red')
     expectTypeOf(simulate).toEqualTypeOf<(start: Light, steps: number) => Light[]>()
   })
 })

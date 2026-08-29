@@ -33,4 +33,12 @@ describe('ex12/ex03 — zod schemas', () => {
     expect(parseUser('nope').ok).toBe(false)
     expect(parseUser({ id: 1, name: 'Ada' }).ok).toBe(false)
   })
+
+  it('parseUser accepts falsy-but-valid field values', () => {
+    // 0, '' and [] are all well-typed — validation checks TYPES, not truthiness
+    expect(parseUser({ id: 0, name: '', tags: [] })).toEqual({
+      ok: true,
+      value: { id: 0, name: '', tags: [] },
+    })
+  })
 })

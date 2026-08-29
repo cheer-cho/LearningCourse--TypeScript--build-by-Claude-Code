@@ -16,6 +16,8 @@ describe('ex05/ex07 — type predicates', () => {
     expect(isString('a')).toBe(true)
     expect(isString(42)).toBe(false)
     expect(isString(null)).toBe(false)
+    expect(isString('')).toBe(true)       // falsy, but still a string
+    expect(isString(undefined)).toBe(false)
     expectTypeOf(isString).toEqualTypeOf<(value: unknown) => value is string>()
   })
 
@@ -23,12 +25,15 @@ describe('ex05/ex07 — type predicates', () => {
     const mixed: unknown[] = ['a', 1, 'b', null, 'c']
     const strings = mixed.filter(isString)
     expect(strings).toEqual(['a', 'b', 'c'])
+    // '' must survive the filter — a truthiness filter would drop it
+    expect(([1, '', 'a', 0] as unknown[]).filter(isString)).toEqual(['', 'a'])
     expectTypeOf(strings).toEqualTypeOf<string[]>()
   })
 
   it('swimmers returns Fish[], not (Fish | Bird)[]', () => {
     expect(swimmers([nemo, tweety, dory]).map((f: Fish) => f.name)).toEqual(['nemo', 'dory'])
     expect(swimmers([tweety])).toEqual([])
+    expect(swimmers([])).toEqual([])
     expectTypeOf(swimmers).toEqualTypeOf<(pets: (Fish | Bird)[]) => Fish[]>()
   })
 })

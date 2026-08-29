@@ -43,12 +43,20 @@ describe('✦ checkpoint 6 — classes', () => {
     const shapes = new ShapeCollection<Shape>()
     expect(shapes.size).toBe(0)
     expect(shapes.largest()).toBeUndefined()
+    expect(shapes.totalArea()).toBe(0)   // empty collection totals 0
     shapes.add(new Circle(1))
     shapes.add(new Rectangle(10, 10))
     shapes.add(new Circle(2))
     expect(shapes.size).toBe(3)
     expect(shapes.totalArea()).toBeCloseTo(Math.PI + 100 + Math.PI * 4)
     expect(shapes.largest()?.name).toBe('Rectangle')
+
+    // a single zero-area shape is still the largest — not "nothing"
+    const flat = new ShapeCollection<Shape>()
+    flat.add(new Circle(0))
+    expect(flat.size).toBe(1)
+    expect(flat.totalArea()).toBe(0)
+    expect(flat.largest()?.name).toBe('Circle')
     expectTypeOf(shapes.add).toEqualTypeOf<(shape: Shape) => void>()
     expectTypeOf(shapes.largest).toEqualTypeOf<() => Shape | undefined>()
   })

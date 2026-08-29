@@ -5,6 +5,8 @@ describe('ex04/ex04 — overloads', () => {
   it('toArray: precise return type per argument type', () => {
     expect(toArray('abc')).toEqual(['a', 'b', 'c'])
     expect(toArray(123)).toEqual([1, 2, 3])
+    expect(toArray('')).toEqual([])     // empty string, not a failure
+    expect(toArray(0)).toEqual([0])     // falsy number, still one digit
     expectTypeOf(toArray('abc')).toEqualTypeOf<string[]>()
     expectTypeOf(toArray(123)).toEqualTypeOf<number[]>()
   })

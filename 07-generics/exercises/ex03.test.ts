@@ -14,6 +14,8 @@ describe('ex07/ex03 — multiple type parameters', () => {
   it('zip stops at the shorter array', () => {
     expect(zip([1, 2, 3], ['only'])).toEqual([[1, 'only']])
     expect(zip([], [1, 2])).toEqual([])
+    expect(zip([1, 2], [])).toEqual([])
+    expect(zip([0], [''])).toEqual([[0, '']])  // falsy values still pair
   })
 
   it('swap flips the tuple order in values AND types', () => {
@@ -26,6 +28,8 @@ describe('ex07/ex03 — multiple type parameters', () => {
   it('mapObject transforms values, keeps keys', () => {
     const doubled = mapObject({ a: 1, b: 2 }, (v) => v * 2)
     expect(doubled).toEqual({ a: 2, b: 4 })
+    expect(mapObject({}, (v: never) => v)).toEqual({})
+    expect(mapObject({ a: 0 }, (v) => v + 1)).toEqual({ a: 1 })  // falsy values map
     expectTypeOf(doubled).toEqualTypeOf<Record<'a' | 'b', number>>()
   })
 

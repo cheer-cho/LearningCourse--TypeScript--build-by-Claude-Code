@@ -5,6 +5,7 @@ describe('puzzles — type-challenges warm-up', () => {
   it('First returns the first tuple element, or never when empty', () => {
     expectTypeOf<First<[1, 2, 3]>>().toEqualTypeOf<1>()
     expectTypeOf<First<[]>>().toEqualTypeOf<never>()
+    expectTypeOf<First<[1]>>().toEqualTypeOf<1>()
   })
 
   it('Length returns the tuple length as a literal number', () => {
@@ -14,6 +15,7 @@ describe('puzzles — type-challenges warm-up', () => {
 
   it('TupleToUnion turns a tuple into a union of its elements', () => {
     expectTypeOf<TupleToUnion<[1, 2, 3]>>().toEqualTypeOf<1 | 2 | 3>()
+    expectTypeOf<TupleToUnion<[]>>().toEqualTypeOf<never>()  // empty tuple, empty union
   })
 
   it('TupleToObject maps each literal element to a key/value pair', () => {
@@ -24,6 +26,8 @@ describe('puzzles — type-challenges warm-up', () => {
     expectTypeOf<Includes<[1, 2, 3], 2>>().toEqualTypeOf<true>()
     expectTypeOf<Includes<[1, 2, 3], 4>>().toEqualTypeOf<false>()
     expectTypeOf<Includes<['a', 'b'], string>>().toEqualTypeOf<false>()
+    expectTypeOf<Includes<[], 1>>().toEqualTypeOf<false>()
+    expectTypeOf<Includes<[boolean], true>>().toEqualTypeOf<false>()  // exact equality, not assignability
   })
 
   it('Push appends an element to the end of a tuple', () => {
@@ -34,10 +38,15 @@ describe('puzzles — type-challenges warm-up', () => {
   it('Trim removes leading and trailing whitespace', () => {
     expectTypeOf<Trim<'  hello world  '>>().toEqualTypeOf<'hello world'>()
     expectTypeOf<Trim<'\t\nhi\n'>>().toEqualTypeOf<'hi'>()
+    expectTypeOf<Trim<''>>().toEqualTypeOf<''>()
+    expectTypeOf<Trim<'   '>>().toEqualTypeOf<''>()   // all whitespace trims to nothing
   })
 
   it('Replace substitutes the first occurrence only', () => {
     expectTypeOf<Replace<'foo bar foo', 'foo', 'baz'>>().toEqualTypeOf<'baz bar foo'>()
     expectTypeOf<Replace<'abc', 'x', 'y'>>().toEqualTypeOf<'abc'>()
+    expectTypeOf<Replace<'aaa', 'a', 'b'>>().toEqualTypeOf<'baa'>()  // first only
+    // an empty From must NOT match — that guard is the whole trick
+    expectTypeOf<Replace<'abc', '', 'y'>>().toEqualTypeOf<'abc'>()
   })
 })

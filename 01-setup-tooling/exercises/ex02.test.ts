@@ -5,6 +5,8 @@ describe('ex02 — strict null checks', () => {
   it('firstOrDefault returns the first item or the fallback', () => {
     expect(firstOrDefault(['a', 'b'], 'z')).toBe('a')
     expect(firstOrDefault([], 'z')).toBe('z')
+    // '' is a real first item, not a missing one — `||` gets this wrong
+    expect(firstOrDefault([''], 'z')).toBe('')
     expectTypeOf(firstOrDefault).returns.toEqualTypeOf<string>()
   })
 
@@ -12,11 +14,15 @@ describe('ex02 — strict null checks', () => {
     expect(lengthOf('four')).toBe(4)
     expect(lengthOf(null)).toBe(0)
     expect(lengthOf(undefined)).toBe(0)
+    expect(lengthOf('')).toBe(0)
   })
 
   it('itemAt returns the item or undefined', () => {
     expect(itemAt([10, 20, 30], 1)).toBe(20)
     expect(itemAt([10], 5)).toBeUndefined()
+    // 0 is a real item at a real index — must not read as "missing"
+    expect(itemAt([0, 1], 0)).toBe(0)
+    expect(itemAt([10], -1)).toBeUndefined()
     expectTypeOf(itemAt).returns.toEqualTypeOf<number | undefined>()
   })
 })

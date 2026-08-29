@@ -14,6 +14,7 @@ describe('ex05/ex01 — union types', () => {
     expect(len('hello')).toBe(5)
     expect(len([1, 2, 3])).toBe(3)
     expect(len([])).toBe(0)
+    expect(len('')).toBe(0)
     expectTypeOf(len).toEqualTypeOf<(x: string | unknown[]) => number>()
   })
 

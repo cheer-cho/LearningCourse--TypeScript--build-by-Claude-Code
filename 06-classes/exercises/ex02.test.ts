@@ -11,6 +11,11 @@ describe('ex06/ex02 — access modifiers', () => {
     expect(a.getBalance()).toBe(70)
     expect(a.withdraw(30, '9999')).toBe(false)
     expect(a.withdraw(1000, '1234')).toBe(false)
+    // boundary: withdrawing the ENTIRE balance is allowed (> , not >=)
+    expect(a.withdraw(70, '1234')).toBe(true)
+    expect(a.getBalance()).toBe(0)
+    expect(a.withdraw(0, '1234')).toBe(true)      // a zero withdrawal is legal
+    a.deposit(70)
     expect(a.getBalance()).toBe(70)
     expectTypeOf(a.deposit).toEqualTypeOf<(amount: number) => void>()
     expectTypeOf(a.withdraw).toEqualTypeOf<(amount: number, pin: string) => boolean>()
