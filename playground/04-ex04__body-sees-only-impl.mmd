@@ -1,0 +1,7 @@
+flowchart TD
+    C1["caller: makeDate('2026-01-15')"] --> S1["overload 1<br/>(a: string)"]
+    C2["caller: makeDate(2026, 0, 15)"] --> S2["overload 2<br/>(a: number, b: number, c: number)"]
+    S1 --> W["🚧 the overloads stop here<br/>callers see them, the body does not"]
+    S2 --> W
+    W --> IMPL["implementation signature<br/>(a: string | number, b?: number, c?: number)"]
+    IMPL --> BODY["inside the body, b and c are<br/><b>number | undefined</b><br/>even after narrowing a"]
