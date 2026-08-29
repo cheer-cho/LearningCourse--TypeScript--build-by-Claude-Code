@@ -77,6 +77,26 @@ is just ignored. This is deliberate: it lets you write
 `items.forEach((x) => results.push(x))` even though `push` returns a
 number. But a variable of type `void` is unusable.
 
+The leniency applies only when `void` is on a **type the function is
+assigned to**. Put `void` on the function's **own** signature and the body
+is checked strictly:
+
+```ts
+const cb: () => void = () => 42;   // OK — assignability: result will be ignored
+function f(): void { return 42; }  // Error — body check: promised to return nothing
+```
+
+```mermaid
+flowchart TD
+    A["Where is `void`?"] --> B["on the target type<br/>`const cb: () => void = ...`"]
+    A --> C["on the function's own signature<br/>`function f(): void`"]
+    B --> D["assignability check<br/>any return type accepted"]
+    C --> E["body check<br/>`return 42` is an error"]
+```
+*Same word, two checks: the assignment, or the body.*
+
+`undefined` has no such leniency — `() => undefined` rejects `() => 42`.
+
 ## Common gotchas
 
 - Optional parameters are `T | undefined` inside the body; defaults are not.
