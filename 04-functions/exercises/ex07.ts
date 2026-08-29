@@ -12,18 +12,20 @@
  * Check: npm test -- 04 -t ex07
  */
 
+type NumFn = (n: number) => number;
+
 // TODO: fix types, then implement.
-export function makeAdder(x: any): any {
-  throw new Error('TODO: implement makeAdder')
+export function makeAdder(x: number): NumFn {
+  return (y) => y + x;
 }
 
 // TODO: fix types, then implement.
-export function twice(fn: any): any {
-  throw new Error('TODO: implement twice')
+export function twice(fn: NumFn): NumFn {
+  return (n) => fn(fn(n));
 }
 
 // TODO: f turns a number into a string; g turns a string into a boolean.
 //       pipeline2 returns a function from number to boolean.
-export function pipeline2(f: any, g: any): any {
-  throw new Error('TODO: implement pipeline2')
+export function pipeline2(f: (n: number) => string, g: (s: string) => boolean): (n: number) => boolean {
+  return (n) => g(f(n));
 }
