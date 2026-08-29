@@ -14,19 +14,23 @@
  */
 
 export function forEachNumber(items: number[], visit: (n: number) => void): void {
-  throw new Error('TODO: implement forEachNumber')
+  for (const item of items) {
+    visit(item);
+  }
 }
 
 // Return [n*2 for each n], built via forEachNumber + push.
 export function collectDoubles(items: number[]): number[] {
-  throw new Error('TODO: implement collectDoubles')
+  const result: number[] = [];
+  forEachNumber(items, (item) => result.push(item * 2));
+  return result;
 }
 
 // Quiz:
 //   q1: `const cb: () => void = () => 42` — does it compile?
 //   q2: `function f(): void { return 42 }` — does it compile?
 //       (declared return annotation, not a callback type!)
-export const quiz: { q1: 'yes' | 'no'; q2: 'yes' | 'no' } = {
-  q1: 'no', // TODO
-  q2: 'yes', // TODO
-}
+export const quiz: { q1: 'yes' | 'no'; q2: 'yes' | 'no'; } = {
+  q1: 'yes', // 
+  q2: 'no', //
+};
