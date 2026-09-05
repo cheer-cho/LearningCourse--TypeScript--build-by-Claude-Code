@@ -12,6 +12,18 @@ quizzes and reviews. Format:
 
 ---
 
+## 2026-11-20 — 04/ex04
+
+**Mistake:** `makeDate(iso: string)` returned `new Date()` (now), ignoring
+the argument; the real parse lines were left commented out while exploring
+time zones. The test only checked the year was 2026, so it passed — in 2026.
+**Correction:** A green test is not proof the code is right; it is proof the
+test didn't catch you. Before calling an exercise done, read each branch and
+ask "does this line use its inputs?". Fixed to `new Date(a)`; the test now
+checks the full parsed date. Time-zone rule kept as a comment: date-only ISO
+strings parse as UTC midnight, date-time strings without an offset as local.
+**Status:** open
+
 ## 2026-11-20 — 01/checkpoint
 
 **Mistake:** Used `parseFloat(raw)` to turn sensor text into a number, with
@@ -24,6 +36,21 @@ the rest, so `parseCelsius('12abc')` returned `12` instead of `null`. And
 that blank strings become `0`, so reject them first with
 `raw.trim() === ''`. Rule: `parseFloat`/`parseInt` = "pull a number off the
 front" (e.g. `'12px'`), `Number` = "is this text a number?".
+**Status:** open
+
+## 2026-08-28 — 04/ex01
+
+**Mistake:** To give `applyOp` the type `ApplyOp`, wrote
+`function applyOp<ApplyOp>(a, b, op)`. Read the angle brackets as "this
+function has type `ApplyOp`". They do the opposite: `<T>` _declares_ a new
+generic type parameter, which shadowed the alias of the same name and left
+every parameter implicitly `any`. Also assumed `op` was a `string` to
+`switch` on, rather than the function itself.
+**Correction:** A function type alias annotates a **value**, so it lives on
+a `const`, a parameter, or a return type — `const applyOp: ApplyOp = ...`.
+There is no syntax to hang an alias on a `function` declaration; those
+annotate each parameter inline. Angle brackets after a name always mean
+"introduce a type variable" (module 07), never "apply a type".
 **Status:** open
 
 ## 2026-08-11 — 02/ex05
