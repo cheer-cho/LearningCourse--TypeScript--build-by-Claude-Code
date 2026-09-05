@@ -57,4 +57,11 @@ optional-parameter setting. The test suite did not cover a falsy argument;
 cases were added. Question to ask when branching on an optional: "am I
 asking whether it was **passed**, or whether it is **truthy**?" — for
 optionals it is always the former, so `!== undefined`.
+**Good sign 2026-09-05 — 04/checkpoint:** gave `pad` a default parameter
+(`char = ' '`) instead of `char || ' '`, so the explicit `''` argument was
+honored. Defaults fire only on `undefined` — the right tool.
+**Recurred same day:** a follow-up edit replaced the default with
+`char || ' '`, which turned the explicit `''` into a space and broke the
+test. The default had been chosen without the reasoning behind it. Quiz
+target: "default parameter asks *passed?*, `||` asks *truthy?*".
 **Status:** open
