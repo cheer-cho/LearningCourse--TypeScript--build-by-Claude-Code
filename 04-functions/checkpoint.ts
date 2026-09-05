@@ -12,15 +12,22 @@
 // Text already >= width comes back unchanged.
 //   pad('7', 3)      -> '  7'
 //   pad('7', 3, '0') -> '007'
-export function pad(text: string, width: number, char: any): string {
-  throw new Error('TODO: implement pad')
+export function pad(text: string, width: number, char: string = ' '): string {
+  if (text.length >= width) {
+    return text;
+  }
+
+  return text.padStart(width, char);
 }
 
 // Join any number of strings with `separator` — rest params.
 //   joinWith('-', 'a', 'b', 'c') -> 'a-b-c'
 //   joinWith('-')                -> ''
-export function joinWith(separator: string, ...parts: any): string {
-  throw new Error('TODO: implement joinWith')
+export function joinWith(separator: string, ...parts: string[]): string {
+  if (parts.length === 0) {
+    return '';
+  }
+  return parts.join(separator);
 }
 
 // The first element of a string or a number array — OVERLOADED, so each
@@ -29,8 +36,10 @@ export function joinWith(separator: string, ...parts: any): string {
 //   firstOf([1, 2, 3]) -> 1            type: number | undefined
 //   firstOf([])        -> undefined
 // Write the two overload signatures above one implementation.
+export function firstOf(x: string): string;
+export function firstOf(x: number[]): number | undefined;
 export function firstOf(x: string | number[]): string | number | undefined {
-  throw new Error('TODO: implement firstOf')
+  return typeof x === 'string' ? x.charAt(0) : x[0];
 }
 
 // Wrap `fn` so it only runs the FIRST time the wrapper is called; every
@@ -38,6 +47,13 @@ export function firstOf(x: string | number[]): string | number | undefined {
 //   const boom = once(() => count++)
 //   boom(); boom(); boom()   // count is 1
 // Hint: remember "already called?" in a closure flag.
-export function once(fn: any): any {
-  throw new Error('TODO: implement once')
+export function once(fn: () => void): () => void {
+  let isCalled = false;
+  return () => {
+    if (isCalled) {
+      return;
+    }
+    isCalled = true;
+    fn();
+  };
 }
