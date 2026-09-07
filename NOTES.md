@@ -35,6 +35,14 @@ you and widens the literal to the whole union, so a wrong mapping
 `as const` keeps the values as literal types, and literals are verified
 assignable to the union at the return site. Rule of thumb: `as const`
 narrows and stays checked; `as SomeType` overrides the checker.
+**Recurred 2026-09-07 — 05/ex08:** inside `assertIsUser`, cast the
+unvalidated input with `value as User` *before* checking it, then only
+tested `!== undefined`. Casting to the target type made the fields look
+already-typed, so the `typeof` checks that actually prove the claim got
+skipped and `{ name: 42, age: 36 }` slipped through. Rule: inside a
+guard/assertion, cast only to something honest like
+`Record<string, unknown>`; the narrowing to `User` is what the
+*signature* earns, not what a cast grants.
 **Recurred 2026-08-22 — 02/ex08:** first attempt annotated or cast every
 line (`: string`, `: readonly [1,2,3]`, `as {...}[]`) in an exercise that
 forbids annotations. Corrected quickly once prompted: `let` to widen,

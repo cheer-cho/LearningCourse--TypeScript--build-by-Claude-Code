@@ -37,6 +37,35 @@ describe('ex05/ex08 — assertion functions', () => {
     expectTypeOf<typeof raw>().toEqualTypeOf<User>()
   })
 
+  it('assertIsUser errors say WHAT failed, not just that something failed', () => {
+    // A bare `throw new Error()` has message '' — useless when debugging.
+    const messageFor = (input: unknown): string => {
+      try {
+        assertIsUser(input)
+      } catch (error) {
+        return (error as Error).message
+      }
+      return '(did not throw)'
+    }
+    expect(messageFor(null)).not.toBe('')
+    expect(messageFor({ age: 1 })).not.toBe('')
+    expect(messageFor({ name: 'Ada' })).not.toBe('')
+    // Different failures deserve different explanations.
+    expect(messageFor({ age: 1 })).not.toBe(messageFor({ name: 'Ada' }))
+  })
+
+  it('greet lets the assertion error through unchanged', () => {
+    // Wrapping in try/catch and rethrowing `new Error()` replaces a useful
+    // message with an empty one. The original error should surface as-is.
+    let fromAssertion = ''
+    try {
+      assertIsUser({ age: 1 })
+    } catch (error) {
+      fromAssertion = (error as Error).message
+    }
+    expect(() => greet({ age: 1 })).toThrow(fromAssertion)
+  })
+
   it('greet relies on the assertion instead of casts', () => {
     expect(greet({ name: 'Ada', age: 36 })).toBe('Hello, Ada')
     expect(greet({ name: '', age: 0 })).toBe('Hello, ')
