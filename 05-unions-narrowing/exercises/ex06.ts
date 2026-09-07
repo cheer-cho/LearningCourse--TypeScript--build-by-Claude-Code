@@ -28,15 +28,45 @@
  */
 
 // TODO: the four-variant discriminated union described above.
-export type Shape = unknown
+export type Circle = { kind: 'circle'; radius: number };
+export type Rectangle = { kind: 'rect'; width: number; height: number };
+export type Triangle = { kind: 'triangle'; base: number; height: number };
+export type Ellipse = { kind: 'ellipse'; rx: number; ry: number };
+export type Shape = Circle | Rectangle | Triangle | Ellipse;
 
 // TODO: type the parameter and return as never, then implement.
-export function assertNever(value: any): any {
-  throw new Error('TODO: implement assertNever')
+export function assertNever(value: never): never {
+  throw new Error(`Unhandled: ${JSON.stringify(value)}`)
 }
 
 // TODO: type the parameter (Shape) and return, then implement
 // EXHAUSTIVELY (default: assertNever).
-export function area(shape: any): any {
-  throw new Error('TODO: implement area')
+export function area(shape: Shape): number {
+  switch (shape.kind) {
+    case 'circle':
+      return Math.PI * shape.radius ** 2;
+    case 'rect':
+      return shape.width * shape.height;
+    case 'triangle':
+      return 0.5 * shape.base * shape.height;
+    case 'ellipse':
+      return Math.PI * shape.rx * shape.ry;
+    default:
+      return assertNever(shape);
+  }
 }
+
+/**
+ * A quick question before you move on.
+ * Did you try the sanity check from the instructions,
+ * commenting out the ellipse case?
+ * 
+ * If so, what type did TypeScript say shape had in the default branch,
+ * and why did that break the call to assertNever?
+ * If you can explain that in one sentence, you own this concept.
+ * 
+ * 
+ * Answer: remove the 'ellipse' case the shape in default become 'Ellipse'
+ * error TS2345: Argument of type 'Ellipse' is not assignable to parameter of type 'never'.
+ * therefore, typescript will throw error type passing into assertNever is mismatched.
+ */
