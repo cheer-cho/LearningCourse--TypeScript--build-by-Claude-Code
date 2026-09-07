@@ -20,23 +20,38 @@
  */
 
 // TODO: { drive: () => string }
-export type Car = unknown
+export type Car = {
+  drive: () => string;
+};
 
 // TODO: { sail: () => string }
-export type Boat = unknown
+export type Boat = {
+  sail: () => string;
+};
 
 // TODO: type the parameter (Car | Boat) and return, then implement.
-export function move(vehicle: any): any {
-  throw new Error('TODO: implement move')
+export function move(vehicle: Car | Boat): string {
+  if ('drive' in vehicle) {
+    return vehicle.drive();
+  }
+
+  return vehicle.sail();
 }
 
 // TODO: type the parameter (Date | string) and return, then implement.
-export function toIso(stamp: any): any {
-  throw new Error('TODO: implement toIso')
+export function toIso(stamp: Date | string): string {
+  if (stamp instanceof Date) {
+    return stamp.toISOString();
+  }
+
+  return new Date(stamp).toISOString();
 }
 
 // TODO: type the parameter (string[] | Set<string>) and return, then
 // implement.
-export function sizeOf(collection: any): any {
-  throw new Error('TODO: implement sizeOf')
+export function sizeOf(collection: string[] | Set<string>): number {
+  if (collection instanceof Set) {
+    return collection.size;
+  }
+  return collection.length;
 }
