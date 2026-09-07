@@ -26,16 +26,31 @@
  */
 
 // TODO: type value (string), padding (string | number), return string.
-export function padLeft(value: any, padding: any): any {
-  throw new Error('TODO: implement padLeft')
+export function padLeft(value: string, padding: number | string
+): string {
+  if (typeof padding === 'number') {
+    return value.padStart(padding + value.length)
+  }
+  return `${padding}${value}`
 }
 
 // TODO: type input (string | string[] | null), return string[].
-export function toLines(input: any): any {
-  throw new Error('TODO: implement toLines')
+export function toLines(input: string | string[] | null): string[] {
+  if (typeof input === 'string') {
+    return [input]
+  }
+
+  if (Array.isArray(input)) {
+    return input
+  }
+
+  return [];
 }
 
 // TODO: type x (string | number), y (string | boolean), return string.
-export function concatIfBothStrings(x: any, y: any): any {
-  throw new Error('TODO: implement concatIfBothStrings')
+export function concatIfBothStrings(x: string | number, y: string | boolean): string {
+  if (x === y) {
+    return `${x.toUpperCase()}${y.toUpperCase()}`
+  }
+  return `${x}/${y}`
 }
