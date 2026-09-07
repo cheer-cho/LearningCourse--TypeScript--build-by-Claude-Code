@@ -15,15 +15,22 @@
  */
 
 // TODO: string | number
-export type Id = unknown
+export type Id = string | number;
 
 // TODO: 'yes' | 'no' | 'maybe'
-export type Answer = unknown
+export type Answer = 'yes' | 'no' | 'maybe';
 
 // TODO: type the parameter (string | unknown[]) and return, then implement.
-export function len(x: any): any {
-  throw new Error('TODO: implement len')
+export function len(x: string | unknown[]): number {
+  return x.length;
+}
+
+export function lenExample(x: string | unknown[] | Set<String>): number {
+  if (x instanceof Set) {
+    return x.size;
+  }
+  return x.length;
 }
 
 // TODO: annotate as Id[].
-export const ids: any = [7, 'a42', 9]
+export const ids: Id[] = [7, 'a42', 9];
