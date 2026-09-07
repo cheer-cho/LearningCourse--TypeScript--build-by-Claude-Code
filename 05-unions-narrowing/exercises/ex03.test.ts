@@ -5,6 +5,7 @@ describe('ex05/ex03 — typeof, truthiness, equality narrowing', () => {
   it('padLeft narrows padding with typeof', () => {
     expect(padLeft('hi', 4)).toBe('    hi')
     expect(padLeft('hi', 0)).toBe('hi')
+    expect(padLeft('hello', 2)).toBe('  hello')   // padding shorter than value still pads
     expect(padLeft('hi', '>>')).toBe('>>hi')
     expect(padLeft('', 3)).toBe('   ')
     expect(padLeft('hi', '')).toBe('hi')   // '' is a padding string, not a miss
