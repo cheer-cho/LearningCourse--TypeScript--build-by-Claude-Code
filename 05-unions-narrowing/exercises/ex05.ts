@@ -23,15 +23,49 @@
  */
 
 // TODO: the four-variant discriminated union described above.
-export type RequestState = unknown
+export type IdleState = {
+  status: 'idle';
+};
+export type LoadingState = {
+  status: 'loading';
+  startedAt: number;
+};
+export type SuccessState = {
+  status: 'success';
+  data: string;
+};
+export type ErrorState = {
+  status: 'error';
+  message: string;
+};
+export type RequestState = IdleState | LoadingState | SuccessState | ErrorState;
+
+function assertNever(value: never): never {
+  throw new Error(`Unhandled: ${JSON.stringify(value)}`);
+}
 
 // TODO: type the parameter (RequestState) and return, then implement.
-export function describeState(state: any): any {
-  throw new Error('TODO: implement describeState')
+export function describeState(state: RequestState): string {
+  switch (state.status) {
+    case 'idle':
+      return 'idle';
+    case 'loading':
+      return `loading since ${state.startedAt}`;
+    case 'success':
+      return `got: ${state.data}`;
+    case 'error':
+      return `error: ${state.message}`;
+    default:
+      return assertNever(state);
+  }
 }
 
 // TODO: type the parameters (RequestState, string) and return, then
 // implement.
-export function dataOrDefault(state: any, fallback: any): any {
-  throw new Error('TODO: implement dataOrDefault')
+export function dataOrDefault(state: RequestState, fallback: string): string {
+  if (state.status === 'success') {
+    return state.data;
+  }
+  // at this point state is other RequestState types that not a Success
+  return fallback;
 }
