@@ -12,6 +12,19 @@ quizzes and reviews. Format:
 
 ---
 
+## 2026-09-07 — 05/checkpoint
+**Mistake:** Wrote a guard as `value is String` (capital S). Read `String`
+as "the string type", but it is the *wrapper object* interface (what
+`new String('x')` produces). A primitive `string` is assignable to `String`,
+never the other way, so a value narrowed to `String` cannot be passed where
+`string` is required. Harmless here only because the assertion signature,
+not the guard, did the real narrowing.
+**Correction:** The five primitive types are always lowercase: `string`,
+`number`, `boolean`, `symbol`, `bigint`. Capitalized `String` / `Number` /
+`Boolean` / `Object` are legacy wrapper interfaces and should not appear
+in annotations. Rule: if it matches a `typeof` result, it is lowercase.
+**Status:** open
+
 ## 2026-08-28 — 04/ex01
 **Mistake:** To give `applyOp` the type `ApplyOp`, wrote
 `function applyOp<ApplyOp>(a, b, op)`. Read the angle brackets as "this
