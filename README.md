@@ -36,7 +36,9 @@ Lessons use Mermaid diagrams heavily. To see them rendered:
 
 1. Open [ROADMAP.md](./ROADMAP.md) — it is your progress tracker.
 2. Enter the current module folder (start with `01-setup-tooling/`).
-3. Read `LESSON.md` — short, diagram-first. 5–10 minutes.
+3. Read `LESSON.md` — diagram-first, one section per concept. Its
+   "Map of this module" table tells you which section prepares which
+   exercise, so you can read it front to back or jump in as needed.
 4. Work through `exercises/ex01.ts`, `ex02.ts`, … in order. Each file has
    instructions in comments and `TODO` stubs for you to fill in.
 5. Check yourself: `npm test -- 01` (replace `01` with the module number).
