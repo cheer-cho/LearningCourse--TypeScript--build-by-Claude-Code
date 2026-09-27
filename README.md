@@ -91,6 +91,7 @@ your TypeScript teacher. Useful things to say:
   checkpoint.ts       graded checkpoint; passing it = module complete
   SUMMARY.md          cheat-sheet + mindmap + self-quiz
 playground/           scratch space for experiments with your instructor
+                      (each LESSON.md links its playgrounds under a 🧪 line)
 NOTES.md              your instructor's log of your recurring mistakes
 ROADMAP.md            full learning path + progress checkboxes
 ```

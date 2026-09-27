@@ -38,6 +38,12 @@ graph BT
 class from it. A mixin is just another `extends`, aimed at a class a
 function built for you.*
 
+> 🧪 **Playgrounds** (scratch files from Q&A on this diagram):
+> - [`06-lesson__small-hierarchy.ts`](../playground/06-lesson__small-hierarchy.ts) — the four arrow kinds, one each, plus proof that a class survives compilation and an interface does not.
+> - [`06-lesson__extends-vs-implements.ts`](../playground/06-lesson__extends-vs-implements.ts) — the full grid: who may `extends` / `implements` whom (2 of 7 combos error).
+> - [`06-lesson__why-interface-and-party.ts`](../playground/06-lesson__why-interface-and-party.ts) — a tiny RPG story showing each relationship tool's job.
+> - [`06-lesson__party-of-t.ts`](../playground/06-lesson__party-of-t.ts) + [`.md`](../playground/06-lesson__party-of-t.md) — what "class Party of T · T must satisfy" means.
+
 ## Minimal syntax
 
 ```ts
@@ -210,6 +216,8 @@ base constructor wrote (see *Field semantics* near the end).
 
 ### Access modifiers — who may touch a member
 
+> 🧪 **Playground:** [`06-lesson__default-visibility.ts`](../playground/06-lesson__default-visibility.ts) — no modifier means `public`; the same class written with and without `public` is assignable both ways.
+
 Modifiers limit *where* a member can be used — the difference between
 "implementation detail" and "part of the API".
 
@@ -285,6 +293,8 @@ Gotcha: `#name` must be declared in the class before use, cannot combine
 with `private`, and cannot be reached as `this['#key']` — it is not a
 string key.
 
+> 🧪 **Playground:** [`06-lesson__type-predicate-recap.ts`](../playground/06-lesson__type-predicate-recap.ts) — `value is Vault` is a type predicate (module 05, ex07): a boolean return that also narrows the argument in the `if` and in `.filter()`; diagram in [`06-lesson__type-predicate-recap.md`](../playground/06-lesson__type-predicate-recap.md).
+
 ### `readonly` — write once, and only shallowly
 
 `readonly` stops reassignment after construction. It says nothing about
@@ -310,6 +320,8 @@ new Ticket('T-1').tags.push('urgent')  // ✅ shallow: the array is still mutabl
 ```
 
 ### `private` makes a class nominal
+
+> 🧪 **Playground:** [`06-lesson__interface-extends-class.ts`](../playground/06-lesson__interface-extends-class.ts) — an `interface` that `extends` a class with a `private` member can only be satisfied by that class's descendants.
 
 Types are structural: same shape, same type. A `private` (or `protected`)
 member breaks that rule on purpose — two classes with a private member of
@@ -750,6 +762,8 @@ can never carry code, so shared behaviour forces a class.*
 
 ### `implements` — a compile-time promise
 
+> 🧪 **Playgrounds:** [`06-lesson__shape-check.ts`](../playground/06-lesson__shape-check.ts) — three unrelated things pass as `Printable`, one class that wrote `implements` fails; [`06-lesson__extends-vs-implements.ts`](../playground/06-lesson__extends-vs-implements.ts) — `class implements class` is legal but copies nothing.
+
 `implements` says "this class has at least this shape". The compiler
 checks it; nothing is inherited, nothing runs. A class may implement
 several interfaces at once. And it does **not** type your parameters —
@@ -811,6 +825,8 @@ boot(Echo, 'hello').run()            // 'hello' — the class is passed as a val
 
 ### Classes are structural too
 
+> 🧪 **Playground:** [`06-lesson__shape-check.ts`](../playground/06-lesson__shape-check.ts) — "shape check" means members only, origin ignored.
+
 A class name used as a type means "anything with this shape". An object
 literal with the right members satisfies it — no `new` required. That is
 convenient for tests and awkward for `instanceof`. And `instanceof`
@@ -849,6 +865,9 @@ type to TS, so `instanceof` cannot narrow between them — give each a
 distinguishing member (`readonly kind = 'email'` works well).
 
 ### Generic classes — the type parameter lives on the instance
+
+> 🧪 **Playground:** [`06-lesson__party-of-t.ts`](../playground/06-lesson__party-of-t.ts) — `Party<T extends Combatant>`: a generic class with a constraint.
+> 🧪 **Playground:** [`06-lesson__reading-angle-brackets.ts`](../playground/06-lesson__reading-angle-brackets.ts) — how to *read* `<T extends {...}>` before Module 07: a class with a blank, then a constraint on the blank.
 
 `class Queue<T>` is one blueprint that produces many contracts:
 `Queue<number>`, `Queue<string>`. `T` is fixed when you `new`, per
