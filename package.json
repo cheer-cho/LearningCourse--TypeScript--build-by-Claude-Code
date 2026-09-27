@@ -7,7 +7,9 @@
   "scripts": {
     "test": "node scripts/test.mjs",
     "typecheck": "tsc --noEmit",
-    "verify:solutions": "node scripts/verify-solutions.mjs"
+    "playground": "node scripts/playground.mjs",
+    "verify:solutions": "node scripts/verify-solutions.mjs",
+    "verify:lessons": "node scripts/verify-lessons.mjs"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

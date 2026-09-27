@@ -98,11 +98,11 @@ checking entirely. This flag makes the fallback an error instead.
 
 ```ts
 // ❌ error TS7006: Parameter 'x' implicitly has an 'any' type.
-function len(x) {
+function lenLoose(x) {
   return x.lenght       // typo! but `any` would let it compile
 }
 
-// ✅ annotate — now the typo is a compile error
+// ✅ annotate — now a typo like `lenght` is a compile error
 function len(x: string) {
   return x.length
 }
@@ -192,9 +192,9 @@ assignment is ever removed, the crash comes at runtime, not compile time.
 In a loose function, `this` could be anything, so TS would give it `any`.
 
 ```ts
-// ❌ error TS2683: 'this' implicitly has type 'any' because it
-//    does not have a type annotation.
-function getX() {
+function getXLoose() {
+  // ❌ error TS2683: 'this' implicitly has type 'any' because it
+  //    does not have a type annotation.
   return this.x
 }
 
@@ -258,7 +258,7 @@ type Settings = { theme?: string }
 const s: Settings = { theme: undefined }
 
 // ✅ leave it out entirely
-const s: Settings = {}
+const t: Settings = {}
 ```
 
 ### `noImplicitOverride` — overriding must be on purpose
@@ -271,11 +271,13 @@ keyword — and then TS errors if the base method is renamed and your
 ```ts
 class Base { save() {} }
 
-class Sub extends Base {
+class SilentSub extends Base {
   // ❌ error TS4114: This member must have an 'override' modifier
   //    because it overrides a member in the base class 'Base'.
   save() {}
+}
 
+class Sub extends Base {
   // ✅ explicit — now renaming Base.save() breaks loudly here
   override save() {}
 }
@@ -287,15 +289,22 @@ A non-empty `case` without `break`/`return` falls into the next case.
 Occasionally intended, usually a bug.
 
 ```ts
+declare const n: number
+let result = ''
+
 switch (n) {
+  // ❌ error TS7029: Fallthrough case in switch.
   case 1:
     result = 'one'
-    // ❌ error TS7029: Fallthrough case in switch.
+    // no break — execution continues into case 2
   case 2:
     result = 'two'
     break
 }
 ```
+
+The error is reported on the `case` that *falls through* (`case 1`), not
+on the one it falls into.
 
 ## Declaration files & source maps (30-second version)
 

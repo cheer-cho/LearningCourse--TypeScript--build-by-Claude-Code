@@ -66,6 +66,15 @@ overcome.
 - All lesson content follows the readability rules in
   `system-prompt/build-typescript-course.md`: diagram-first, short prose,
   every diagram captioned.
+- Lessons are **thorough, not thin** (this supersedes the spec's "keep
+  LESSON.md tight"): one `###` section per concept the module's exercises
+  or SUMMARY.md touch, each with a why, a verified example (mistake with
+  the real `// ❌ error TSxxxx` message plus the `// ✅` fix), and a gotcha.
+  Model: `01-setup-tooling/LESSON.md`.
+- Every ```ts block in a LESSON.md must pass
+  `npm run verify:lessons -- <NN>` — it compiles each block under the
+  course tsconfig and checks that `❌`-marked lines error and nothing else
+  does. Fence pseudo-code as ```ts skip; chain blocks with ```ts continue.
 - Exercises must always be verifiable by `npm test`, checking both runtime
   behavior and type correctness. Type assertions must fail when types are
   wrong — never silently pass.

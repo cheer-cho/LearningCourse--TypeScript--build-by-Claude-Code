@@ -1,0 +1,11 @@
+flowchart LR
+    subgraph impl["implementation signature alone"]
+      I["(string | number, number?) => string | number"]
+      I --> IN["4 arg combos legal<br/>2 of them meaningless<br/>return needs a cast"]
+    end
+    subgraph ov["overloads"]
+      A["(string, number) => string"]
+      B["(number, number) => number"]
+      A --> ON["2 arg combos legal<br/>both meaningful<br/>return is exact"]
+      B --> ON
+    end
