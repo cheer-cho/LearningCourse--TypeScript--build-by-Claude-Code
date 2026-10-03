@@ -27,32 +27,47 @@
  *
  * Check: npm test -- 06 -t ex02
  */
-
-// TODO: fix the modifiers and types, then implement.
 export class BankAccount {
-  id: any
-  balance: any
-  pin: any
+  readonly id: string;
+  protected balance = 0;
+  #pin: string;
 
-  constructor(id: any, pin: any) {
-    throw new Error('TODO: implement the BankAccount constructor')
+  constructor(id: string, pin: string) {
+    this.id = id;
+    this.#pin = pin;
   }
 
-  deposit(amount: any): any {
-    throw new Error('TODO: implement deposit')
+  deposit(amount: number): void {
+    if (!(amount > 0)) {
+      return;
+    }
+    this.balance += amount;
   }
 
-  withdraw(amount: any, pin: any): any {
-    throw new Error('TODO: implement withdraw')
+  withdraw(amount: number, pin: string): boolean {
+    if (pin !== this.#pin) {
+      return false;
+    }
+
+    if (!(amount >= 0)) {
+      return false;
+    }
+
+    if (this.balance < amount) {
+      return false;
+    }
+
+    this.balance -= amount;
+    return true;
   }
 
-  getBalance(): any {
-    throw new Error('TODO: implement getBalance')
+  getBalance(): number {
+    return this.balance;
   }
 }
 
 export class SavingsAccount extends BankAccount {
-  addInterest(rate: any): any {
-    throw new Error('TODO: implement addInterest')
+  addInterest(rate: number): void {
+    this.balance += this.balance * rate;
   }
 }
