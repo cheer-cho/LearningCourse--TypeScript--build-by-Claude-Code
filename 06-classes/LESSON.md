@@ -3,23 +3,23 @@
 ## Why this exists
 
 JavaScript classes already work at runtime — TypeScript adds the
-*contracts*: which fields exist and get initialized, who is allowed to
+_contracts_: which fields exist and get initialized, who is allowed to
 touch them, and what a subclass must implement. Nail these and whole
 categories of "cannot read property of undefined" die at compile time.
 
 ## Map of this module
 
-| Section | Exercise |
-| --- | --- |
-| Class anatomy · strict initialization · `!` and `declare` | ex01 |
-| Access modifiers · `#private` · `readonly` · nominal classes · private constructors | ex02 |
-| Parameter properties · accessors | ex03 |
-| Static members · static blocks · `typeof Class` | ex04 |
-| Inheritance · `super` · `override` | ex05, ex06 |
-| Abstract classes · `implements` · classes are structural | ex05, checkpoint |
-| Generic classes · `this` return type | ex06, checkpoint |
-| Mixins | ex07 |
-| Class expressions · `this` pitfalls · field semantics · decorators | reference |
+| Section                                                                             | Exercise         |
+| ----------------------------------------------------------------------------------- | ---------------- |
+| Class anatomy · strict initialization · `!` and `declare`                           | ex01             |
+| Access modifiers · `#private` · `readonly` · nominal classes · private constructors | ex02             |
+| Parameter properties · accessors                                                    | ex03             |
+| Static members · static blocks · `typeof Class`                                     | ex04             |
+| Inheritance · `super` · `override`                                                  | ex05, ex06       |
+| Abstract classes · `implements` · classes are structural                            | ex05, checkpoint |
+| Generic classes · `this` return type                                                | ex06, checkpoint |
+| Mixins                                                                              | ex07             |
+| Class expressions · `this` pitfalls · field semantics · decorators                  | reference        |
 
 ## A small hierarchy
 
@@ -33,12 +33,13 @@ graph BT
     M -- "extends" --> A["class Article"]
 ```
 
-*What to notice: `extends` (solid) inherits code AND type; `implements`
+_What to notice: `extends` (solid) inherits code AND type; `implements`
 (dashed) is a compile-time promise only — no code, no types flow into the
 class from it. A mixin is just another `extends`, aimed at a class a
-function built for you.*
+function built for you._
 
 > 🧪 **Playgrounds** (scratch files from Q&A on this diagram):
+>
 > - [`06-lesson__small-hierarchy.ts`](../playground/06-lesson__small-hierarchy.ts) — the four arrow kinds, one each, plus proof that a class survives compilation and an interface does not.
 > - [`06-lesson__extends-vs-implements.ts`](../playground/06-lesson__extends-vs-implements.ts) — the full grid: who may `extends` / `implements` whom (2 of 7 combos error).
 > - [`06-lesson__why-interface-and-party.ts`](../playground/06-lesson__why-interface-and-party.ts) — a tiny RPG story showing each relationship tool's job.
@@ -48,30 +49,36 @@ function built for you.*
 
 ```ts
 class Account {
-  readonly id: string        // assignable only at declaration or in ctor
-  protected balance = 0      // initializer satisfies strict init
-  #pin: string               // real runtime privacy (JS, not just TS)
+  readonly id: string; // assignable only at declaration or in ctor
+  protected balance = 0; // initializer satisfies strict init
+  #pin: string; // real runtime privacy (JS, not just TS)
 
-  static count = 0
-  static {                   // runs ONCE, when the class is defined
-    Account.count = 0
+  static count = 0;
+  static {
+    // runs ONCE, when the class is defined
+    Account.count = 0;
   }
 
   constructor(id: string, pin: string) {
-    this.id = id             // strictPropertyInitialization demands this
-    this.#pin = pin
-    Account.count++
+    this.id = id; // strictPropertyInitialization demands this
+    this.#pin = pin;
+    Account.count++;
   }
 
-  get empty(): boolean {     // getter — used like a property
-    return this.balance === 0
+  get empty(): boolean {
+    // getter — used like a property
+    return this.balance === 0;
   }
 }
 
 class Savings extends Account {
   // parameter property: declares AND assigns this.rate in one stroke
-  constructor(id: string, pin: string, private rate: number) {
-    super(id, pin)
+  constructor(
+    id: string,
+    pin: string,
+    private rate: number,
+  ) {
+    super(id, pin);
   }
 }
 ```
@@ -86,21 +93,22 @@ the instance through `this`.
 
 ```ts
 class Roster {
-  team: string               // field: declared here, assigned in the ctor
-  members: string[] = []     // field with an initializer (type inferred)
+  team: string; // field: declared here, assigned in the ctor
+  members: string[] = []; // field with an initializer (type inferred)
 
   constructor(team: string) {
-    this.team = team
+    this.team = team;
   }
 
-  join(name: string): void { // method: lives on the prototype, shared
-    this.members.push(name)
+  join(name: string): void {
+    // method: lives on the prototype, shared
+    this.members.push(name);
   }
 }
 
-const backend = new Roster('Backend')
-backend.join('Ada')
-backend.members.length       // 1
+const backend = new Roster('Backend');
+backend.join('Ada');
+backend.members.length; // 1
 ```
 
 ```mermaid
@@ -111,8 +119,8 @@ flowchart LR
     C --> R["return the object as this"]
 ```
 
-*What to notice: field initializers run BEFORE the constructor body — a
-constructor can rely on `this.members` already being an array.*
+_What to notice: field initializers run BEFORE the constructor body — a
+constructor can rely on `this.members` already being an array._
 
 ### `strictPropertyInitialization` — no half-built objects
 
@@ -123,13 +131,13 @@ that might still be unassigned when the constructor finishes.
 ```ts
 class Invoice {
   // ❌ error TS2564: Property 'customer' has no initializer and is not definitely assigned in the constructor.
-  customer: string
-  total = 0                  // ✅ initializer
-  currency: string           // ✅ assigned below
-  note: string | undefined   // ✅ undefined is part of the type
+  customer: string;
+  total = 0; // ✅ initializer
+  currency: string; // ✅ assigned below
+  note: string | undefined; // ✅ undefined is part of the type
 
   constructor() {
-    this.currency = 'EUR'
+    this.currency = 'EUR';
   }
 }
 ```
@@ -145,27 +153,29 @@ flowchart TD
     U -- "no" --> E["❌ TS2564"]
 ```
 
-*What to notice: "every path" is literal — an assignment inside an `if`
+_What to notice: "every path" is literal — an assignment inside an `if`
 without an `else` does not count, and neither does one made in a method
-the constructor calls.*
+the constructor calls._
 
 That last case is the one that bites:
 
 ```ts
 class Session {
   // ❌ error TS2564: Property 'token' has no initializer and is not definitely assigned in the constructor.
-  token: string
+  token: string;
 
   constructor() {
-    this.reset()             // assigns token — but TS does not follow calls
+    this.reset(); // assigns token — but TS does not follow calls
   }
 
-  reset(): void { this.token = Math.random().toString(36).slice(2) }
+  reset(): void {
+    this.token = Math.random().toString(36).slice(2);
+  }
 }
 ```
 
 Gotcha: the fix is not to sprinkle `!`. Assign directly in the constructor
-(`this.token = this.makeToken()` — assigning a call's *result* is fine),
+(`this.token = this.makeToken()` — assigning a call's _result_ is fine),
 or widen to `string | undefined` and narrow where you read it.
 
 ### The `!` escape hatch and `declare` fields
@@ -178,89 +188,91 @@ crash arrives at runtime, not at compile time.
 
 ```ts
 class Cache {
-  store!: Map<string, string>   // set by init(), not the ctor
+  store!: Map<string, string>; // set by init(), not the ctor
 
-  init(): void { this.store = new Map() }
+  init(): void {
+    this.store = new Map();
+  }
 
   read(key: string): string | undefined {
-    return this.store.get(key)  // compiles — crashes if init() was skipped
+    return this.store.get(key); // compiles — crashes if init() was skipped
   }
 }
 ```
 
-`declare` is different: it re-declares a field's *type* only and emits no
+`declare` is different: it re-declares a field's _type_ only and emits no
 field. Use it in a subclass to narrow an inherited field's type without
 touching its value.
 
 ```ts
 class Widget {
-  kind: string
+  kind: string;
   constructor(kind: string) {
-    this.kind = kind
+    this.kind = kind;
   }
 }
 
 class Slider extends Widget {
-  declare kind: 'horizontal' | 'vertical'   // type only, no runtime field
+  declare kind: 'horizontal' | 'vertical'; // type only, no runtime field
   constructor() {
-    super('horizontal')
+    super('horizontal');
   }
 }
 
-new Slider().kind   // type: 'horizontal' | 'vertical'
+new Slider().kind; // type: 'horizontal' | 'vertical'
 ```
 
-Without `declare`, the redeclared field would trip TS2564 *and* be
+Without `declare`, the redeclared field would trip TS2564 _and_ be
 re-created as `undefined` after `super()` returns, wiping the value the
-base constructor wrote (see *Field semantics* near the end).
+base constructor wrote (see _Field semantics_ near the end).
 
 ### Access modifiers — who may touch a member
 
 > 🧪 **Playground:** [`06-lesson__default-visibility.ts`](../playground/06-lesson__default-visibility.ts) — no modifier means `public`; the same class written with and without `public` is assignable both ways.
 
-Modifiers limit *where* a member can be used — the difference between
+Modifiers limit _where_ a member can be used — the difference between
 "implementation detail" and "part of the API".
 
 ```ts
 class Safe {
-  readonly serial: string
-  protected contents: string[] = []
-  private attempts = 0
-  #combo: string
+  readonly serial: string;
+  protected contents: string[] = [];
+  private attempts = 0;
+  #combo: string;
 
   constructor(serial: string, combo: string) {
-    this.serial = serial
-    this.#combo = combo
+    this.serial = serial;
+    this.#combo = combo;
   }
 
   open(combo: string): boolean {
-    this.attempts++
-    return combo === this.#combo
+    this.attempts++;
+    return combo === this.#combo;
   }
 }
 
 class WallSafe extends Safe {
   count(): number {
-    return this.contents.length   // ✅ protected: a subclass may read it
+    return this.contents.length; // ✅ protected: a subclass may read it
   }
 }
 
-const safe = new Safe('S-1', '4-2-7')
+const safe = new Safe('S-1', '4-2-7');
 // ❌ error TS2445: Property 'contents' is protected and only accessible within class 'Safe' and its subclasses.
-safe.contents
+safe.contents;
 // ❌ error TS2341: Property 'attempts' is private and only accessible within class 'Safe'.
-safe.attempts
+safe.attempts;
 // ❌ error TS18013: Property '#combo' is not accessible outside class 'Safe' because it has a private identifier.
-safe.#combo
+safe.#combo;
 ```
 
-| | class body | subclass | outside | `Object.keys` / `JSON.stringify` | enforced by |
-| --- | --- | --- | --- | --- | --- |
-| `public` (default) | ✅ | ✅ | ✅ | visible | — |
-| `protected` | ✅ | ✅ | ❌ | visible | TS only |
-| `private` | ✅ | ❌ | ❌ | **visible** | TS only |
-| `#name` | ✅ | ❌ | ❌ | hidden | JS engine |
-| `readonly` | write in ctor only | read | read | visible | TS only |
+|                    | class body         | subclass | outside | `Object.keys` / `JSON.stringify` | enforced by |
+| ------------------ | ------------------ | -------- | ------- | -------------------------------- | ----------- |
+| `public` (default) | ✅                 | ✅       | ✅      | visible                          | —           |
+| `protected`        | ✅                 | ✅       | ❌      | visible                          | TS only     |
+| `private`          | ✅                 | ❌       | ❌      | **visible**                      | TS only     |
+| `#name`            | ✅                 | ❌       | ❌      | hidden                           | JS engine   |
+| `readonly`         | write in ctor only | read     | read    | visible                          | TS only     |
 
 Gotcha: `private` is a compile-time promise. The emitted JavaScript has a
 normal property, so `(safe as any).attempts` and `Object.keys(safe)` both
@@ -269,24 +281,24 @@ see it. Only `#name` survives to runtime.
 ### `#private` — privacy the engine enforces
 
 `#combo` is JavaScript syntax, not a TypeScript modifier. The field is
-invisible to reflection, and `#key in obj` is a *brand check* — `true`
+invisible to reflection, and `#key in obj` is a _brand check_ — `true`
 only for objects this exact class constructed.
 
 ```ts
 class Vault {
-  private label = 'top secret'
-  #key = 'xyz'
+  private label = 'top secret';
+  #key = 'xyz';
 
   static isVault(value: unknown): value is Vault {
-    return typeof value === 'object' && value !== null && #key in value
+    return typeof value === 'object' && value !== null && #key in value;
   }
 }
 
-const vault = new Vault()
-Object.keys(vault)          // ['label']  — TS private is erased
-JSON.stringify(vault)       // '{"label":"top secret"}'
-Vault.isVault(vault)        // true
-Vault.isVault({ label: 'top secret' })   // false — no #key brand
+const vault = new Vault();
+Object.keys(vault); // ['label']  — TS private is erased
+JSON.stringify(vault); // '{"label":"top secret"}'
+Vault.isVault(vault); // true
+Vault.isVault({ label: 'top secret' }); // false — no #key brand
 ```
 
 Gotcha: `#name` must be declared in the class before use, cannot combine
@@ -298,25 +310,25 @@ string key.
 ### `readonly` — write once, and only shallowly
 
 `readonly` stops reassignment after construction. It says nothing about
-what is *inside* the value — for that, type the field `readonly string[]`
+what is _inside_ the value — for that, type the field `readonly string[]`
 (module 08 builds a `DeepReadonly`).
 
 ```ts
 class Ticket {
-  readonly id: string
-  readonly tags: string[] = []
+  readonly id: string;
+  readonly tags: string[] = [];
 
   constructor(id: string) {
-    this.id = id            // ✅ the constructor may write
+    this.id = id; // ✅ the constructor may write
   }
 
   rename(id: string): void {
     // ❌ error TS2540: Cannot assign to 'id' because it is a read-only property.
-    this.id = id
+    this.id = id;
   }
 }
 
-new Ticket('T-1').tags.push('urgent')  // ✅ shallow: the array is still mutable
+new Ticket('T-1').tags.push('urgent'); // ✅ shallow: the array is still mutable
 ```
 
 ### `private` makes a class nominal
@@ -325,7 +337,7 @@ new Ticket('T-1').tags.push('urgent')  // ✅ shallow: the array is still mutabl
 
 Types are structural: same shape, same type. A `private` (or `protected`)
 member breaks that rule on purpose — two classes with a private member of
-the same name are *not* interchangeable, and no object literal can ever
+the same name are _not_ interchangeable, and no object literal can ever
 satisfy the class.
 
 ```ts
@@ -339,17 +351,17 @@ class Plain {
   constructor(public value: number) {}
 }
 
-let distance: Meters = new Meters(5)
+let distance: Meters = new Meters(5);
 // ❌ error TS2322: Type 'Seconds' is not assignable to type 'Meters'. Types have separate declarations of a private property 'value'.
-distance = new Seconds(5)
+distance = new Seconds(5);
 
-const plain: Plain = { value: 5 }       // ✅ public shape — a literal is fine
+const plain: Plain = { value: 5 }; // ✅ public shape — a literal is fine
 // ❌ error TS2322: Property 'value' is private in type 'Meters' but not in type '{ value: number; }'.
-const fake: Meters = { value: 5 }
+const fake: Meters = { value: 5 };
 ```
 
 This is a feature: one `private` field turns a class into a lightweight
-*branded* type (module 11). Gotcha: it also means you cannot mock such a
+_branded_ type (module 11). Gotcha: it also means you cannot mock such a
 class with a plain object in tests — `new` the real thing or subclass it.
 
 ### `private` and `protected` constructors — singletons and factories
@@ -360,29 +372,29 @@ lets subclasses call `super()`.
 
 ```ts
 class AppConfig {
-  private static instance: AppConfig | undefined
+  private static instance: AppConfig | undefined;
   private constructor(readonly env: string) {}
 
   static get(): AppConfig {
-    return (AppConfig.instance ??= new AppConfig('prod'))
+    return (AppConfig.instance ??= new AppConfig('prod'));
   }
 }
 
-AppConfig.get().env        // 'prod' — always the same instance
+AppConfig.get().env; // 'prod' — always the same instance
 // ❌ error TS2673: Constructor of class 'AppConfig' is private and only accessible within the class declaration.
-new AppConfig('dev')
+new AppConfig('dev');
 
 class Repository {
   protected constructor(readonly table: string) {}
 }
 class UserRepository extends Repository {
   constructor() {
-    super('users')          // ✅ a subclass may call it
+    super('users'); // ✅ a subclass may call it
   }
 }
-new UserRepository()
+new UserRepository();
 // ❌ error TS2674: Constructor of class 'Repository' is protected and only accessible within the class declaration.
-new Repository('x')
+new Repository('x');
 ```
 
 ### Parameter properties — declare and assign in one stroke
@@ -390,7 +402,7 @@ new Repository('x')
 Writing `id: number`, then `id: number` again in the constructor, then
 `this.id = id` is three lines for one idea. A modifier on a constructor
 parameter (`public`, `private`, `protected`, `readonly`, or a combination)
-collapses them. A parameter *without* a modifier stays a plain parameter.
+collapses them. A parameter _without_ a modifier stays a plain parameter.
 
 ```ts
 class Employee {
@@ -400,52 +412,56 @@ class Employee {
     private salary: number,
   ) {}
 
-  raise(pct: number): void { this.salary *= 1 + pct / 100 }
-}
-
-class Person {
-  constructor(name: string) {}   // NO modifier — a plain parameter, no field
-
-  greet(): string {
-    // ❌ error TS2339: Property 'name' does not exist on type 'Person'.
-    return `hi ${this.name}`
+  raise(pct: number): void {
+    this.salary *= 1 + pct / 100;
   }
 }
 
-new Employee(1, 'Ada', 5000).name   // 'Ada'
+class Person {
+  constructor(name: string) {} // NO modifier — a plain parameter, no field
+
+  greet(): string {
+    // ❌ error TS2339: Property 'name' does not exist on type 'Person'.
+    return `hi ${this.name}`;
+  }
+}
+
+new Employee(1, 'Ada', 5000).name; // 'Ada'
 ```
 
-| Parameter properties shine when… | They hurt when… |
-| --- | --- |
-| The class is mostly data (`Employee`, `Point`) | The constructor body also transforms inputs |
-| Every parameter maps 1:1 to a field | Some parameters are fields and some are not — readers must scan modifiers |
-| The list is short (≤ 4) | The list is long — one field per line in the body reads better |
+| Parameter properties shine when…               | They hurt when…                                                           |
+| ---------------------------------------------- | ------------------------------------------------------------------------- |
+| The class is mostly data (`Employee`, `Point`) | The constructor body also transforms inputs                               |
+| Every parameter maps 1:1 to a field            | Some parameters are fields and some are not — readers must scan modifiers |
+| The list is short (≤ 4)                        | The list is long — one field per line in the body reads better            |
 
 ### Accessors — `get` and `set`
 
-A getter runs code but is *used* like a property. That lets you validate
+A getter runs code but is _used_ like a property. That lets you validate
 writes, derive values, or change storage later without breaking callers.
 
 ```ts
 class Volume {
-  private level = 50                 // 0..100
+  private level = 50; // 0..100
 
-  get percent(): number { return this.level }
+  get percent(): number {
+    return this.level;
+  }
 
   set percent(next: number) {
-    if (next < 0 || next > 100) throw new RangeError('0–100 only')
-    this.level = next
+    if (next < 0 || next > 100) throw new RangeError('0–100 only');
+    this.level = next;
   }
 }
 
-const speaker = new Volume()
-speaker.percent = 80                 // runs the setter (validates)
-speaker.percent                      // 80 — runs the getter
+const speaker = new Volume();
+speaker.percent = 80; // runs the setter (validates)
+speaker.percent; // 80 — runs the getter
 ```
 
 Three more facts: a getter with **no setter** is `readonly` in the type
 (you never write the keyword — the compiler infers it); since TS 5.1 the
-setter may accept a *wider* type than the getter returns; and the
+setter may accept a _wider_ type than the getter returns; and the
 `accessor` keyword (TS 4.9+) generates a hidden field plus a get/set pair
 — it exists mainly for decorators, so just recognise it.
 
@@ -453,33 +469,37 @@ setter may accept a *wider* type than the getter returns; and the
 class Book {
   constructor(private readonly rawIsbn: string) {}
 
-  get isbn(): string {               // getter only ⇒ readonly
-    return this.rawIsbn.replaceAll('-', '')
+  get isbn(): string {
+    // getter only ⇒ readonly
+    return this.rawIsbn.replaceAll('-', '');
   }
 }
 
 class Timer {
-  private ms = 0
+  private ms = 0;
 
-  get delay(): number { return this.ms }
+  get delay(): number {
+    return this.ms;
+  }
 
-  set delay(value: number | string) {   // setter wider than the getter
-    this.ms = typeof value === 'string' ? parseInt(value, 10) : value
+  set delay(value: number | string) {
+    // setter wider than the getter
+    this.ms = typeof value === 'string' ? parseInt(value, 10) : value;
   }
 }
 
 class Draft {
-  accessor title = 'untitled'        // = hidden field + get title / set title
+  accessor title = 'untitled'; // = hidden field + get title / set title
 }
 
-const book = new Book('978-0-13')
+const book = new Book('978-0-13');
 // ❌ error TS2540: Cannot assign to 'isbn' because it is a read-only property.
-book.isbn = '000'
+book.isbn = '000';
 
-const timer = new Timer()
-timer.delay = '250'                  // ✅ setter takes a string
-const wait: number = timer.delay     // ✅ getter always gives a number
-new Draft().title
+const timer = new Timer();
+timer.delay = '250'; // ✅ setter takes a string
+const wait: number = timer.delay; // ✅ getter always gives a number
+new Draft().title;
 ```
 
 Gotcha: a getter and setter must agree on visibility — no `public get`
@@ -491,55 +511,56 @@ Some data belongs to the class as a whole: an instance counter, a
 registry, a constant. `static` puts it on the constructor object, so there
 is exactly one copy. A `static {}` block runs once, when the class is
 defined, and is the only place (besides the declaration line) to compute
-*private* static state.
+_private_ static state.
 
 ```ts
 class Logger {
-  static readonly LEVELS = ['debug', 'info', 'warn'] as const
-  static defaultLevel: 'debug' | 'info' | 'warn'
-  private static created: number    // private static state, set up below
-  private static registry = new Map<string, Logger>()
+  static readonly LEVELS = ['debug', 'info', 'warn'] as const;
+  static defaultLevel: 'debug' | 'info' | 'warn';
+  private static created: number; // private static state, set up below
+  private static registry = new Map<string, Logger>();
 
-  static {                           // runs once, when the class is defined
-    Logger.defaultLevel = process.env.LOG_LEVEL === 'debug' ? 'debug' : 'info'
-    Logger.created = 0               // only a static block can reach a private static
+  static {
+    // runs once, when the class is defined
+    Logger.defaultLevel = process.env.LOG_LEVEL === 'debug' ? 'debug' : 'info';
+    Logger.created = 0; // only a static block can reach a private static
   }
 
   constructor(readonly name: string) {
-    Logger.created++                 // `Logger.`, not `this.` — it is on the class
-    Logger.registry.set(name, this)
+    Logger.created++; // `Logger.`, not `this.` — it is on the class
+    Logger.registry.set(name, this);
   }
 
   static count(): number {
-    return this.created              // inside a static, `this` IS the class
+    return this.created; // inside a static, `this` IS the class
   }
 }
 
-new Logger('http')
-new Logger('db')
-Logger.count()                       // 2
+new Logger('http');
+new Logger('db');
+Logger.count(); // 2
 ```
 
 Two rules the compiler enforces:
 
 ```ts
 class Build {
-  static readonly VERSION: string
+  static readonly VERSION: string;
 
   static {
     // ❌ error TS2540: Cannot assign to 'VERSION' because it is a read-only property.
-    Build.VERSION = '1.0.0'          // readonly statics: initialize at the declaration
+    Build.VERSION = '1.0.0'; // readonly statics: initialize at the declaration
   }
 }
 
 class Box<T> {
   // ❌ error TS2302: Static members cannot reference class type parameters.
-  static empty: T
+  static empty: T;
   constructor(public value: T) {}
 }
 ```
 
-Why the second? `T` belongs to each *instance* (`Box<number>`,
+Why the second? `T` belongs to each _instance_ (`Box<number>`,
 `Box<string>`). The static side exists once, before any instance — there
 is no single `T` for it to mean.
 
@@ -554,31 +575,31 @@ graph LR
     S["typeof Robot<br/>the constructor value<br/>static factory · new signature"] -- "new" --> I["Robot<br/>the instance type<br/>model"]
 ```
 
-*What to notice: statics live on the left, instance members on the
-right — a value of type `Robot` has no `factory`.*
+_What to notice: statics live on the left, instance members on the
+right — a value of type `Robot` has no `factory`._
 
 ```ts
 class Robot {
-  static factory = 'Acme'
+  static factory = 'Acme';
   constructor(public model: string) {}
 }
 
-const unit: Robot = new Robot('R2')          // instance side
-const Ctor: typeof Robot = Robot             // static side (the constructor)
-type RobotInstance = InstanceType<typeof Robot>   // Robot, recovered from the ctor
+const unit: Robot = new Robot('R2'); // instance side
+const Ctor: typeof Robot = Robot; // static side (the constructor)
+type RobotInstance = InstanceType<typeof Robot>; // Robot, recovered from the ctor
 
-Ctor.factory                                 // 'Acme'
+Ctor.factory; // 'Acme'
 // ❌ error TS2339: Property 'factory' does not exist on type 'Robot'.
-unit.factory
+unit.factory;
 ```
 
 `InstanceType<typeof X>` matters when you only hold the constructor — a
-class passed into a function, for example (see *interfaces describing
-constructors* below).
+class passed into a function, for example (see _interfaces describing
+constructors_ below).
 
 ### Inheritance — `extends`, `super`, and construction order
 
-`extends` copies the base class's members (instance *and* static) into the
+`extends` copies the base class's members (instance _and_ static) into the
 subclass and lets you add or replace. The subclass constructor must call
 `super(...)` before it touches `this`, because `this` does not exist
 until the base constructor has built it. Omit the constructor entirely and
@@ -588,25 +609,30 @@ the base one is inherited — signature included.
 class Animal {
   constructor(public name: string) {}
 
-  speak(): string { return `${this.name} makes a sound` }
+  speak(): string {
+    return `${this.name} makes a sound`;
+  }
 }
 
 class Dog extends Animal {
-  constructor(name: string, public breed: string) {
-    super(name)                      // builds the Animal part first
+  constructor(
+    name: string,
+    public breed: string,
+  ) {
+    super(name); // builds the Animal part first
   }
 
   override speak(): string {
-    return `${super.speak()} — woof` // super.method() reaches the base version
+    return `${super.speak()} — woof`; // super.method() reaches the base version
   }
 }
 
-class Cat extends Animal {}          // no ctor: inherits (name: string)
+class Cat extends Animal {} // no ctor: inherits (name: string)
 
-new Dog('Rex', 'lab').speak()        // 'Rex makes a sound — woof'
-new Cat('Tom')                       // ✅
+new Dog('Rex', 'lab').speak(); // 'Rex makes a sound — woof'
+new Cat('Tom'); // ✅
 // ❌ error TS2554: Expected 1 arguments, but got 2.
-new Cat('Tom', 'tabby')
+new Cat('Tom', 'tabby');
 ```
 
 ```mermaid
@@ -624,9 +650,9 @@ sequenceDiagram
     D-->>C: the finished Dog
 ```
 
-*What to notice: subclass fields are initialized only AFTER `super()`
+_What to notice: subclass fields are initialized only AFTER `super()`
 returns — a base constructor that calls an overridden method sees the
-subclass's fields as `undefined`.*
+subclass's fields as `undefined`._
 
 The compiler enforces both halves of the `super` rule:
 
@@ -641,11 +667,11 @@ class NoSuper extends Base {
 }
 
 class ThisTooEarly extends Base {
-  label: string
+  label: string;
   constructor() {
     // ❌ error TS17009: 'super' must be called before accessing 'this' in the constructor of a derived class.
-    this.label = 'early'
-    super(1)
+    this.label = 'early';
+    super(1);
   }
 }
 ```
@@ -657,95 +683,103 @@ overridable methods.
 ```ts
 class Loader {
   constructor() {
-    this.setup()                     // runs while Sub.items is still undefined
+    this.setup(); // runs while Sub.items is still undefined
   }
   setup(): void {}
 }
 
 class Sub extends Loader {
-  items: string[] = []               // initialized AFTER super() returns
+  items: string[] = []; // initialized AFTER super() returns
   override setup(): void {
-    this.items.push('x')             // TypeError at runtime: items is undefined
+    this.items.push('x'); // TypeError at runtime: items is undefined
   }
 }
 ```
 
 ### `override` — replacing a base member on purpose
 
-This course enables `noImplicitOverride`. Replacing a *concrete* inherited
+This course enables `noImplicitOverride`. Replacing a _concrete_ inherited
 member without the keyword is an error, and the keyword on a member that
 matches nothing is also an error — so a base-class rename can never
 silently fork a subclass.
 
 ```ts
 class Widget {
-  render(): string { return 'widget' }
+  render(): string {
+    return 'widget';
+  }
 }
 
 class Button extends Widget {
   // ❌ error TS4114: This member must have an 'override' modifier because it overrides a member in the base class 'Widget'.
-  render(): string { return 'button' }
+  render(): string {
+    return 'button';
+  }
 }
 
 class Link extends Widget {
-  override render(): string {        // ✅ explicit
-    return 'link'
+  override render(): string {
+    // ✅ explicit
+    return 'link';
   }
 
   // ❌ error TS4113: This member cannot have an 'override' modifier because it is not declared in the base class 'Widget'.
-  override rendr(): string { return 'typo' }
+  override rendr(): string {
+    return 'typo';
+  }
 }
 ```
 
-| Base member is… | `override` keyword |
-| --- | --- |
-| concrete (has a body) | **required** (TS4114 otherwise) |
-| abstract (no body) | optional — but write it, so a base rename fails loudly |
-| absent | forbidden (TS4113) |
+| Base member is…       | `override` keyword                                     |
+| --------------------- | ------------------------------------------------------ |
+| concrete (has a body) | **required** (TS4114 otherwise)                        |
+| abstract (no body)    | optional — but write it, so a base rename fails loudly |
+| absent                | forbidden (TS4113)                                     |
 
 An override must stay compatible: a return type assignable to the base's,
 parameters at least as wide. Narrowing a parameter is TS2416.
 
 ### Abstract classes — templates with holes
 
-An abstract class holds real code *and* deliberate gaps. Subclasses must
+An abstract class holds real code _and_ deliberate gaps. Subclasses must
 fill the gaps; nobody may `new` the template itself. Reach for it when
 several classes share an algorithm but differ in one step.
 
 ```ts
 abstract class Notifier {
-  abstract readonly channel: string               // abstract PROPERTY
-  abstract send(to: string, msg: string): void    // abstract METHOD
+  abstract readonly channel: string; // abstract PROPERTY
+  abstract send(to: string, msg: string): void; // abstract METHOD
 
-  broadcast(recipients: string[], msg: string): void {   // concrete code
-    for (const r of recipients) this.send(r, msg)        // calls the hole
+  broadcast(recipients: string[], msg: string): void {
+    // concrete code
+    for (const r of recipients) this.send(r, msg); // calls the hole
   }
 }
 
 class EmailNotifier extends Notifier {
-  readonly channel = 'email'
+  readonly channel = 'email';
   override send(to: string, msg: string): void {
-    console.log(`[${this.channel}] ${to}: ${msg}`)
+    console.log(`[${this.channel}] ${to}: ${msg}`);
   }
 }
 
 // ❌ error TS2515: Non-abstract class 'SmsNotifier' does not implement inherited abstract member send from class 'Notifier'.
 class SmsNotifier extends Notifier {}
 
-const notifier: Notifier = new EmailNotifier()  // ✅ abstract type as supertype
-notifier instanceof Notifier                    // true at runtime
+const notifier: Notifier = new EmailNotifier(); // ✅ abstract type as supertype
+notifier instanceof Notifier; // true at runtime
 // ❌ error TS2511: Cannot create an instance of an abstract class.
-new Notifier()
+new Notifier();
 ```
 
-| | `abstract class` | `interface` |
-| --- | --- | --- |
-| Can hold code and field values | ✅ | ❌ |
-| Exists at runtime (`instanceof`) | ✅ | ❌ (erased) |
-| A class can use several | ❌ one `extends` | ✅ many `implements` |
-| Object literals can satisfy it | ❌ if it has `private`/`protected` | ✅ |
-| Can require a constructor shape | ❌ | ✅ (`new (...) => T`) |
-| Can mark members `abstract` | ✅ | every member is "abstract" |
+|                                  | `abstract class`                   | `interface`                |
+| -------------------------------- | ---------------------------------- | -------------------------- |
+| Can hold code and field values   | ✅                                 | ❌                         |
+| Exists at runtime (`instanceof`) | ✅                                 | ❌ (erased)                |
+| A class can use several          | ❌ one `extends`                   | ✅ many `implements`       |
+| Object literals can satisfy it   | ❌ if it has `private`/`protected` | ✅                         |
+| Can require a constructor shape  | ❌                                 | ✅ (`new (...) => T`)      |
+| Can mark members `abstract`      | ✅                                 | every member is "abstract" |
 
 ```mermaid
 flowchart TD
@@ -757,8 +791,8 @@ flowchart TD
     Q3 -- "no" --> AB
 ```
 
-*What to notice: the first question decides most cases — an interface
-can never carry code, so shared behaviour forces a class.*
+_What to notice: the first question decides most cases — an interface
+can never carry code, so shared behaviour forces a class._
 
 ### `implements` — a compile-time promise
 
@@ -769,32 +803,37 @@ checks it; nothing is inherited, nothing runs. A class may implement
 several interfaces at once. And it does **not** type your parameters —
 the interface knows `value` is a `number`; your method does not inherit
 that knowledge. Annotate it yourself, and the compiler checks it
-*against* the interface.
+_against_ the interface.
 
 ```ts
 interface Printable {
-  print(): string
+  print(): string;
 }
 interface Priced {
-  price: number
+  price: number;
 }
 
 class Product implements Printable, Priced {
-  constructor(public name: string, public price: number) {}
+  constructor(
+    public name: string,
+    public price: number,
+  ) {}
 
-  print(): string { return `${this.name} — $${this.price}` }
+  print(): string {
+    return `${this.name} — $${this.price}`;
+  }
 }
 
 // ❌ error TS2420: Class 'Receipt' incorrectly implements interface 'Printable'. Property 'print' is missing in type 'Receipt' but required in type 'Printable'.
 class Receipt implements Printable {}
 
 interface Formatter {
-  format(value: number): string
+  format(value: number): string;
 }
 class Money implements Formatter {
   // ❌ error TS7006: Parameter 'value' implicitly has an 'any' type.
   format(value) {
-    return `$${value}`
+    return `$${value}`;
   }
 }
 ```
@@ -805,22 +844,24 @@ as a value:
 
 ```ts
 interface Plugin {
-  run(): string
+  run(): string;
 }
 interface PluginConstructor {
-  new (name: string): Plugin         // "something you can `new` with a string"
+  new (name: string): Plugin; // "something you can `new` with a string"
 }
 
 function boot(Ctor: PluginConstructor, name: string): Plugin {
-  return new Ctor(name)
+  return new Ctor(name);
 }
 
 class Echo implements Plugin {
   constructor(private name: string) {}
-  run(): string { return this.name }
+  run(): string {
+    return this.name;
+  }
 }
 
-boot(Echo, 'hello').run()            // 'hello' — the class is passed as a value
+boot(Echo, 'hello').run(); // 'hello' — the class is passed as a value
 ```
 
 ### Classes are structural too
@@ -834,17 +875,20 @@ narrows a union of classes the way `typeof` narrows primitives.
 
 ```ts
 class Point {
-  constructor(public x: number, public y: number) {}
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
 }
 
 function distance(p: Point): number {
-  return Math.hypot(p.x, p.y)
+  return Math.hypot(p.x, p.y);
 }
 
-distance(new Point(3, 4))            // 5
-distance({ x: 3, y: 4 })             // 5 — same shape, accepted
-const literal: Point = { x: 0, y: 0 }
-literal instanceof Point             // false at runtime — never constructed
+distance(new Point(3, 4)); // 5
+distance({ x: 3, y: 4 }); // 5 — same shape, accepted
+const literal: Point = { x: 0, y: 0 };
+literal instanceof Point; // false at runtime — never constructed
 
 class EmailMessage {
   constructor(public address: string) {}
@@ -854,47 +898,54 @@ class SmsMessage {
 }
 
 function destination(msg: EmailMessage | SmsMessage): string {
-  if (msg instanceof EmailMessage) return msg.address   // EmailMessage here
-  return msg.phone                                      // SmsMessage here
+  if (msg instanceof EmailMessage) return msg.address; // EmailMessage here
+  return msg.phone; // SmsMessage here
 }
 ```
 
 A `private` or `#private` member switches the literal trick off (see
-*nominal* above). Gotcha: two classes with *identical* shapes are the same
+_nominal_ above). Gotcha: two classes with _identical_ shapes are the same
 type to TS, so `instanceof` cannot narrow between them — give each a
 distinguishing member (`readonly kind = 'email'` works well).
 
 ### Generic classes — the type parameter lives on the instance
 
 > 🧪 **Playground:** [`06-lesson__party-of-t.ts`](../playground/06-lesson__party-of-t.ts) — `Party<T extends Combatant>`: a generic class with a constraint.
-> 🧪 **Playground:** [`06-lesson__reading-angle-brackets.ts`](../playground/06-lesson__reading-angle-brackets.ts) — how to *read* `<T extends {...}>` before Module 07: a class with a blank, then a constraint on the blank.
+> 🧪 **Playground:** [`06-lesson__reading-angle-brackets.ts`](../playground/06-lesson__reading-angle-brackets.ts) — how to _read_ `<T extends {...}>` before Module 07: a class with a blank, then a constraint on the blank.
 
 `class Queue<T>` is one blueprint that produces many contracts:
 `Queue<number>`, `Queue<string>`. `T` is fixed when you `new`, per
-instance — and a generic *method* can add its own parameter on top.
+instance — and a generic _method_ can add its own parameter on top.
 
 ```ts
 class Queue<T> {
-  private items: T[] = []
+  private items: T[] = [];
 
-  enqueue(item: T): void { this.items.push(item) }
+  enqueue(item: T): void {
+    this.items.push(item);
+  }
 
-  dequeue(): T | undefined { return this.items.shift() }
+  dequeue(): T | undefined {
+    return this.items.shift();
+  }
 
-  get length(): number { return this.items.length }
+  get length(): number {
+    return this.items.length;
+  }
 
-  map<U>(fn: (item: T) => U): Queue<U> {   // a generic METHOD on a generic class
-    const out = new Queue<U>()
-    for (const item of this.items) out.enqueue(fn(item))
-    return out
+  map<U>(fn: (item: T) => U): Queue<U> {
+    // a generic METHOD on a generic class
+    const out = new Queue<U>();
+    for (const item of this.items) out.enqueue(fn(item));
+    return out;
   }
 }
 
-const numbers = new Queue<number>()
-numbers.enqueue(1)
-const strings = numbers.map((n) => String(n))   // Queue<string>
+const numbers = new Queue<number>();
+numbers.enqueue(1);
+const strings = numbers.map((n) => String(n)); // Queue<string>
 // ❌ error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
-numbers.enqueue('one')
+numbers.enqueue('one');
 ```
 
 `T` is inferred from constructor arguments. A no-argument constructor
@@ -904,72 +955,81 @@ exactly as on functions.
 
 ```ts continue
 class Pair<T> {
-  constructor(public first: T, public second: T) {}
+  constructor(
+    public first: T,
+    public second: T,
+  ) {}
 }
 
-const inferred = new Pair(1, 2)      // Pair<number> — inferred from the args
-const mystery = new Queue()          // Queue<unknown> — nothing to infer from
-mystery.enqueue(42)
+const inferred = new Pair(1, 2); // Pair<number> — inferred from the args
+const mystery = new Queue(); // Queue<unknown> — nothing to infer from
+mystery.enqueue(42);
 // ❌ error TS18046: 'mystery.dequeue()' is of type 'unknown'.
-mystery.dequeue().toFixed()
+mystery.dequeue().toFixed();
 
 class Registry<T extends { id: string }> {
-  private byId = new Map<string, T>()
+  private byId = new Map<string, T>();
 
   add(item: T): void {
-    this.byId.set(item.id, item)     // `.id` is known to exist
+    this.byId.set(item.id, item); // `.id` is known to exist
   }
 }
 
-new Registry<{ id: string; label: string }>()
+new Registry<{ id: string; label: string }>();
 // ❌ error TS2344: Type 'number' does not satisfy the constraint '{ id: string; }'.
-new Registry<number>()
+new Registry<number>();
 ```
 
 ### `this` as a return type — fluent chains that survive subclassing
 
-Returning `this` (the *type*) instead of the class name makes a chain
+Returning `this` (the _type_) instead of the class name makes a chain
 keep the most specific type, so subclass methods stay reachable after a
 base-class call. Name the class instead and the chain "forgets" the
 subclass.
 
 ```ts
 class QueryBuilder {
-  protected parts: string[] = []
+  protected parts: string[] = [];
 
-  where(condition: string): this {   // `this` = "whatever subclass I am"
-    this.parts.push(`WHERE ${condition}`)
-    return this
+  where(condition: string): this {
+    // `this` = "whatever subclass I am"
+    this.parts.push(`WHERE ${condition}`);
+    return this;
   }
 
-  build(): string { return this.parts.join(' ') }
+  build(): string {
+    return this.parts.join(' ');
+  }
 }
 
 class PagedQuery extends QueryBuilder {
   limit(n: number): this {
-    this.parts.push(`LIMIT ${n}`)
-    return this
+    this.parts.push(`LIMIT ${n}`);
+    return this;
   }
 }
 
-new PagedQuery().where('id = 1').limit(10).build()   // ✅ 'WHERE id = 1 LIMIT 10'
+new PagedQuery().where('id = 1').limit(10).build(); // ✅ 'WHERE id = 1 LIMIT 10'
 
 class Loose {
-  where(): Loose {                   // returns the BASE type, always
-    return this
+  where(): Loose {
+    // returns the BASE type, always
+    return this;
   }
 }
 class PagedLoose extends Loose {
-  limit(): this { return this }
+  limit(): this {
+    return this;
+  }
 }
 
 // ❌ error TS2339: Property 'limit' does not exist on type 'Loose'.
-new PagedLoose().where().limit()
+new PagedLoose().where().limit();
 ```
 
 ### Mixins — a function from a class to a bigger class
 
-A class can `extends` only one base. A *mixin* composes independent
+A class can `extends` only one base. A _mixin_ composes independent
 behaviours anyway: a function takes a constructor and returns a new class
 extending it. Because it is a plain function, features compose by
 chaining calls.
@@ -982,11 +1042,11 @@ flowchart LR
     T --> C["Article + version + bump<br/>+ tags + tag"]
 ```
 
-*What to notice: each call wraps the previous result — the final class
-has every layer's members on one instance.*
+_What to notice: each call wraps the previous result — the final class
+has every layer's members on one instance._
 
 ```ts
-type Constructor<T = {}> = new (...args: any[]) => T
+type Constructor<T = {}> = new (...args: any[]) => T;
 
 class Article {
   constructor(public title: string) {}
@@ -994,25 +1054,29 @@ class Article {
 
 function Versioned<TBase extends Constructor>(Base: TBase) {
   return class extends Base {
-    version = 1
-    bump(): void { this.version++ }
-  }
+    version = 1;
+    bump(): void {
+      this.version++;
+    }
+  };
 }
 
 function Taggable<TBase extends Constructor>(Base: TBase) {
   return class extends Base {
-    tags: string[] = []
-    tag(label: string): void { this.tags.push(label) }
-  }
+    tags: string[] = [];
+    tag(label: string): void {
+      this.tags.push(label);
+    }
+  };
 }
 
 class Post extends Taggable(Versioned(Article)) {}
 
-const post = new Post('Hello')       // Article's ctor signature survives
-post.bump()
-post.tag('typescript')
-post.version                         // 2
-post.title                           // 'Hello'
+const post = new Post('Hello'); // Article's ctor signature survives
+post.bump();
+post.tag('typescript');
+post.version; // 2
+post.title; // 'Hello'
 ```
 
 `Constructor<T>` reads as "anything you can `new` into a `T`". The
@@ -1021,28 +1085,28 @@ constructor takes, so it must forward everything.
 
 Constrain the base when the mixin needs something from it. And note why
 a runtime function beats a type-level `&`: an intersection describes a
-shape but *builds* nothing.
+shape but _builds_ nothing.
 
 ```ts continue
 function Greetable<TBase extends Constructor<{ name: string }>>(Base: TBase) {
   return class extends Base {
     greet(): string {
-      return `Hello, ${this.name}`   // `this.name` is guaranteed by the constraint
+      return `Hello, ${this.name}`; // `this.name` is guaranteed by the constraint
     }
-  }
+  };
 }
 
 class User {
   constructor(public name: string) {}
 }
 
-new (Greetable(User))('Ada').greet()   // 'Hello, Ada'
+new (Greetable(User))('Ada').greet(); // 'Hello, Ada'
 // ❌ error TS2345: Argument of type 'typeof Article' is not assignable to parameter of type 'Constructor<{ name: string; }>'.
-Greetable(Article)
+Greetable(Article);
 
-type TaggedArticle = Article & { tags: string[] }
+type TaggedArticle = Article & { tags: string[] };
 // ❌ error TS2322: Property 'tags' is missing in type 'Article' but required in type '{ tags: string[]; }'.
-const tagged: TaggedArticle = new Article('x')   // nothing ever CREATES tags
+const tagged: TaggedArticle = new Article('x'); // nothing ever CREATES tags
 ```
 
 Three mixin gotchas:
@@ -1051,25 +1115,25 @@ Three mixin gotchas:
    constructor, it must be `(...args: any[])` and forward to `super`:
 
 ```ts
-type Constructor<T = {}> = new (...args: any[]) => T
+type Constructor<T = {}> = new (...args: any[]) => T;
 
 function Broken<TBase extends Constructor>(Base: TBase) {
   // ❌ error TS2545: A mixin class must have a constructor with a single rest parameter of type 'any[]'.
   return class extends Base {
     constructor(label: string) {
-      super()
+      super();
     }
-  }
+  };
 }
 
 function Fixed<TBase extends Constructor>(Base: TBase) {
   return class extends Base {
-    createdAt: Date
+    createdAt: Date;
     constructor(...args: any[]) {
-      super(...args)
-      this.createdAt = new Date()
+      super(...args);
+      this.createdAt = new Date();
     }
-  }
+  };
 }
 ```
 
@@ -1078,8 +1142,21 @@ function Fixed<TBase extends Constructor>(Base: TBase) {
    load. If the mixin throws, the module fails to import; no test ever
    runs.
 
+```mermaid
+  sequenceDiagram
+    participant T as test file
+    participant M as ex07.ts
+    participant X as Taggable()
+    T->>M: import { Post } from './ex07'
+    M->>X: evaluate `class Post extends Taggable(Article)`
+    X-->>M: 💥 throws
+    M-->>T: import fails
+    Note over T: no it(...) block ever runs.<br/>The whole file shows as an error,<br/>not as individual failing tests
+
+```
+
 3. **`JSON.stringify(this)` sees every layer.** All mixins end up as
-   fields on *one* instance, so a `snapshot()` method that stringifies
+   fields on _one_ instance, so a `snapshot()` method that stringifies
    `this` includes `version`, `tags`, and anything another mixin added —
    whichever order the mixins were applied in.
 
@@ -1090,63 +1167,68 @@ mixin returns. An inner name is visible only inside the class body.
 
 ```ts
 const Point = class {
-  constructor(public x: number, public y: number) {}
-}
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+};
 
 const Origin = class Named {
   static zero(): Named {
-    return new Named()
+    return new Named();
   }
-}
+};
 
-new Point(1, 2).x                    // 1
-Origin.zero() instanceof Origin      // true
+new Point(1, 2).x; // 1
+Origin.zero() instanceof Origin; // true
 ```
 
 ### `this` pitfalls — detached methods
 
-A prototype method's `this` is whatever the *call site* supplies. Pass
+A prototype method's `this` is whatever the _call site_ supplies. Pass
 the method around without its object and `this` is `undefined`.
 
-| | prototype method `inc() {}` | arrow field `inc = () => {}` |
-| --- | --- | --- |
-| Where it lives | shared, on the prototype | one copy per instance |
-| `this` when detached | lost (`undefined`) | captured — always the instance |
-| Overridable with `super.inc()` | ✅ | ❌ (it is a field, not a method) |
-| Memory per instance | none | one closure |
-| Good for | most methods | callbacks you hand to others |
+|                                | prototype method `inc() {}` | arrow field `inc = () => {}`     |
+| ------------------------------ | --------------------------- | -------------------------------- |
+| Where it lives                 | shared, on the prototype    | one copy per instance            |
+| `this` when detached           | lost (`undefined`)          | captured — always the instance   |
+| Overridable with `super.inc()` | ✅                          | ❌ (it is a field, not a method) |
+| Memory per instance            | none                        | one closure                      |
+| Good for                       | most methods                | callbacks you hand to others     |
 
 TS does not flag a detached call by default. Declare a `this` parameter
 and it will:
 
 ```ts
 class Counter {
-  count = 0
+  count = 0;
 
-  inc(this: Counter): void {         // `this` must be a Counter (erased at runtime)
-    this.count++
+  inc(this: Counter): void {
+    // `this` must be a Counter (erased at runtime)
+    this.count++;
   }
 
-  incArrow = (): void => {           // arrow field: `this` captured at construction
-    this.count++
-  }
+  incArrow = (): void => {
+    // arrow field: `this` captured at construction
+    this.count++;
+  };
 }
 
-const counter = new Counter()
-const detached = counter.inc
+const counter = new Counter();
+const detached = counter.inc;
 // ❌ error TS2684: The 'this' context of type 'void' is not assignable to method's 'this' of type 'Counter'.
-detached()
+detached();
 
-const safe = counter.incArrow
-safe()                               // ✅ count is 1
-counter.inc.bind(counter)()          // ✅ also fine
+const safe = counter.incArrow;
+safe(); // ✅ count is 1
+counter.inc.bind(counter)(); // ✅ also fine
 ```
 
 ### Field semantics — `useDefineForClassFields`
 
 With `target: ES2022` (this course), class fields compile to native
 JavaScript field definitions. Two consequences: a field declared in a
-subclass is *defined* (as `undefined`) after `super()` returns even when
+subclass is _defined_ (as `undefined`) after `super()` returns even when
 the base constructor already assigned it — which is why re-typing needs
 `declare` — and initializers run in declaration order, base class first,
 before the constructor body. Older targets emitted `this.x = ...` in the
@@ -1163,23 +1245,23 @@ class.
 
 ### Reading the compiler's class errors
 
-| Code | Message (abridged) | What it tells you |
-| --- | --- | --- |
-| TS2564 | Property has no initializer and is not definitely assigned | initializer, ctor assignment, or widen with `undefined` |
-| TS2341 | Property is private and only accessible within class | you are outside — use a method, or loosen the modifier |
-| TS2445 | Property is protected and only accessible within class and its subclasses | same, from outside the hierarchy |
-| TS18013 | Property '#x' is not accessible outside class | `#private` reached from outside — no escape hatch |
-| TS2540 | Cannot assign because it is a read-only property | `readonly` field, getter-only property, or `static readonly` assigned late |
-| TS2377 | Constructors for derived classes must contain a 'super' call | add `super(...)` |
-| TS17009 | 'super' must be called before accessing 'this' | move the `this.` line below `super()` |
-| TS4114 | This member must have an 'override' modifier | you replaced a concrete base member — say so |
-| TS4113 | This member cannot have an 'override' modifier | nothing to override — a rename or typo |
-| TS2511 | Cannot create an instance of an abstract class | `new` a concrete subclass instead |
-| TS2515 | Non-abstract class does not implement inherited abstract member | fill the hole, or mark the class `abstract` too |
-| TS2420 | Class incorrectly implements interface | a member is missing or has the wrong type |
-| TS2302 | Static members cannot reference class type parameters | `T` is per-instance; make the static method generic itself |
-| TS2673 / TS2674 | Constructor is private / protected | go through the static factory |
-| TS2545 | A mixin class must have a constructor with a single rest parameter | use `constructor(...args: any[])` |
+| Code            | Message (abridged)                                                        | What it tells you                                                          |
+| --------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| TS2564          | Property has no initializer and is not definitely assigned                | initializer, ctor assignment, or widen with `undefined`                    |
+| TS2341          | Property is private and only accessible within class                      | you are outside — use a method, or loosen the modifier                     |
+| TS2445          | Property is protected and only accessible within class and its subclasses | same, from outside the hierarchy                                           |
+| TS18013         | Property '#x' is not accessible outside class                             | `#private` reached from outside — no escape hatch                          |
+| TS2540          | Cannot assign because it is a read-only property                          | `readonly` field, getter-only property, or `static readonly` assigned late |
+| TS2377          | Constructors for derived classes must contain a 'super' call              | add `super(...)`                                                           |
+| TS17009         | 'super' must be called before accessing 'this'                            | move the `this.` line below `super()`                                      |
+| TS4114          | This member must have an 'override' modifier                              | you replaced a concrete base member — say so                               |
+| TS4113          | This member cannot have an 'override' modifier                            | nothing to override — a rename or typo                                     |
+| TS2511          | Cannot create an instance of an abstract class                            | `new` a concrete subclass instead                                          |
+| TS2515          | Non-abstract class does not implement inherited abstract member           | fill the hole, or mark the class `abstract` too                            |
+| TS2420          | Class incorrectly implements interface                                    | a member is missing or has the wrong type                                  |
+| TS2302          | Static members cannot reference class type parameters                     | `T` is per-instance; make the static method generic itself                 |
+| TS2673 / TS2674 | Constructor is private / protected                                        | go through the static factory                                              |
+| TS2545          | A mixin class must have a constructor with a single rest parameter        | use `constructor(...args: any[])`                                          |
 
 ### Rules to remember
 
@@ -1213,11 +1295,11 @@ class.
 - `static readonly` must be initialized at its declaration — a static
   block is not allowed to assign it (unlike a constructor for instance
   `readonly`).
-- Generic classes: the type parameter lives on the *instance* —
+- Generic classes: the type parameter lives on the _instance_ —
   `new Queue<number>()`, and statics can't see `T`.
-- A base constructor that calls an overridden method runs it *before*
+- A base constructor that calls an overridden method runs it _before_
   the subclass's field initializers — expect `undefined` there.
-- An inherited constructor brings its *signature*: extra arguments to
+- An inherited constructor brings its _signature_: extra arguments to
   `new Sub(...)` are a real TS2554, not ignored.
 - Mixin functions run when the `class ... extends Mixin(Base)` statement
   is evaluated — a throwing mixin breaks the module at import time.
