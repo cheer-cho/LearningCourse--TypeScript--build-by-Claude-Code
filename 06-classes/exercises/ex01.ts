@@ -19,20 +19,21 @@
  * Check: npm test -- 06 -t ex01
  */
 
-// TODO: replace the `any`s with real types and implement.
 export class Playlist {
-  name: any
-  songs: any
+  name: string;
+  protected songs: string[] = [];
+  // we can use readonly; readonly songs: string[] = []
+  // consumer can still push to it, read it, but cannot mutate it; eg reset using = []
 
-  constructor(name: any) {
-    throw new Error('TODO: implement the Playlist constructor')
+  constructor(name: string) {
+    this.name = name;
   }
 
-  add(song: any): any {
-    throw new Error('TODO: implement add')
+  add(song: string): void {
+    this.songs.push(song);
   }
 
-  size(): any {
-    throw new Error('TODO: implement size')
+  size(): number {
+    return this.songs.length;
   }
 }
