@@ -21,7 +21,8 @@
 
 export class Playlist {
   name: string;
-  protected songs: string[] = [];
+  // protected songs: string[] = [];
+  readonly songs: string[] = [];
   // we can use readonly; readonly songs: string[] = []
   // consumer can still push to it, read it, but cannot mutate it; eg reset using = []
 
