@@ -24,36 +24,46 @@
  * Check: npm test -- 06 -t ex03
  */
 
-// TODO: parameter property + real accessor types.
 export class Temperature {
-  celsius: any
+  constructor(private celsius: number) { }
 
-  constructor(celsius: any) {
-    throw new Error('TODO: implement Temperature')
+  get fahrenheit(): number {
+    return this.celsius * 1.8 + 32;
   }
 
-  get fahrenheit(): any {
-    throw new Error('TODO: implement the fahrenheit getter')
+  set fahrenheit(f: number) {
+    this.celsius = (f - 32) / 1.8;
   }
 
-  set fahrenheit(f: any) {
-    throw new Error('TODO: implement the fahrenheit setter')
-  }
-
-  get value(): any {
-    throw new Error('TODO: implement the value getter')
+  get value(): number {
+    return this.celsius;
   }
 }
 
-// TODO: readonly parameter property + area getter.
-export class Circle {
-  radius: any
-
-  constructor(radius: any) {
-    throw new Error('TODO: implement Circle')
+export class TemperatureWithNativePrivate {
+  // Same as Temperature, but runtime-private (#) — can't be a parameter property (TS18009)
+  #celsius: number;
+  constructor(celsius: number) {
+    this.#celsius = celsius;
   }
 
-  get area(): any {
-    throw new Error('TODO: implement the area getter')
+  get fahrenheit(): number {
+    return this.#celsius * 1.8 + 32;
+  }
+
+  set fahrenheit(f: number) {
+    this.#celsius = (f - 32) / 1.8;
+  }
+
+  get value(): number {
+    return this.#celsius;
+  }
+}
+
+export class Circle {
+  constructor(readonly radius: number) { }
+
+  get area(): number {
+    return Math.PI * this.radius ** 2;
   }
 }
