@@ -27,33 +27,41 @@
 
 // TODO: one method, describe(): string.
 export interface Describable {
-  describe(): unknown
+  describe(): string;
 }
 
 // TODO: make this abstract, implement Describable, add the abstract
 // topSpeed() method, and write the concrete describe().
-export class Vehicle {
-  make: any
+export abstract class Vehicle implements Describable {
+  readonly make: string;
 
-  constructor(make: any) {
-    throw new Error('TODO: implement the Vehicle constructor')
+  constructor(make: string) {
+    this.make = make;
   }
 
-  describe(): any {
-    throw new Error('TODO: implement describe')
+  abstract topSpeed(): number;
+
+  describe(): string {
+    return `${this.make} tops out at ${this.topSpeed()} km/h`;
   }
 }
 
 // TODO: extend Vehicle, add a private speedKph, implement topSpeed.
 export class Car extends Vehicle {
-  topSpeed(): any {
-    throw new Error('TODO: implement Car.topSpeed')
+  constructor(make: string, private speedKph: number) {
+    super(make);
+  }
+  topSpeed(): number {
+    return this.speedKph;
   }
 }
 
 // TODO: extend Vehicle, add a private gears, implement topSpeed.
 export class Bike extends Vehicle {
-  topSpeed(): any {
-    throw new Error('TODO: implement Bike.topSpeed')
+  constructor(make: string, private gears: number) {
+    super(make);
+  }
+  topSpeed(): number {
+    return this.gears * 8;
   }
 }
