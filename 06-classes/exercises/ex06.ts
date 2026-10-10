@@ -31,41 +31,41 @@
  *
  * Check: npm test -- 06 -t ex06
  */
-
-// TODO: type T, implement every member.
 export class Stack<T> {
-  items: any = []
+  private items: T[] = [];
 
-  push(item: any): any {
-    throw new Error('TODO: implement push')
+  push(item: T): void {
+    this.items.push(item);
   }
 
-  pop(): any {
-    throw new Error('TODO: implement pop')
+  pop(): T | undefined {
+    return this.items.pop();
   }
 
-  peek(): any {
-    throw new Error('TODO: implement peek')
+  peek(): T | undefined {
+    return this.items[this.items.length - 1];
   }
 
-  get size(): any {
-    throw new Error('TODO: implement size')
+  get size(): number {
+    return this.items.length;
   }
 
-  isEmpty(): any {
-    throw new Error('TODO: implement isEmpty')
+  isEmpty(): boolean {
+    return this.items.length === 0;
   }
 }
 
-// TODO: add `log`, implement the overrides.
 export class LoggingStack<T> extends Stack<T> {
-  log: any = []
+  log: string[] = [];
 
-  override push(item: any): any {
-    throw new Error('TODO: implement LoggingStack.push')
+  override push(item: T): void {
+    this.log.push("push");
+    super.push(item);
   }
 
-  override pop(): any {
-    throw new Error('TODO: implement LoggingStack.pop')
+  override pop(): T | undefined {
+    const item = super.pop();
+    this.log.push("pop");
+    return item;
   }
 }
