@@ -26,27 +26,28 @@
  * Check: npm test -- 06 -t ex07
  */
 
-// TODO: new (...args: any[]) => T
-export type Constructor<T = {}> = any
+export type Constructor<T = {}> = new (...args: any[]) => T;
 
-// TODO: constrain TBase to Constructor, return a class extending Base
-// that adds createdAt: Date.
-export function Timestamped(Base: any): any {
-  throw new Error('TODO: implement the Timestamped mixin')
+export function Timestamped<TBase extends Constructor>(Base: TBase) {
+  return class extends Base {
+    readonly createdAt: Date;
+    constructor(...args: any[]) {
+      super(...args);
+      this.createdAt = new Date();
+    }
+  };
 }
 
-// TODO: constrain TBase to Constructor, return a class extending Base
-// that adds serialize(): string.
-export function Serializable(Base: any): any {
-  throw new Error('TODO: implement the Serializable mixin')
+export function Serializable<TBase extends Constructor>(Base: TBase) {
+  return class extends Base {
+    serialize(): string {
+      return JSON.stringify(this);
+    }
+  };
 }
 
-// TODO: two parameter properties.
 export class Note {
-  title: any
-  body: any
-
-  constructor(title: any, body: any) {
-    throw new Error('TODO: implement the Note constructor')
-  }
+  constructor(public title: string, public body: string) { }
 }
+
+export class Logged extends Timestamped(Serializable(Note)) { }
