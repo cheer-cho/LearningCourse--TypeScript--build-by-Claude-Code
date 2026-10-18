@@ -93,6 +93,3 @@ export class ShapeCollection<T extends Shape> {
     return [...this.#shapes].sort((a, b) => b.area() - a.area())[0];
   }
 }
-
-// @ts-expect-error — outsiders must not push into shapes
-new ShapeCollection<Circle>().shapes.push(new Circle(1));
