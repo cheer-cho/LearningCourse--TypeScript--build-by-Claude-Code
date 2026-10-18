@@ -24,6 +24,13 @@ it?_ (everyone → no visibility modifier; subclasses → `protected`; this
 class only → `private`) and _may it change after construction?_ (no →
 `readonly`). Visibility and mutability are separate axes, so a public,
 never-reassigned field is `readonly`. Fixed to `readonly createdAt`. ✅
+**Follow-up (06/checkpoint, 2026-10-17):** Expected `readonly shapes: T[]`
+to stop outsiders pushing; it only blocks reassignment. Then put
+`readonly T[]` on the field itself and found the class couldn't push
+either. Learned the split: `readonly` on a _property_ locks reassignment,
+`readonly T[]` on a _type_ locks contents (for everyone), and "read-only
+for outsiders" = private mutable `#field` + getter returning `readonly T[]`.
+Fixed it on its own after a nudge. ✅
 **Status:** improving
 
 ## 2026-09-07 — 05/checkpoint

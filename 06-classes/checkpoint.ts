@@ -15,7 +15,7 @@
 // The contract: anything with a measurable area.
 //   One method: area(): number
 export interface HasArea {
-  area(): unknown
+  area(): number;
 }
 
 // The ABSTRACT base class for all shapes — implements HasArea.
@@ -24,25 +24,31 @@ export interface HasArea {
 //     field; also increments Shape.count.
 //   - `abstract area(): number` — every subclass must provide it.
 //   - `describe()` — CONCRETE: `${name}: area ${area().toFixed(2)}`.
-export class Shape {
-  static count: any
+export abstract class Shape implements HasArea {
+  static count = 0;
 
-  name: any
+  readonly name: string;
 
-  constructor(name: any) {
-    throw new Error('TODO: implement the Shape constructor')
+  constructor(name: string) {
+    this.name = name;
+    Shape.count++;
   }
 
-  describe(): any {
-    throw new Error('TODO: implement describe')
+  abstract area(): number;
+
+  describe(): string {
+    return `${this.name}: area ${this.area().toFixed(2)}`;
   }
 }
 
 // A circle: readonly `radius` PARAMETER PROPERTY, calls super('Circle').
 //   area = PI * radius ** 2
 export class Circle extends Shape {
-  area(): any {
-    throw new Error('TODO: implement Circle.area')
+  constructor(readonly radius: number) {
+    super("Circle");
+  }
+  area(): number {
+    return Math.PI * this.radius ** 2;
   }
 }
 
@@ -50,8 +56,11 @@ export class Circle extends Shape {
 // calls super('Rectangle').
 //   area = width * height
 export class Rectangle extends Shape {
-  area(): any {
-    throw new Error('TODO: implement Rectangle.area')
+  constructor(readonly width: number, readonly height: number) {
+    super("Rectangle");
+  }
+  area(): number {
+    return this.width * this.height;
   }
 }
 
@@ -61,22 +70,29 @@ export class Rectangle extends Shape {
 //   - get size(): how many shapes are stored.
 //   - totalArea(): sum of every shape's area.
 //   - largest(): the shape with the greatest area, or undefined when empty.
-export class ShapeCollection<T> {
-  shapes: any = []
+export class ShapeCollection<T extends Shape> {
+  #shapes: T[] = [];
 
-  add(shape: any): any {
-    throw new Error('TODO: implement add')
+  add(shape: T): void {
+    this.#shapes.push(shape);
   }
 
-  get size(): any {
-    throw new Error('TODO: implement size')
+  get shapes(): readonly T[] {
+    return this.#shapes;
   }
 
-  totalArea(): any {
-    throw new Error('TODO: implement totalArea')
+  get size(): number {
+    return this.#shapes.length;
   }
 
-  largest(): any {
-    throw new Error('TODO: implement largest')
+  totalArea(): number {
+    return this.#shapes.reduce((totalArea, currentShape) => totalArea + currentShape.area(), 0);
+  }
+
+  largest(): T | undefined {
+    return [...this.#shapes].sort((a, b) => b.area() - a.area())[0];
   }
 }
+
+// @ts-expect-error — outsiders must not push into shapes
+new ShapeCollection<Circle>().shapes.push(new Circle(1));
