@@ -738,6 +738,8 @@ notifier instanceof Notifier                    // true at runtime
 new Notifier()
 ```
 
+> 🧪 **Playground:** [`06-lesson__abstract_type_as_supertype--why_annotate_with_the_base.ts`](../playground/06-lesson__abstract_type_as_supertype--why_annotate_with_the_base.ts) — why annotate with the abstract base instead of the concrete class: the annotation picks what the variable may hold *later* (any subclass), lets callers depend only on the contract, and hides subclass-only members until an `instanceof` guard narrows back.
+
 | | `abstract class` | `interface` |
 | --- | --- | --- |
 | Can hold code and field values | ✅ | ❌ |
@@ -802,6 +804,9 @@ class Money implements Formatter {
 `implements` only ever talks about the **instance** side. To describe the
 constructor, write an interface with a `new` signature and pass the class
 as a value:
+
+> 🧪 **Playground:** [`06-lesson__construct_signatures--passing_a_class_as_a_value.ts`](../playground/06-lesson__construct_signatures--passing_a_class_as_a_value.ts) — `new (name: string): Plugin` describes the *static* side; `boot(Echo, …)` receives the class itself, any class with that constructor shape fits (with or without `implements`), and passing an instance is both a type error and a runtime crash. Also: why the file needs `export {}` (global `Plugin` from the DOM lib).
+> 🧪 **Playground:** [`06-lesson__construct_signatures--real_world_uses.ts`](../playground/06-lesson__construct_signatures--real_world_uses.ts) — where you already use this: vitest's `toThrow(RangeError)` takes the class for `instanceof`; ORM/DI style `getRepository(User)` takes the class as a key and infers `Repository<User>` from it; a runtime-chosen factory `new shapes[kind](2)`.
 
 ```ts
 interface Plugin {
