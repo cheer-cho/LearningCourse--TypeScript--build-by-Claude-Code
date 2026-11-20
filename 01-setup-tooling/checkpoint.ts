@@ -10,8 +10,6 @@
  * Passing `npm test -- 01` (all of it) completes this module. 🎉
  */
 
-import { number } from "zod";
-
 // One log entry: when it was taken, how warm it was, and (optionally)
 // which sensor reported it.
 //   Shape: { time: string; celsius: number; sensor?: string }
@@ -31,15 +29,9 @@ export type Reading = {
 // strings (careful: Number('') is 0, not NaN!).
 //   Signature: (raw: string) => number | null
 export function parseCelsius(raw: string): number | null {
-  if (!raw) {
-    return null;
-  }
-  const celsiusNum = parseFloat(raw)
-  if (Number.isNaN(celsiusNum)) {
-    return null;
-  }
-  return celsiusNum;
-  throw new Error('TODO: implement parseCelsius')
+  if (raw.trim() === '') return null; // Number('') and Number('  ') are 0, not NaN
+  const celsius = Number(raw);        // whole string must be numeric: '12abc' -> NaN
+  return Number.isNaN(celsius) ? null : celsius;
 }
 
 // Look up the temperature at position `index`. Out-of-range lookups are
@@ -48,8 +40,7 @@ export function parseCelsius(raw: string): number | null {
 //   readingAt([1], 9)       -> undefined
 //   Signature: (temps: number[], index: number) => number | undefined
 export function readingAt(temps: number[], index: number): number | undefined {
-  return temps?.[index];
-  throw new Error('TODO: implement readingAt')
+  return temps[index];
 }
 
 // The mean of all temperatures. An empty list has no mean — return 0
