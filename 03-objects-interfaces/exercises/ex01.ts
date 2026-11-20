@@ -18,5 +18,5 @@ export type Book = {
 
 // TODO: type the parameter as Book, then implement.
 export function describeBook(book: Book): string {
-  return `${book.title} (${book.pages}p) by ${book.author || 'unknown'}`
+  return `${book.title} (${book.pages}p) by ${book.author ?? 'unknown'}`
 }
