@@ -12,7 +12,10 @@ describe('ex04/ex04 — overloads', () => {
   })
 
   it('makeDate: ISO string or (year, monthIndex, day)', () => {
-    expect(makeDate('2026-01-15T00:00:00Z').getUTCFullYear()).toBe(2026)
+    // a fixed date in ANOTHER year: an implementation that ignores the
+    // string (e.g. returns `new Date()`) must fail
+    const iso = makeDate('2020-03-15T00:00:00Z')
+    expect(iso.toISOString()).toBe('2020-03-15T00:00:00.000Z')
     const d = makeDate(2026, 0, 15)
     expect(d.getFullYear()).toBe(2026)
     expect(d.getMonth()).toBe(0)
