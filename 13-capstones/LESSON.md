@@ -26,9 +26,9 @@ exercise AND the checkpoint for its own project.*
 | --- | --- |
 | A workflow for project-sized work | all three capstones |
 | Reading an acceptance test | all three — the tests ARE the spec |
-| Design notes: Capstone A | `capstone-a-task-manager.ts` |
-| Design notes: Capstone B | `capstone-b-fetch-wrapper.ts` |
-| Design notes: Capstone C | `capstone-c-type-puzzles.ts` |
+| Design notes: Capstone A | `capstone_a_task_manager.ts` |
+| Design notes: Capstone B | `capstone_b_fetch_wrapper.ts` |
+| Design notes: Capstone C | `capstone_c_type_puzzles.ts` |
 | When are you done? | ticking the roadmap |
 
 ## The three capstones
@@ -60,9 +60,9 @@ capstone file is like reading a project README before you start coding.*
 
 | Capstone | File | Focus | Tests |
 | --- | --- | --- | --- |
-| A | `capstone-a-task-manager.ts` | discriminated state, pure reducers, branded ids | 27 |
-| B | `capstone-b-fetch-wrapper.ts` | inferred generics, template-literal parsing, zod | 11 |
-| C | `capstone-c-type-puzzles.ts` | conditional & recursive type-level programming | 14 |
+| A | `capstone_a_task_manager.ts` | discriminated state, pure reducers, branded ids | 27 |
+| B | `capstone_b_fetch_wrapper.ts` | inferred generics, template-literal parsing, zod | 11 |
+| C | `capstone_c_type_puzzles.ts` | conditional & recursive type-level programming | 14 |
 
 Run one capstone at a time with `-t`:
 
@@ -410,5 +410,5 @@ to silence a real problem. Then:
 
 ## Try it now
 
-→ `exercises/capstone-a-task-manager.ts`, `capstone-b-fetch-wrapper.ts`,
-`capstone-c-type-puzzles.ts` — in any order. Check with `npm test -- 13`.
+→ `exercises/capstone_a_task_manager.ts`, `capstone_b_fetch_wrapper.ts`,
+`capstone_c_type_puzzles.ts` — in any order. Check with `npm test -- 13`.

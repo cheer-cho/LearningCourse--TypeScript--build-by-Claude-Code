@@ -1343,5 +1343,5 @@ an error must cross a JSON boundary.
 
 ## Try it now
 
-→ `exercises/ex01.ts` through `ex07.ts`, then `checkpoint.ts`.
+→ `exercises/ex01_promise_types.ts` through `ex07_async_iteration.ts`, then `checkpoint.ts`.
 Check with `npm test -- 10`.

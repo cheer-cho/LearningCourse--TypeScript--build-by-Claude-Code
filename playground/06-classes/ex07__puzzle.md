@@ -5,7 +5,7 @@ Demo: `npm run playground ex07__puzzle`
 This expands the Mixins section of `06-classes/LESSON.md` (and the
 Inheritance — `extends`, `super`, and construction order section). It
 is a cut-down copy of the mixin exercise's `Logged`
-(`exercises/ex07.ts`): `Timestamped(Serializable(Note))`.
+(`exercises/ex07_mixins.ts`): `Timestamped(Serializable(Note))`.
 
 The puzzle: `Serializable`'s constructor stringifies `this`. Why is
 `createdAt` missing there, but present after `new`?

@@ -1023,5 +1023,5 @@ instantiation. Find the concrete part first; it is usually the answer.
 
 ## Try it now
 
-→ `exercises/ex01.ts` through `ex08.ts`, then `checkpoint.ts`.
+→ `exercises/ex01_generic_functions.ts` through `ex08_variance.ts`, then `checkpoint.ts`.
 Check with `npm test -- 07`.
