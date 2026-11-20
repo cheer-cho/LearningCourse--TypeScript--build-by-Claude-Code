@@ -90,6 +90,11 @@ export class ShapeCollection<T extends Shape> {
   }
 
   largest(): T | undefined {
-    return [...this.#shapes].sort((a, b) => b.area() - a.area())[0];
+    // one pass instead of copy + sort; ties keep the first one added
+    let best: T | undefined;
+    for (const shape of this.#shapes) {
+      if (best === undefined || shape.area() > best.area()) best = shape;
+    }
+    return best;
   }
 }
