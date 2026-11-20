@@ -1,3 +1,6 @@
+// Enum vs const enum vs literal union vs `as const` array: what exists at runtime?
+// Run: npm run playground enums-vs-alternatives
+
 // ─────────────────────────────────────────────────────────────
 // 1. Regular enum — EXISTS at runtime (it compiles to an object)
 // ─────────────────────────────────────────────────────────────

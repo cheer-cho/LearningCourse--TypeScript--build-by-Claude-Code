@@ -45,5 +45,11 @@ with a caption, a comparison table, and gotchas.
 | 01 | `01-setup-tooling/lesson__exact-optional-undefined.md` | missing key vs key set to `undefined` |
 | 01 | `01-setup-tooling/lesson__strict-function-types.md` | a handler must accept at least what its type promises |
 | 01 | `01-setup-tooling/lesson__strict-property-init.md` | the four ways a field passes the init check |
+| 02 | `02-basics/ex01__enums-vs-alternatives.md` | what survives to runtime: enum vs `const enum` vs literal union vs `as const` |
+| 02 | `02-basics/ex03__readonly-spellings.md` | `readonly T[]` = `ReadonlyArray<T>`; `readonly` vanishes at runtime |
+| 02 | `02-basics/ex03__tuples-demo.md` | tuples: fixed length, typed positions, labels, the `push` gap |
+| 02 | `02-basics/ex05__opposite-review.md` | `as Direction` switches checking off; `as const` keeps checking |
+| 02 | `02-basics/ex06__any-vs-unknown.md` | `any` = "trust me", `unknown` = "prove it first" |
+| 02 | `02-basics/ex07__never-demo.md` | exhaustive `switch` with `never`; a missed case names itself |
 | 06 | `06-classes/lesson__party-of-t.md` | "class Party of T" — generic class with a constraint |
 | 06 | `06-classes/lesson__type-predicate-recap.md` | type predicate recap |

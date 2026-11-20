@@ -293,6 +293,8 @@ Gotcha: `readonly` is compile-time only. The array can still be mutated
 by anyone holding a `number[]` reference to it — use `Object.freeze` if
 you need the runtime guarantee.
 
+> 🧪 **Playground:** [`ex03__readonly-spellings.ts`](../playground/02-basics/ex03__readonly-spellings.ts) + [`.md`](../playground/02-basics/ex03__readonly-spellings.md) — `readonly T[]` = `ReadonlyArray<T>`; `readonly` vanishes at runtime
+
 ### `arr[i]` may be missing
 
 An array type describes the *elements*, not that index `i` exists. This
@@ -416,6 +418,8 @@ pair.push(2)
 Gotcha: a `readonly [string, number]` is not assignable to
 `[string, number]` — same rule as arrays. Prefer `readonly` on
 parameters so both kinds can be passed in.
+
+> 🧪 **Playground:** [`ex03__tuples-demo.ts`](../playground/02-basics/ex03__tuples-demo.ts) + [`.md`](../playground/02-basics/ex03__tuples-demo.md) — tuples: fixed length, typed positions, labels, the `push` gap
 
 ### Tuple inference: why `[1, 2]` is `number[]`
 
@@ -622,6 +626,8 @@ flowchart TD
 `as const` list when you need a runtime array; `enum` only when the
 nominal wall is the point.*
 
+> 🧪 **Playground:** [`ex01__enums-vs-alternatives.ts`](../playground/02-basics/ex01__enums-vs-alternatives.ts) + [`.md`](../playground/02-basics/ex01__enums-vs-alternatives.md) — what survives to runtime: enum vs `const enum` vs literal union vs `as const`
+
 ### Literal types
 
 A literal type has exactly one value: `'md'` is a type whose only
@@ -809,6 +815,8 @@ Rule of thumb: **`as const` narrows and stays checked; `as SomeType`
 overrides the checker.** If you reach for `as T` to make an error go
 away, stop — the error was probably right.
 
+> 🧪 **Playground:** [`ex05__opposite-review.ts`](../playground/02-basics/ex05__opposite-review.ts) + [`.md`](../playground/02-basics/ex05__opposite-review.md) — `as Direction` switches checking off; `as const` keeps checking
+
 ### `any` vs `unknown`
 
 `any` switches checking off: you can read, call and assign anything,
@@ -856,6 +864,8 @@ flowchart LR
 
 *What to notice: both accept everything. Only `unknown` makes you earn
 the right to use it.*
+
+> 🧪 **Playground:** [`ex06__any-vs-unknown.ts`](../playground/02-basics/ex06__any-vs-unknown.ts) + [`.md`](../playground/02-basics/ex06__any-vs-unknown.md) — `any` = "trust me", `unknown` = "prove it first"
 
 ### Narrowing `unknown`
 
@@ -985,6 +995,8 @@ Gotcha: `never` also appears in **error messages** as a symptom — "Type
 'X' is not assignable to type 'never'" usually means TS proved a branch
 unreachable, or an intersection collapsed. Read it as "you handled this
 already, or these types contradict".
+
+> 🧪 **Playground:** [`ex07__never-demo.ts`](../playground/02-basics/ex07__never-demo.ts) + [`.md`](../playground/02-basics/ex07__never-demo.md) — exhaustive `switch` with `never`; a missed case names itself
 
 ### `void` vs `undefined`
 
