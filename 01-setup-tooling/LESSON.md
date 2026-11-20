@@ -248,6 +248,24 @@ console.log(words[0].length)
 console.log(words[0]?.length)
 ```
 
+Often you want a **fallback** for the miss. Use `??`, not `||`:
+
+```ts
+const names: string[] = ['']           // one real item: the empty string
+
+const a = names[0] ?? 'anonymous'       // ✅ ''  — falls back only on undefined/null
+const b = names[0] || 'anonymous'       // ⚠️ 'anonymous' — compiles, but wrong
+```
+
+Both compile. Both give `string`. But `||` falls back on **any falsy**
+value (`''`, `0`, `false`, `NaN`), so it treats a real `''` or `0` as missing.
+`??` falls back only on `undefined` and `null`, which is exactly what
+"the index missed" means.
+
+Gotcha: the compiler can't catch this one. When the fallback is for
+*missing*, reach for `??` by default. Use `||` only when you really mean
+"any falsy value".
+
 ### `exactOptionalPropertyTypes` — missing ≠ set to `undefined`
 
 `theme?: string` means the key may be *absent*. Without the flag you
