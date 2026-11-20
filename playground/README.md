@@ -107,3 +107,5 @@ with a caption, a comparison table, and gotchas.
 | 06 | `06-classes/lesson__this-binding.md` | the call site sets `this`; what TS2684 does and doesn't catch |
 | 06 | `06-classes/lesson__type-predicate-recap.md` | type predicate recap |
 | 06 | `06-classes/lesson__why-interface-and-party.md` | why both `Combatant` and `Character` exist |
+| 07 | `07-generics/lesson__how-T-is-picked.md` | how the compiler picks `T` (explicit → args → target → default → unknown) |
+| 07 | `07-generics/lesson__keyof-lookup.md` | `K extends keyof T` + `T[K]` typed property lookup |
