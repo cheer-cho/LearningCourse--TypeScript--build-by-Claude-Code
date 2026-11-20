@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { withHeader, withOverrides, type HeaderMap, type Overrides, type ServerConfig } from './checkpoint'
+import { withHeader, withOverrides, type HeaderMap, type Overrides, type ServerConfig } from './checkpoint_03'
 
 describe('✦ checkpoint 3 — objects & interfaces', () => {
   it('ServerConfig has the right shape', () => {

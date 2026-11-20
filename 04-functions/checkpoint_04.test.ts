@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { firstOf, joinWith, once, pad } from './checkpoint'
+import { firstOf, joinWith, once, pad } from './checkpoint_04'
 
 describe('✦ checkpoint 4 — functions', () => {
   it('pad left-pads with a default of space', () => {

@@ -3,7 +3,7 @@
  *
  * A project, not a drill: a small reusable library of type-level
  * utilities, each harder than the ones you've built so far. There is no
- * `checkpoint.ts` for this module — this file IS the graded work. Every
+ * `checkpoint_13.ts` for this module — this file IS the graded work. Every
  * puzzle here recombines ideas from:
  *   - 05 narrowing & conditional types
  *   - 07 generics & constraints

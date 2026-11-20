@@ -5,14 +5,14 @@
 Twelve modules taught you the pieces — literal types, discriminated unions,
 generics, async, zod, branded types, template-literal parsing. A capstone
 forces you to pick the RIGHT pieces for a real problem with no TODO comment
-telling you which one. This module has no `checkpoint.ts`: each capstone
+telling you which one. This module has no `checkpoint_13.ts`: each capstone
 file below IS the graded work.
 
 ## How this module is different
 
 ```mermaid
 flowchart LR
-    E["exercises/exNN.ts<br/>one concept each"] -->|"01-12"| C["checkpoint.ts<br/>combines the module"]
+    E["exercises/exNN_topic.ts<br/>one concept each"] -->|"01-12"| C["checkpoint_NN.ts<br/>combines the module"]
     A["capstone-a/b/c<br/>one project each"] -->|"13"| G["graded directly —<br/>no checkpoint"]
 ```
 

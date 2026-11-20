@@ -6,7 +6,7 @@ import {
   transcript,
   type ChatMessage,
   type Incoming,
-} from './checkpoint'
+} from './checkpoint_05'
 
 describe('✦ checkpoint 5 — unions & narrowing', () => {
   it('Incoming models the four message variants', () => {

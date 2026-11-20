@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { EventBus, EVENT_NAMES, type Events, type ListenerMap, type OnEventName, type PayloadOf } from './checkpoint'
+import { EventBus, EVENT_NAMES, type Events, type ListenerMap, type OnEventName, type PayloadOf } from './checkpoint_08'
 
 describe('✦ checkpoint 8 — type system deep dive', () => {
   it('ListenerMap maps each event key to its handler signature', () => {

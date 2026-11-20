@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { catalog, type Shape } from './checkpoint'
+import { catalog, type Shape } from './checkpoint_09'
 import type { Circle } from './exercises/ex02-circle'
 import type { Square } from './exercises/ex02-square'
 

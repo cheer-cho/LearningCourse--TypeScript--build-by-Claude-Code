@@ -4,7 +4,7 @@
  * A project, not a drill: build a tiny API client whose `request()`
  * method infers the exact response type from the endpoint key alone —
  * no manual generic annotations at the call site. There is no
- * `checkpoint.ts` for this module — this file IS the graded work.
+ * `checkpoint_13.ts` for this module — this file IS the graded work.
  * Draws on:
  *   - 07 generics
  *   - 10 the Result pattern & async

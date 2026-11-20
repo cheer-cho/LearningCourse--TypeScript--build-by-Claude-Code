@@ -1002,5 +1002,5 @@ from "absent".
 
 ## Try it now
 
-→ `exercises/ex01_object_types.ts` through `ex07_structural_typing.ts`, then `checkpoint.ts`.
+→ `exercises/ex01_object_types.ts` through `ex07_structural_typing.ts`, then `checkpoint_03.ts`.
 Check with `npm test -- 03`.
