@@ -94,6 +94,9 @@ with a caption, a comparison table, and gotchas.
 | 06 | `06-classes/ex04__static-this.md` | detaching a static method: safe if it names the class, crashes if it uses `this` |
 | 06 | `06-classes/ex07__puzzle.md` | mixin construction order: why `createdAt` is missing inside the constructor |
 | 06 | `06-classes/ex07__serialize.md` | `JSON.stringify(this)` sees every mixin layer's fields |
+| 06 | `06-classes/lesson__abstract-type-as-supertype.md` | `: Notifier` vs `: EmailNotifier`: the annotation picks which subclasses fit |
+| 06 | `06-classes/lesson__construct-signatures-class-as-value.md` | `new (name: string): Plugin` describes the class itself, not its instances |
+| 06 | `06-classes/lesson__construct-signatures-real-world.md` | passing a class in real code: `toThrow(RangeError)`, `getRepository(User)`, factories |
 | 06 | `06-classes/lesson__default-visibility.md` | no modifier means `public`; the "who reads / may it change" flowchart |
 | 06 | `06-classes/lesson__extends-vs-implements.md` | the full 7-combination `extends` / `implements` grid (TS2689, TS1176) |
 | 06 | `06-classes/lesson__generic-method-map.md` | class `T` fixed per instance vs method `U` chosen per call |
@@ -101,11 +104,13 @@ with a caption, a comparison table, and gotchas.
 | 06 | `06-classes/lesson__mixin-eval.md` | a mixin runs once, at module load; a throwing mixin breaks every import |
 | 06 | `06-classes/lesson__mixin-greetable.md` | constrained mixin (TS2345); a mixin builds members, `&` only describes them |
 | 06 | `06-classes/lesson__party-of-t.md` | "class Party of T" — generic class with a constraint |
+| 06 | `06-classes/lesson__private-constructors-singletons-factories.md` | `private` constructor (TS2673) vs `protected` (TS2674): singletons, subclass-only bases |
 | 06 | `06-classes/lesson__reading-angle-brackets.md` | reading `<T extends {...}>` as a typed blank with a rule |
 | 06 | `06-classes/lesson__shape-check.md` | the shape check compares members only; `implements` just checks early |
 | 06 | `06-classes/lesson__small-hierarchy.md` | the four arrow kinds; which ones move runtime code |
 | 06 | `06-classes/lesson__this-binding.md` | the call site sets `this`; what TS2684 does and doesn't catch |
 | 06 | `06-classes/lesson__type-predicate-recap.md` | type predicate recap |
+| 06 | `06-classes/lesson__typeof-class-static-vs-instance.md` | `Robot` (instance) vs `typeof Robot` (constructor + statics), `InstanceType`, TS2576 |
 | 06 | `06-classes/lesson__why-interface-and-party.md` | why both `Combatant` and `Character` exist |
 | 07 | `07-generics/lesson__how-T-is-picked.md` | how the compiler picks `T` (explicit → args → target → default → unknown) |
 | 07 | `07-generics/lesson__keyof-lookup.md` | `K extends keyof T` + `T[K]` typed property lookup |
