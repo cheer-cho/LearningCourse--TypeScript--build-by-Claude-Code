@@ -11,14 +11,12 @@
  */
 
 // TODO: rest parameter, then implement.
-export function sumOf (...nums: number[]): number {
+export function sumOf(...nums: number[]): number {
   return nums.reduce((acc, cur) => acc + cur, 0)
 }
 
 // TODO: base + rest segments, then implement.
-export function buildPath (base: string, ...segments: string[]): string {
-  // const path = segments.length > 0 ? `/${segments.join('/')}` : ''
-  // return `${base}${path}`
+export function buildPath(base: string, ...segments: string[]): string {
   return [base, ...segments].join('/')
 }
 
@@ -26,7 +24,7 @@ export function buildPath (base: string, ...segments: string[]): string {
 //   fn:   (a: number, b: string) => string
 //   args: [number, string]
 // then implement by SPREADING args into fn.
-export function callWith (
+export function callWith(
   fn: (a: number, b: string) => string,
   args: [number, string]
 ): string {

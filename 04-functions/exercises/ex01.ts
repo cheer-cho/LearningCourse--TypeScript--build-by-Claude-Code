@@ -28,6 +28,6 @@ export const applyOp: ApplyOp = (a, b, op) => op(a, b)
 
 // This is the same function as applyOp, but using function declaration
 // type ApplyOp will probably be not reused, so this should be a better one.
-export function applyOp2 (a: number, b: number, op: BinaryOp) {
+export function applyOp2(a: number, b: number, op: BinaryOp) {
   return op(a, b)
 }

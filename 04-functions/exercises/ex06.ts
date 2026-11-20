@@ -31,6 +31,10 @@ export function collectDoubles(items: number[]): number[] {
 //   q2: `function f(): void { return 42 }` — does it compile?
 //       (declared return annotation, not a callback type!)
 export const quiz: { q1: 'yes' | 'no'; q2: 'yes' | 'no'; } = {
-  q1: 'yes', // 
-  q2: 'no', //
+  // q1: a void CALLBACK type means "the caller ignores the result", so a
+  // function that returns 42 may fill it.
+  q1: 'yes',
+  // q2: a declared `: void` on your own function is a promise to return
+  // nothing — `return 42` breaks it (TS2322).
+  q2: 'no',
 };

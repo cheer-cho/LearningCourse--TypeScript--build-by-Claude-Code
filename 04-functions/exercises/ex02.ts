@@ -14,24 +14,15 @@
  */
 
 // TODO: give greeting a default value instead of any.
-export function greet (name: string, greeting: string = 'Hello'): string {
+export function greet(name: string, greeting: string = 'Hello'): string {
   return `${greeting}, ${name}!`
 }
 
 // TODO: make `end` optional, then implement both behaviors.
-export function range (start: number, end?: number): number[] {
-  const rangeNumbers: number[] = []
-  let startRange = 0
-  let endRange = 0
-  if (end !== undefined) {
-    startRange = start
-    endRange = end
-  } else {
-    endRange = start
-  }
-  while (startRange < endRange) {
-    rangeNumbers.push(startRange)
-    startRange++
-  }
-  return rangeNumbers
+export function range(start: number, end?: number): number[] {
+  // One argument means "0 up to start". Ask "was end PASSED?", not "is it truthy?"
+  const [from, to] = end === undefined ? [0, start] : [start, end]
+  const result: number[] = []
+  for (let i = from; i < to; i++) result.push(i)
+  return result
 }

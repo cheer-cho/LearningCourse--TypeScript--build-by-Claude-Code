@@ -12,22 +12,15 @@
 // Text already >= width comes back unchanged.
 //   pad('7', 3)      -> '  7'
 //   pad('7', 3, '0') -> '007'
-export function pad(text: string, width: number, char: string = ' '): string {
-  if (text.length >= width) {
-    return text;
-  }
-
-  return text.padStart(width, char);
+export function pad(text: string, width: number, char = ' '): string {
+  return text.padStart(width, char); // already returns `text` when it is long enough
 }
 
 // Join any number of strings with `separator` — rest params.
 //   joinWith('-', 'a', 'b', 'c') -> 'a-b-c'
 //   joinWith('-')                -> ''
 export function joinWith(separator: string, ...parts: string[]): string {
-  if (parts.length === 0) {
-    return '';
-  }
-  return parts.join(separator);
+  return parts.join(separator); // [].join() is already ''
 }
 
 // The first element of a string or a number array — OVERLOADED, so each
