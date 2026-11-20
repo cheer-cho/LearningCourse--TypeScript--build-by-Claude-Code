@@ -20,7 +20,7 @@
 // TODO: add the two overload signatures above this implementation.
 export function toArray(x: string): string[]
 export function toArray(x: number): number[]
-export function toArray (x: string | number): string[] | number[] {
+export function toArray(x: string | number): string[] | number[] {
   if (typeof x === 'string') return x.split('')
   return [...String(x)].map(Number)
 }
@@ -29,11 +29,11 @@ export function toArray (x: string | number): string[] | number[] {
 // then implement.
 export function makeDate(a: string): Date
 export function makeDate(a: number, b: number, c: number): Date
-export function makeDate (a: string | number, b?: number, c?: number): Date {
+export function makeDate(a: string | number, b?: number, c?: number): Date {
   if (typeof a === 'string') {
-    return new Date()
-    // return new Date(`${a}T00:00:00`) // force local
-    // return new Date(Date.UTC(a, b, c)) // force UTC
+    // Date-only ISO strings ('2026-01-15') parse as UTC midnight; strings
+    // with a time and no offset parse as local. See ex04__date-timezone.
+    return new Date(a)
   }
   if (b === undefined || c === undefined) {
     throw new Error(`
