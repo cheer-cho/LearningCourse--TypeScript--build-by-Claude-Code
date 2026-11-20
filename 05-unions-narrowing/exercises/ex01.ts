@@ -25,7 +25,7 @@ export function len(x: string | unknown[]): number {
   return x.length;
 }
 
-export function lenExample(x: string | unknown[] | Set<String>): number {
+export function lenExample(x: string | unknown[] | Set<unknown>): number {
   if (x instanceof Set) {
     return x.size;
   }
