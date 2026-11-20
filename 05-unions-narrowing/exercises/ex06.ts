@@ -66,7 +66,8 @@ export function area(shape: Shape): number {
  * If you can explain that in one sentence, you own this concept.
  * 
  * 
- * Answer: remove the 'ellipse' case the shape in default become 'Ellipse'
- * error TS2345: Argument of type 'Ellipse' is not assignable to parameter of type 'never'.
- * therefore, typescript will throw error type passing into assertNever is mismatched.
+ * Answer: without the 'ellipse' case, `shape` in `default` is `Ellipse`
+ * (the one variant not handled yet) instead of `never`, so passing it to
+ * assertNever(value: never) fails with
+ *   error TS2345: Argument of type 'Ellipse' is not assignable to parameter of type 'never'.
  */

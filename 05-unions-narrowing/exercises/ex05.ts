@@ -66,6 +66,6 @@ export function dataOrDefault(state: RequestState, fallback: string): string {
   if (state.status === 'success') {
     return state.data;
   }
-  // at this point state is other RequestState types that not a Success
+  // narrowed: state is now Idle | Loading | Error — never Success
   return fallback;
 }

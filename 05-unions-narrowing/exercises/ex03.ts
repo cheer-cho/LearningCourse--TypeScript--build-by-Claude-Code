@@ -26,8 +26,7 @@
  */
 
 // TODO: type value (string), padding (string | number), return string.
-export function padLeft(value: string, padding: number | string
-): string {
+export function padLeft(value: string, padding: number | string): string {
   if (typeof padding === 'number') {
     return value.padStart(padding + value.length)
   }
