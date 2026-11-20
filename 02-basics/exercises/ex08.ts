@@ -9,23 +9,23 @@
  */
 
 // TODO: target type: 42  (the literal — currently it's the literal 0)
-export const answer = 0
+export const answer = 42
 
 // TODO: target type: string  (currently 'hello' widens... does it?
 //       Check which declaration keyword widens literals.)
-export const greeting = 'hello'
+export let greeting = 'hello'
 
 // TODO: target type: readonly [1, 2, 3]  (no annotation — one keyword)
-export const steps = [1, 2, 3]
+export const steps = [1, 2, 3] as const
 
 // TODO: target type: (n: number) => string
 //       (only the parameter annotation is allowed)
-export const describeNum = (n: number) => n
+export const describeNum = (n: number) => n.toString()
 
 // TODO: target type: { kind: 'ok'; value: number }[]
 //       (currently infers { kind: string; value: number }[] — make ONLY
 //       `kind` stay literal. Hint: as const can target a single value.)
 export const results = [
-  { kind: 'ok', value: 1 },
-  { kind: 'ok', value: 2 },
+  { kind: 'ok' as const, value: 1 },
+  { kind: 'ok' as const, value: 2 },
 ]

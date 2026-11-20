@@ -1,3 +1,6 @@
+// Assertion (`as Direction`) vs `as const`: which one lets a wrong mapping through?
+// Run: npm run playground opposite-review
+
 type Direction = 'north' | 'south' | 'east' | 'west';
 
 // --- Version A: your version. `as Direction` is an ASSERTION.

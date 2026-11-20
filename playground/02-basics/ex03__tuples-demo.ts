@@ -1,4 +1,6 @@
 // A tuple: fixed length, one type per position.
+// Run: npm run playground tuples-demo
+
 // The labels (red:, green:, blue:) are documentation only —
 // they show up in editor hints but don't exist at runtime.
 type Rgb = [red: number, green: number, blue: number]

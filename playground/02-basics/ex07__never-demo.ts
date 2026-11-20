@@ -1,4 +1,8 @@
-// Demo: exhaustiveness checking with `never` (traffic lights, not shapes!)
+// Exhaustiveness checking with `never`.
+// Run: npm run playground never-demo
+// Expect ONE type error (TS2345) inside brokenAction — that is the check working.
+
+// (traffic lights, not shapes!)
 
 type Light = 'red' | 'yellow' | 'green'
 
@@ -27,4 +31,12 @@ function brokenAction(light: Light): string {
   }
 }
 
-console.log(action('green'))
+console.log("action('green') ->", action('green'))
+
+// The broken version still runs (tsx ignores type errors).
+// 'yellow' falls into default, and assertNever throws at runtime.
+try {
+  brokenAction('yellow')
+} catch (e) {
+  console.log("brokenAction('yellow') threw ->", (e as Error).message)
+}

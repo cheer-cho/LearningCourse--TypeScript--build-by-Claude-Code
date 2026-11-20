@@ -26,6 +26,31 @@ that blank strings become `0`, so reject them first with
 front" (e.g. `'12px'`), `Number` = "is this text a number?".
 **Status:** open
 
+## 2026-08-11 — 02/ex05
+
+**Mistake:** Used `as Direction` on each value of a lookup map to make the
+return type fit. `as` is an _assertion_ — it tells the compiler to trust
+you and widens the literal to the whole union, so a wrong mapping
+(`north: 'north' as Direction`) compiles silently.
+**Correction:** Prefer letting the compiler _check_ instead of asserting:
+`as const` keeps the values as literal types, and literals are verified
+assignable to the union at the return site. Rule of thumb: `as const`
+narrows and stays checked; `as SomeType` overrides the checker.
+**Recurred 2026-09-07 — 05/ex08:** inside `assertIsUser`, cast the
+unvalidated input with `value as User` _before_ checking it, then only
+tested `!== undefined`. Casting to the target type made the fields look
+already-typed, so the `typeof` checks that actually prove the claim got
+skipped and `{ name: 42, age: 36 }` slipped through. Rule: inside a
+guard/assertion, cast only to something honest like
+`Record<string, unknown>`; the narrowing to `User` is what the
+_signature_ earns, not what a cast grants.
+**Recurred 2026-08-22 — 02/ex08:** first attempt annotated or cast every
+line (`: string`, `: readonly [1,2,3]`, `as {...}[]`) in an exercise that
+forbids annotations. Corrected quickly once prompted: `let` to widen,
+`as const` to narrow, drop return annotations and let the body infer.
+Quiz target: "inputs are annotated, outputs are inferred."
+**Status:** open
+
 ## 2026-08-10 — 01/ex02
 
 **Mistake:** Used `||` to supply a fallback for possibly-missing values
