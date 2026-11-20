@@ -34,8 +34,11 @@ const run = (cmd, args) =>
   spawnSync(cmd, args, { stdio: 'inherit', shell: process.platform === 'win32' })
 
 console.log(`\n── typecheck ${file} ──`)
+// Same compiler options as the course tsconfig.json (tsc ignores tsconfig when given a file).
 const check = run('npx', ['tsc', '--noEmit', '--strict', '--target', 'es2022',
-  '--module', 'esnext', '--moduleResolution', 'bundler', file])
+  '--module', 'esnext', '--moduleResolution', 'bundler', '--lib', 'es2022', '--types', 'node',
+  '--noUncheckedIndexedAccess', '--exactOptionalPropertyTypes', '--noImplicitOverride',
+  '--noFallthroughCasesInSwitch', '--skipLibCheck', file])
 if (check.status !== 0) console.log('(type errors above — running anyway)')
 
 console.log(`\n── run ${file} ──`)
