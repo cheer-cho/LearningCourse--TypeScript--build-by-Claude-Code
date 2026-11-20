@@ -1,3 +1,6 @@
+// Missing key vs key set to undefined vs key set to false: three checks, three answers.
+// Run: npm run playground ex02__presence-on-objects
+
 type Settings = { debug?: boolean; theme?: string }
 
 const a: Settings = {}                    // debug is MISSING

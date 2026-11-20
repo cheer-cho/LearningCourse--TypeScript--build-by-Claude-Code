@@ -1,4 +1,5 @@
 // Demo: what an overload is. Deliberately NOT the ex04 functions.
+// Run: npm run playground ex04__overloads
 
 // ---- 1. Without overloads: the return type is a fuzzy union ----
 function wrapLoose(x: string | boolean): string[] | boolean[] {

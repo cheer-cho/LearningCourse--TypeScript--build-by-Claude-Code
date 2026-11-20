@@ -1,4 +1,5 @@
 // Where overloads can appear. All deliberately NOT the ex04 functions.
+// Run: npm run playground ex04__overload-forms
 
 // ---- 1. Function declaration: signatures (no body) + ONE implementation ----
 function wrap(x: string): string[]

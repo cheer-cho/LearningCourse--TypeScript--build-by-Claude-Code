@@ -1,4 +1,5 @@
 // Where can a function TYPE be used? Three places — and one non-place.
+// Run: npm run playground ex01__annotating-function-values
 
 type Formatter = (s: string) => string
 
@@ -22,7 +23,7 @@ function whisper(s: string): string {
   return s.toLowerCase()
 }
 
-console.log(shout('hi'))                 // HI!
-console.log(applyTwice('hi', shout))     // HI!!
-console.log(applyTwice('ab', repeatN(2)))// abababab
-console.log(whisper('LOUD'))             // loud
+console.log("shout('hi')               ->", shout('hi'))                    // HI!
+console.log("applyTwice('hi', shout)   ->", applyTwice('hi', shout))        // HI!!
+console.log("applyTwice('ab', repeatN(2)) ->", applyTwice('ab', repeatN(2))) // abababab
+console.log("whisper('LOUD')           ->", whisper('LOUD'))                // loud

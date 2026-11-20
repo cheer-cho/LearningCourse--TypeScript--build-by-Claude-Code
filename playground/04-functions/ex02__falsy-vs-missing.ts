@@ -1,3 +1,6 @@
+// Which values trip `||` and which trip `??`? One row per value.
+// Run: npm run playground ex02__falsy-vs-missing
+
 const values: [string, unknown][] = [
   ['undefined', undefined], ['null', null], ['0', 0], ["''", ''],
   ['false', false], ['NaN', NaN], ['[]', []], ['{}', {}], ["'hi'", 'hi'],

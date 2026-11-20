@@ -1,5 +1,6 @@
 // What you LOSE with only the implementation signature.
 // Deliberately NOT the ex04 functions — same shape, different names.
+// Run: npm run playground ex04__why-overloads
 
 // ============ A. Only the implementation signature ============
 export function joinLoose(sep: string | number, times?: number): string | number {
@@ -9,12 +10,14 @@ export function joinLoose(sep: string | number, times?: number): string | number
 
 const l1 = joinLoose('ab', 2)
 // l1: string | number  -> you KNOW it's a string, TS doesn't:
-// l1.toUpperCase()            // Error: Property 'toUpperCase' does not exist on type 'number'
+// l1.toUpperCase()            // Error TS2339: Property 'toUpperCase' does not exist on type 'string | number'
 const l1ok = (l1 as string).toUpperCase()   // cast at EVERY call site. Yuck.
 
 joinLoose('ab')        // fine
 joinLoose(3)           // fine
-joinLoose('ab', 2)     // fine... and so is nonsense the body never handles well:
+joinLoose('ab', 2)     // fine
+joinLoose(3, 2)        // fine. All 4 combos compile, even the 2 with no `times`
+                       // that the API never meant to offer.
 
 // ============ B. Same body, with overloads ============
 export function join(sep: string, times: number): string

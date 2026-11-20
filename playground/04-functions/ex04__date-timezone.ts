@@ -1,4 +1,5 @@
 // The mismatch: the same calendar day, two different instants.
+// Run: npm run playground ex04__date-timezone
 
 const fromString = new Date('2026-01-15')      // date-only ISO -> parsed as UTC
 const fromParts  = new Date(2026, 0, 15)       // year/month/day -> LOCAL midnight
