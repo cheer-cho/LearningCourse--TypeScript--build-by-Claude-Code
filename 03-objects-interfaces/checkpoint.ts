@@ -23,12 +23,7 @@ export type ServerConfig = {
 
 // What callers are allowed to override: env and debug, both OPTIONAL.
 // Deliberately NO host/port — those can't be overridden.
-export type Overrides_Bad = {
-  env?: 'dev' | 'prod';
-  debug?: boolean;
-};
-
-// Better code
+// Derived from ServerConfig, so the two can never drift apart.
 export type Overrides = Partial<Pick<ServerConfig, 'env' | 'debug'>>;
 
 // A NEW config built from `base` with `overrides` applied on top

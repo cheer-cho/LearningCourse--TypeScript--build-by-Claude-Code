@@ -22,7 +22,7 @@ export interface AppGlobals {
   version: string
 }
 
-export function makeGlobals (): AppGlobals {
+export function makeGlobals(): AppGlobals {
   // TODO: once merged, this object must also provide `version`.
   return {
     appName: 'mastery',
