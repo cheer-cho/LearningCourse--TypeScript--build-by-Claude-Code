@@ -248,6 +248,8 @@ Rule: when the property's type includes `0`, `''` or `false`, always use
 `??` and `!== undefined`. When it is an object or a non-empty string,
 `||` happens to work — but `??` says what you mean.
 
+> 🧪 **Playground:** [`cp__overrides-falsy.ts`](../playground/03-objects-interfaces/cp__overrides-falsy.ts) + [`.md`](../playground/03-objects-interfaces/cp__overrides-falsy.md) — applying optional overrides: `!== undefined` keeps `false`, a truthy guard drops it
+
 ### Checking presence: `in` and `Object.hasOwn`
 
 Sometimes you need "was this key set?", not "is the value truthy?".
@@ -314,6 +316,8 @@ compiler does. It does not even affect assignability — a `Ticket` is
 freely assignable to `{ id: number; title: string }`, whose `id` is
 *mutable*, and a write through that alias mutates the original.
 
+> 🧪 **Playground:** [`ex02__readonly-existant.ts`](../playground/03-objects-interfaces/ex02__readonly-existant.ts) + [`.md`](../playground/03-objects-interfaces/ex02__readonly-existant.md) — `readonly` doesn't survive an alias; writes through a mutable name hit the original
+
 ### `Readonly<T>`, `Object.freeze`, and `as const`
 
 Marking every property by hand is tedious. Three shortcuts:
@@ -365,6 +369,41 @@ Gotcha: spread is shallow. `{ ...ticket }` copies the `tags` *reference*;
 both objects share one array until you spread the inner value too. Also,
 the *inferred* type of a spread drops `readonly` — annotate the result
 (`const renamed: Ticket = ...`) if you want the modifier to survive.
+
+**Applying a whole bag of optional overrides.** A common job is "take a
+base object, apply whatever the caller passed". Two safe ways:
+
+```ts
+type Settings = { theme: 'light' | 'dark'; debug?: boolean }
+type Patch = Partial<Settings>
+const base: Settings = { theme: 'dark', debug: true }
+
+// 1. Plain spread — safe in THIS course, because of exactOptionalPropertyTypes:
+function apply(s: Settings, p: Patch): Settings {
+  return { ...s, ...p }
+}
+apply(base, { debug: false })   // { theme: 'dark', debug: false } — false still wins
+// ❌ error TS2379: Argument of type '{ theme: undefined; }' is not assignable to parameter of type 'Partial<Settings>' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+apply(base, { theme: undefined })
+
+// 2. Guard each key on PRESENCE — safe in any project:
+function applyGuarded(s: Settings, p: Patch): Settings {
+  return {
+    ...s,
+    ...(p.theme !== undefined && { theme: p.theme }),
+    ...(p.debug !== undefined && { debug: p.debug }),
+  }
+}
+```
+
+The flag is what makes version 1 safe: an explicit `undefined` can never
+reach the spread, so it can't wipe a base value. Most projects don't
+turn that flag on. There, `{ theme: undefined }` compiles and spread
+copies it. Version 2 works everywhere. Spreading `false` adds no keys,
+so `...(cond && {...})` is a valid "maybe add this key".
+
+Gotcha: guard with `!== undefined`, never with truthiness.
+`...(p.debug && { debug: p.debug })` silently drops `debug: false`.
 
 ### Index signatures: when you don't know the keys
 
@@ -425,6 +464,8 @@ const v: Vault = { [secret]: 'hunter2' }
 Gotcha: a `number` index signature is really a `string` one underneath —
 JavaScript turns every key into a string. `[year: number]` just tells the
 compiler to reject non-numeric keys.
+
+> 🧪 **Playground:** [`ex03__split.ts`](../playground/03-objects-interfaces/ex03__split.ts) + [`.md`](../playground/03-objects-interfaces/ex03__split.md) — `split(' ')` vs `split(/\s+/)` vs `.filter(Boolean)` for counting words
 
 ### The compatibility rule: every property must fit the signature
 
@@ -586,6 +627,8 @@ const ab: AB = { id: 1 }
 Rule: when you see `never` in an error about a property you never
 declared as `never`, look for an intersection with a conflicting field.
 
+> 🧪 **Playground:** [`ex05__type-union-vs-and.ts`](../playground/03-objects-interfaces/ex05__type-union-vs-and.ts) + [`.md`](../playground/03-objects-interfaces/ex05__type-union-vs-and.md) — `\|` vs `&` on object types; clashing literals make the intersection `never`
+
 ### Mixing interface and type, plus `implements`
 
 The two systems interoperate. An interface can extend an alias, and an
@@ -677,6 +720,12 @@ packages (and `namespace` merging for the rare legacy case). Gotcha:
 merging is *silent* — two `interface User` declarations in one scope
 combine without warning. Keep interface names distinct in everyday code.
 
+> 🧪 **Playground:** [`ex06__export-merge.ts`](../playground/03-objects-interfaces/ex06__export-merge.ts) + [`.md`](../playground/03-objects-interfaces/ex06__export-merge.md) — merging needs matching `export`; otherwise TS2395 and two separate halves
+
+> 🧪 **Playground:** [`ex06__merging-rules.ts`](../playground/03-objects-interfaces/ex06__merging-rules.ts) + [`.md`](../playground/03-objects-interfaces/ex06__merging-rules.md) — merge rules: same type collapses, different type TS2717, duplicate `type` TS2300
+
+> 🧪 **Playground:** [`ex06__scope-demo/`](../playground/03-objects-interfaces/ex06__scope-demo/) + [`.md`](../playground/03-objects-interfaces/ex06__scope-demo.md) — script vs module scope: global `const` collides, interfaces merge, `export {}` isolates
+
 ### Structural typing: the duck test
 
 "If it walks like a duck and quacks like a duck, it is a duck." A
@@ -760,6 +809,8 @@ variable or the index signature when extras are genuinely part of the
 data. And spread only exempts the keys that *come from* the spread —
 a key you write out next to it (`{ ...withAlt, alt: 4 }`) is still
 checked and still errors.
+
+> 🧪 **Playground:** [`ex07__freshness.ts`](../playground/03-objects-interfaces/ex07__freshness.ts) + [`.md`](../playground/03-objects-interfaces/ex07__freshness.md) — when TS2353 fires: fresh literal vs variable, assertion, spread
 
 ### Weak types: all-optional is still checked
 
