@@ -1,6 +1,8 @@
 // strictPropertyInitialization demo
 // Rule: a class property must be definitely assigned
 // before the constructor finishes.
+// Run: npm run playground strict-property-init
+//   (the type-check step shows the two ❌ errors; the run shows why they matter)
 
 class User {
   // ❌ Error: never assigned anywhere.
@@ -32,3 +34,11 @@ class User {
     this.email = "a@b.com";
   }
 }
+
+const u = new User();
+console.log("u.name     ->", u.name);     // undefined — but typed `string`: the lie the flag prevents
+console.log("u.email    ->", u.email);    // "a@b.com" — init() did run, TS just can't prove it
+console.log("u.role     ->", u.role);
+console.log("u.id       ->", u.id);
+console.log("u.nickname ->", u.nickname); // undefined — `!` silenced the check, nothing set it
+console.log("u.bio      ->", u.bio);      // undefined — honest: the type allows it
