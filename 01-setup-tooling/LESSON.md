@@ -147,6 +147,8 @@ Don't worry about the theory name (*contravariance*) yet — module 08
 covers it. The intuition: **a handler must accept at least as much as
 its type promises.**
 
+> 🧪 **Playground:** [`lesson__strict-function-types.ts`](../playground/01-setup-tooling/lesson__strict-function-types.ts) + [`.md`](../playground/01-setup-tooling/lesson__strict-function-types.md) — the `Dog`-only handler crashes on a `Cat`; a wider handler is fine.
+
 ### `strictBindCallApply` — typed `.call` / `.apply` / `.bind`
 
 Without the flag, these three methods accepted any arguments.
@@ -186,6 +188,8 @@ Gotcha: assigning in a method called *from* the constructor does **not**
 count — TS only follows assignments directly in the constructor body.
 The `!` escape hatch works but shifts the burden onto you: if the
 assignment is ever removed, the crash comes at runtime, not compile time.
+
+> 🧪 **Playground:** [`lesson__strict-property-init.ts`](../playground/01-setup-tooling/lesson__strict-property-init.ts) + [`.md`](../playground/01-setup-tooling/lesson__strict-property-init.md) — every way to satisfy the check, and what each field really holds at runtime.
 
 ### `noImplicitThis` — `this` must have a known type
 
@@ -260,6 +264,8 @@ const s: Settings = { theme: undefined }
 // ✅ leave it out entirely
 const t: Settings = {}
 ```
+
+> 🧪 **Playground:** [`lesson__exact-optional-undefined.ts`](../playground/01-setup-tooling/lesson__exact-optional-undefined.ts) + [`.md`](../playground/01-setup-tooling/lesson__exact-optional-undefined.md) — absent vs `undefined`: invisible to a read, visible to `in` and `Object.keys`.
 
 ### `noImplicitOverride` — overriding must be on purpose
 

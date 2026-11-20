@@ -42,5 +42,8 @@ with a caption, a comparison table, and gotchas.
 
 | Module | Explainer | Topic |
 | --- | --- | --- |
+| 01 | `01-setup-tooling/lesson__exact-optional-undefined.md` | missing key vs key set to `undefined` |
+| 01 | `01-setup-tooling/lesson__strict-function-types.md` | a handler must accept at least what its type promises |
+| 01 | `01-setup-tooling/lesson__strict-property-init.md` | the four ways a field passes the init check |
 | 06 | `06-classes/lesson__party-of-t.md` | "class Party of T" — generic class with a constraint |
 | 06 | `06-classes/lesson__type-predicate-recap.md` | type predicate recap |
