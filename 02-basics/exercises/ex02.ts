@@ -23,5 +23,4 @@ export const frozen: readonly number[] = [1, 2, 3]
 // Sum every number. Do not mutate the input (the type already forbids it).
 export function sumAll(nums: readonly number[]): number {
   return nums.reduce((sum, cur) => sum + cur, 0)
-  throw new Error('TODO: implement sumAll')
 }

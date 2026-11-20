@@ -25,8 +25,5 @@ type Point = [x: number, y: number]
 export function distance(a: Point, b: Point): number {
   const [x1, y1] = a;
   const [x2, y2] = b;
-  // return Math.sqrt(((x2 - x1) ** 2) + ((y2 - y1) ** 2))
   return Math.hypot((x2 - x1), (y2 - y1));
-  return Math.sqrt((Math.pow(b[0] - a[0], 2) + Math.pow(b[1] - a[1], 2)));
-  throw new Error('TODO: implement distance')
 }

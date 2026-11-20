@@ -39,5 +39,4 @@ export function sides(shape: Shape): number {
 // Call every function in order. Returns void.
 export function runAll(fns: Array<() => void>): void {
   fns.forEach(fn => fn());
-  // throw new Error('TODO: implement runAll')
 }

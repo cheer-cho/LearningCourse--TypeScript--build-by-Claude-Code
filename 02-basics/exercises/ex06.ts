@@ -32,6 +32,5 @@ export function describeValue(value: unknown): string {
         return `array of ${value.length} items`;
       }
       return 'other';
-  };
-  // throw new Error('TODO: implement describeValue')
+  }
 }
