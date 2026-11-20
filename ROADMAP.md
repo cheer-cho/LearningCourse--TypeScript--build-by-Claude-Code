@@ -24,9 +24,9 @@ preparation, everything after it is application.*
 ## Progress
 
 ### 01 — Setup & Tooling
-- [ ] Lesson read
-- [ ] Exercises ex01–ex04
-- [ ] ✦ Checkpoint 1 passed
+- [x] Lesson read
+- [x] Exercises ex01–ex04
+- [x] ✦ Checkpoint 1 passed
 
 ### 02 — Basics
 - [ ] Lesson read

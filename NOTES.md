@@ -12,6 +12,20 @@ quizzes and reviews. Format:
 
 ---
 
+## 2026-11-20 — 01/checkpoint
+
+**Mistake:** Used `parseFloat(raw)` to turn sensor text into a number, with
+`!raw` to reject blanks. `parseFloat` reads a numeric *prefix* and ignores
+the rest, so `parseCelsius('12abc')` returned `12` instead of `null`. And
+`!raw` misses `'   '` (truthy) — which only worked by luck, because
+`parseFloat('   ')` is `NaN`.
+**Correction:** For "the whole string must be a number", use `Number(raw)`:
+`Number('12abc')` is `NaN`, `Number(' 21.5 ')` is `21.5`. Its one trap is
+that blank strings become `0`, so reject them first with
+`raw.trim() === ''`. Rule: `parseFloat`/`parseInt` = "pull a number off the
+front" (e.g. `'12px'`), `Number` = "is this text a number?".
+**Status:** open
+
 ## 2026-08-10 — 01/ex02
 
 **Mistake:** Used `||` to supply a fallback for possibly-missing values
@@ -35,15 +49,8 @@ honored. Defaults fire only on `undefined` — the right tool.
 `char || ' '`, which turned the explicit `''` into a space and broke the
 test. The default had been chosen without the reasoning behind it. Quiz
 target: "default parameter asks _passed?_, `||` asks _truthy?_".
-**Status:** open
-
-```mermaid
-sequenceDiagram
-  participant obj as the one object
-  Note over obj: new Logged('Groceries')
-  obj->>obj: Note constructor → adds title
-  obj->>obj: Serializable constructor → stringify = {"title"}  (1)
-  obj->>obj: Timestamped constructor → adds createdAt
-  Note over obj: new finishes, object is complete
-  obj->>obj: n.serialize() → {"title","createdAt"}  (2)
-```
+**Caught again 2026-11-20 — backfill of 01/ex02, 01/checkpoint, 03/ex01:**
+new edge-case tests (`firstOrDefault([''], 'z')`, `describeBook` with
+`author: ''`) failed on the original `||` code. All fixed to `??`. Module 01
+LESSON now teaches `??` vs `||` right where the first fallback is needed.
+**Status:** improving
