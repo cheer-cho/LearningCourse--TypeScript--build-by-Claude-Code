@@ -1,3 +1,6 @@
+// Purpose: real places you already pass a class as a value (vitest toThrow, ORM/DI repositories, factories).
+// Run: npm run playground lesson__construct-signatures-real-world
+//
 // Q: "Passing a class as a value — is that even a real use case?"
 // Yes. You have already used it. Two examples you will recognise.
 export {}
@@ -13,13 +16,13 @@ function expectToThrow(fn: () => void, Expected: ErrorClass): void {
     fn()
   } catch (e) {
     if (e instanceof Expected) {
-      console.log(`✅ threw ${Expected.name}`)
+      console.log(`1. expectToThrow -> ✅ threw ${Expected.name}`)
       return
     }
-    console.log(`❌ threw ${(e as Error).constructor.name}, expected ${Expected.name}`)
+    console.log(`1. expectToThrow -> ❌ threw ${(e as Error).constructor.name}, expected ${Expected.name}`)
     return
   }
-  console.log('❌ did not throw')
+  console.log('1. expectToThrow -> ❌ did not throw')
 }
 
 expectToThrow(() => { throw new RangeError('too big') }, RangeError) // ✅ threw RangeError
@@ -27,6 +30,7 @@ expectToThrow(() => { throw new TypeError('nope') }, RangeError)     // ❌ thre
 
 // You cannot pass an instance; the framework needs the class to compare against.
 // ❌ error TS2345: Argument of type 'RangeError' is not assignable to parameter of type 'ErrorClass'.
+// (At runtime fn doesn't throw, so the instance is never used: prints "did not throw".)
 // @ts-expect-error
 expectToThrow(() => {}, new RangeError('x'))
 
@@ -65,12 +69,12 @@ const users = getRepository(User)          // Repository<User>  — inferred fro
 const orders = getRepository(Order)        // Repository<Order>
 
 const u = users.create(1, 'Ada')
-console.log(u.name)                        // 'Ada'  — u is typed as User
-console.log(orders.create(7, 99.5).total)  // 99.5   — typed as Order
+console.log('2. users.create(1, \'Ada\').name ->', u.name)  // 'Ada'  — u is typed as User
+console.log('2. orders.create(7, 99.5).total ->', orders.create(7, 99.5).total)  // 99.5 — typed as Order
 
 // ❌ error TS2339: Property 'total' does not exist on type 'User'.
 // @ts-expect-error
-u.total
+console.log('2. u.total (type error, runs anyway) ->', u.total)  // undefined
 
 // ── 3. Same idea, tiny: a factory that picks the class at runtime ────────
 type Shape = { area(): number }
@@ -80,4 +84,10 @@ class Circle { constructor(private r: number) {} area() { return Math.PI * this.
 const shapes: Record<string, new (n: number) => Shape> = { square: Square, circle: Circle }
 
 const kind = process.argv[2] ?? 'square'   // decided at runtime, e.g. from a config file
-console.log(kind, new shapes[kind](2).area().toFixed(2))
+// noUncheckedIndexedAccess: shapes[kind] is `(new (n) => Shape) | undefined`. Guard it.
+const ShapeClass = shapes[kind]
+if (!ShapeClass) throw new Error(`unknown shape: ${kind}`)
+console.log(`3. new shapes.${kind}(2).area() ->`, new ShapeClass(2).area().toFixed(2))
+for (const [name, Cls] of Object.entries(shapes)) {
+  console.log(`3. new ${name}(2) -> ${Cls.name}, area ${new Cls(2).area().toFixed(2)}`)
+}

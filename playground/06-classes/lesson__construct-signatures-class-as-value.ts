@@ -1,3 +1,6 @@
+// Purpose: a `new (...)` signature describes the class itself, so you can pass the class as a value.
+// Run: npm run playground lesson__construct-signatures-class-as-value
+//
 // Q: "interface PluginConstructor { new (name: string): Plugin }" — what does it do?
 //
 // Two interfaces, two *sides* of a class:
@@ -9,10 +12,12 @@
 // CLASS (not an instance) as an ordinary function argument.
 
 // Gotcha found while writing this file: without an import/export this file is a
-// global *script*, and `interface Plugin` silently MERGES with the DOM lib's
-// built-in `Plugin` (navigator.plugins). Suddenly every class "is missing
-// description, filename, length…". `export {}` makes the file a module and
-// keeps our `Plugin` local.
+// global *script*, and `interface Plugin` silently MERGES with any global
+// `Plugin`. Where the DOM lib is loaded (plain `npx tsc file.ts`, browser
+// projects) that is navigator.plugins' `Plugin`, and suddenly every class "is
+// missing description, filename, length…". The course config uses lib ES2022
+// (no DOM), but scripts also share globals with each other. `export {}` makes
+// the file a module and keeps our `Plugin` local.
 export {}
 
 interface Plugin {
@@ -34,7 +39,7 @@ class Echo implements Plugin {
   run(): string { return this.name }
 }
 
-console.log(boot(Echo, 'hello').run()) // 'hello'
+console.log('1. boot(Echo) ->', boot(Echo, 'hello').run()) // 'hello'
 
 // ── 2. Any other class with the same constructor shape also fits ─────────
 class Shout implements Plugin {
@@ -42,7 +47,7 @@ class Shout implements Plugin {
   run(): string { return this.name.toUpperCase() + '!' }
 }
 
-console.log(boot(Shout, 'hello').run()) // 'HELLO!'
+console.log('2. boot(Shout) ->', boot(Shout, 'hello').run()) // 'HELLO!'
 
 // ── 3. `implements` is optional — the check is structural ────────────────
 // Never wrote `implements Plugin`, but has `constructor(string)` and `run()`.
@@ -51,7 +56,7 @@ class Silent {
   run(): string { return '' }
 }
 
-console.log(JSON.stringify(boot(Silent, 'x').run())) // '""'
+console.log('3. boot(Silent) ->', JSON.stringify(boot(Silent, 'x').run())) // '""'
 
 // ── 4. What gets rejected ────────────────────────────────────────────────
 
@@ -82,14 +87,16 @@ try {
   boot(new Echo('oops'), 'hello')
 } catch (e) {
   // The type error above is guarding against a REAL runtime crash:
-  console.log('runtime:', (e as Error).message) // runtime: Ctor is not a constructor
+  console.log('4. boot(instance) runtime ->', (e as Error).message) // Ctor is not a constructor
 }
 
 // ── 5. Why bother? A registry that creates plugins by name, later ────────
 const registry: Record<string, PluginConstructor> = { echo: Echo, shout: Shout }
 
-for (const key of ['echo', 'shout']) {
-  console.log(key, '→', boot(registry[key], 'hi').run())
+// Object.entries, not registry[key]: under noUncheckedIndexedAccess an index
+// lookup is `PluginConstructor | undefined` and would need a guard.
+for (const [key, Ctor] of Object.entries(registry)) {
+  console.log(`5. registry.${key} ->`, boot(Ctor, 'hi').run())
 }
-// echo  → hi
-// shout → HI!
+// 5. registry.echo -> hi
+// 5. registry.shout -> HI!
