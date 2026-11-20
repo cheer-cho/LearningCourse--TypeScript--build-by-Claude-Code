@@ -1380,5 +1380,5 @@ runtime can promise.
 
 ## Try it now
 
-→ `exercises/ex01.ts` through `ex12.ts`, then `exercises/puzzles.ts`, then
+→ `exercises/ex01_keyof_typeof.ts` through `ex12_assignability.ts`, then `exercises/puzzles.ts`, then
 `checkpoint.ts`. Check with `npm test -- 08`.

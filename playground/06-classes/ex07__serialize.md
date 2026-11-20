@@ -4,7 +4,7 @@ Demo: `npm run playground ex07__serialize`
 
 This expands gotcha 3 of the Mixins section in `06-classes/LESSON.md`.
 It imports your real `Logged` from the mixin exercise
-(`exercises/ex07.ts`).
+(`exercises/ex07_mixins.ts`).
 
 Mixins don't make separate objects. `Logged` is one class at the end of
 a chain, and `new Logged(...)` makes one object. Every layer's fields

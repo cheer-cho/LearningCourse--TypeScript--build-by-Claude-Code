@@ -348,5 +348,5 @@ on the one it falls into.
 
 ## Try it now
 
-→ `exercises/ex01.ts` — start there, then ex02–ex04.
+→ `exercises/ex01_annotations.ts` — start there, then ex02–ex04.
 Check with `npm test -- 01`.

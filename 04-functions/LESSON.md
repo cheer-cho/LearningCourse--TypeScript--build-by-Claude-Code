@@ -1057,5 +1057,5 @@ ship.name       // 'ship'
 
 ## Try it now
 
-→ `exercises/ex01.ts` through `ex07.ts`, then `checkpoint.ts`.
+→ `exercises/ex01_function_types.ts` through `ex07_higher_order.ts`, then `checkpoint.ts`.
 Check with `npm test -- 04`.

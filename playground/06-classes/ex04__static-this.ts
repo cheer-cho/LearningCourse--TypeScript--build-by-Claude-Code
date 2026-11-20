@@ -1,6 +1,6 @@
 // Detaching a static method: safe if it names the class, a crash if it uses `this`.
 // Run: npm run playground ex04__static-this
-import { TicketMachine } from '../../06-classes/exercises/ex04'
+import { TicketMachine } from '../../06-classes/exercises/ex04_static_members'
 
 // Your ex04: issue() says `TicketMachine.next++`, so it never reads `this`.
 const issue = TicketMachine.issue // detached — `this` is lost...

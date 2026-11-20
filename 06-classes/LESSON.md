@@ -1164,7 +1164,7 @@ function Fixed<TBase extends Constructor>(Base: TBase) {
 ```mermaid
   sequenceDiagram
     participant T as test file
-    participant M as ex07.ts
+    participant M as ex07_mixins.ts
     participant X as Taggable()
     T->>M: import { Post } from './ex07'
     M->>X: evaluate `class Post extends Taggable(Article)`
@@ -1337,5 +1337,5 @@ class.
 
 ## Try it now
 
-→ `exercises/ex01.ts` through `ex07.ts`, then `checkpoint.ts`.
+→ `exercises/ex01_class_basics.ts` through `ex07_mixins.ts`, then `checkpoint.ts`.
 Check with `npm test -- 06`.
