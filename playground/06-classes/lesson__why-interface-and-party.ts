@@ -1,3 +1,5 @@
+// Run: npm run playground lesson__why-interface-and-party
+
 // THE STORY: a tiny RPG. Four different "relationship" tools, each with a job.
 
 // 1. INTERFACE = the minimum promise "this thing can fight".

@@ -1,3 +1,5 @@
+// Run: npm run playground lesson__reading-angle-brackets
+
 // ── How to READ `class Registry<T extends { id: string }>` without Module 07 ──
 //
 // Think of `<T>` as a PARAMETER for a TYPE, exactly like `(x)` is a parameter
@@ -51,12 +53,12 @@ class SafeRegistry<T extends { id: string }> {
 // Fill the blank. T = { id: string; name: string } for THIS instance.
 const users = new SafeRegistry<{ id: string; name: string }>();
 users.add({ id: 'u1', name: 'Ada' });
-console.log(users.get('u1')?.name); // "Ada", and TS knows .name exists
+console.log('users.get(u1)?.name ->', users.get('u1')?.name); // "Ada", and TS knows .name exists
 
 // Fill the blank differently. T = { id: string; price: number } here.
 const products = new SafeRegistry<{ id: string; price: number }>();
 products.add({ id: 'p1', price: 9 });
-console.log(products.get('p1')?.price); // 9
+console.log('products.get(p1)?.price ->', products.get('p1')?.price); // 9
 
 // new SafeRegistry<{ name: string }>();
 //   ❌ TS2344: Type '{ name: string; }' does not satisfy the constraint '{ id: string; }'.
@@ -77,11 +79,11 @@ interface Product {
 // Same as Step 3, but the blank is filled with a NAME instead of a literal.
 const userRegistry = new SafeRegistry<UserT>();          // T = User
 userRegistry.add({ id: 'u2', name: 'Grace' });
-console.log(userRegistry.get('u2')?.name);              // "Grace"
+console.log('userRegistry.get(u2)?.name ->', userRegistry.get('u2')?.name);              // "Grace"
 
 const productRegistry = new SafeRegistry<Product>();    // T = Product
 productRegistry.add({ id: 'p2', price: 42 });
-console.log(productRegistry.get('p2')?.price);          // 42
+console.log('productRegistry.get(p2)?.price ->', productRegistry.get('p2')?.price);          // 42
 
 // The constraint checks the SHAPE, not the name. User has an `id: string`,
 // so it "satisfies" { id: string } even though it never mentions that type.
@@ -110,4 +112,4 @@ class Single<T extends { id: string }> {
   constructor(public item: T) {}
 }
 const one = new Single({ id: 'x', name: 'inferred' });   // T = { id: string; name: string }
-console.log(one.item.name);                               // TS knows .name exists
+console.log('one.item.name ->', one.item.name);                               // TS knows .name exists

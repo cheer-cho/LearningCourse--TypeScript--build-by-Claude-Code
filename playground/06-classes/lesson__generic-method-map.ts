@@ -1,3 +1,6 @@
+// A generic METHOD on a generic class: T is fixed per instance, U per call.
+// Run: npm run playground lesson__generic-method-map
+
 class Queue<T> {
   private items: T[] = []
   enqueue(item: T): void { this.items.push(item) }
@@ -18,9 +21,9 @@ const labels = nums.map(n => `#${n}`)  // U = string (inferred from the callback
 const flags = nums.map(n => n > 1)     // U = boolean (same queue, different call)
 //    ^? Queue<boolean>
 
-console.log(nums.toArray())    // [1, 2, 3]   — original untouched
-console.log(labels.toArray())  // ['#1', '#2', '#3']
-console.log(flags.toArray())   // [false, true, true]
+console.log('nums   ->', nums.toArray())    // [1, 2, 3]   — original untouched
+console.log('labels ->', labels.toArray())  // ['#1', '#2', '#3']
+console.log('flags  ->', flags.toArray())   // [false, true, true]
 
 // ❌ error TS2345: Argument of type '(s: string) => number' is not assignable
 //    to parameter of type '(item: number) => number'.

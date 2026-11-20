@@ -1,3 +1,5 @@
+// Run: npm run playground lesson__default-visibility
+
 // Q: with no modifier, are `team` and `members` public / private / protected?
 // A: public. No modifier === `public`. The two classes below are identical.
 
@@ -19,8 +21,8 @@ class RosterExplicit {
 
 const a = new Roster('Backend')
 const b = new RosterExplicit('Backend')
-console.log(a.team, a.members)   // ✅ readable from outside
-console.log(b.team, b.members)   // ✅ same thing
+console.log('Roster         ->', a.team, a.members)   // ✅ readable from outside
+console.log('RosterExplicit ->', b.team, b.members)   // ✅ same thing
 
 // Proof they are the same type: assignable both ways.
 const x: Roster = b

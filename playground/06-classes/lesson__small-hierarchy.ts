@@ -1,3 +1,5 @@
+// Run: npm run playground lesson__small-hierarchy
+
 // The four arrow kinds from "A small hierarchy", each in isolation.
 
 // ── 1. extends (solid): code AND type flow down ─────────────────────

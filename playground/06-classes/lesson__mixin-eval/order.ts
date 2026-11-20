@@ -1,3 +1,6 @@
+// When does a mixin run? Once, when the `class ... extends Mixin(Base)` line is evaluated.
+// Run: npm run playground playground/06-classes/lesson__mixin-eval/order.ts
+
 type Constructor<T = {}> = new (...args: any[]) => T
 
 function Taggable<TBase extends Constructor>(Base: TBase) {

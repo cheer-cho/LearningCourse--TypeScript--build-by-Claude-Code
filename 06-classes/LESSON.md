@@ -40,9 +40,9 @@ function built for you._
 
 > 🧪 **Playgrounds** (scratch files from Q&A on this diagram):
 >
-> - [`lesson__small-hierarchy.ts`](../playground/06-classes/lesson__small-hierarchy.ts) — the four arrow kinds, one each, plus proof that a class survives compilation and an interface does not.
-> - [`lesson__extends-vs-implements.ts`](../playground/06-classes/lesson__extends-vs-implements.ts) — the full grid: who may `extends` / `implements` whom (2 of 7 combos error).
-> - [`lesson__why-interface-and-party.ts`](../playground/06-classes/lesson__why-interface-and-party.ts) — a tiny RPG story showing each relationship tool's job.
+> - [`lesson__small-hierarchy.ts`](../playground/06-classes/lesson__small-hierarchy.ts) + [`.md`](../playground/06-classes/lesson__small-hierarchy.md) — the four arrow kinds, one each, plus proof that a class survives compilation and an interface does not.
+> - [`lesson__extends-vs-implements.ts`](../playground/06-classes/lesson__extends-vs-implements.ts) + [`.md`](../playground/06-classes/lesson__extends-vs-implements.md) — the full grid: who may `extends` / `implements` whom (2 of 7 combos error).
+> - [`lesson__why-interface-and-party.ts`](../playground/06-classes/lesson__why-interface-and-party.ts) + [`.md`](../playground/06-classes/lesson__why-interface-and-party.md) — a tiny RPG story showing each relationship tool's job.
 > - [`lesson__party-of-t.ts`](../playground/06-classes/lesson__party-of-t.ts) + [`.md`](../playground/06-classes/lesson__party-of-t.md) — what "class Party of T · T must satisfy" means.
 
 ## Minimal syntax
@@ -228,7 +228,7 @@ base constructor wrote (see _Field semantics_ near the end).
 
 ### Access modifiers — who may touch a member
 
-> 🧪 **Playground:** [`lesson__default-visibility.ts`](../playground/06-classes/lesson__default-visibility.ts) — no modifier means `public`; the same class written with and without `public` is assignable both ways.
+> 🧪 **Playground:** [`lesson__default-visibility.ts`](../playground/06-classes/lesson__default-visibility.ts) + [`.md`](../playground/06-classes/lesson__default-visibility.md) — no modifier means `public`; the same class written with and without `public` is assignable both ways.
 
 Modifiers limit _where_ a member can be used — the difference between
 "implementation detail" and "part of the API".
@@ -307,6 +307,8 @@ string key.
 
 > 🧪 **Playground:** [`lesson__type-predicate-recap.ts`](../playground/06-classes/lesson__type-predicate-recap.ts) — `value is Vault` is a type predicate (module 05, ex07): a boolean return that also narrows the argument in the `if` and in `.filter()`; diagram in [`lesson__type-predicate-recap.md`](../playground/06-classes/lesson__type-predicate-recap.md).
 
+> 🧪 **Playground:** [`ex03__private-fields.ts`](../playground/06-classes/ex03__private-fields.ts) + [`.md`](../playground/06-classes/ex03__private-fields.md) — `#private` hides at runtime, `private` doesn't; TS18009
+
 ### `readonly` — write once, and only shallowly
 
 `readonly` stops reassignment after construction. It says nothing about
@@ -331,9 +333,13 @@ class Ticket {
 new Ticket('T-1').tags.push('urgent'); // ✅ shallow: the array is still mutable
 ```
 
+> 🧪 **Playground:** [`cp__readonly-array.ts`](../playground/06-classes/cp__readonly-array.ts) + [`.md`](../playground/06-classes/cp__readonly-array.md) — read-only for outsiders: private `#field` + getter returning `readonly T[]`
+
+> 🧪 **Playground:** [`cp__readonly-check.ts`](../playground/06-classes/cp__readonly-check.ts) + [`.md`](../playground/06-classes/cp__readonly-check.md) — `@ts-expect-error` as a regression guard on the real checkpoint
+
 ### `private` makes a class nominal
 
-> 🧪 **Playground:** [`lesson__interface-extends-class.ts`](../playground/06-classes/lesson__interface-extends-class.ts) — an `interface` that `extends` a class with a `private` member can only be satisfied by that class's descendants.
+> 🧪 **Playground:** [`lesson__interface-extends-class.ts`](../playground/06-classes/lesson__interface-extends-class.ts) + [`.md`](../playground/06-classes/lesson__interface-extends-class.md) — an `interface` that `extends` a class with a `private` member can only be satisfied by that class's descendants.
 
 Types are structural: same shape, same type. A `private` (or `protected`)
 member breaks that rule on purpose — two classes with a private member of
@@ -563,6 +569,8 @@ class Box<T> {
 Why the second? `T` belongs to each _instance_ (`Box<number>`,
 `Box<string>`). The static side exists once, before any instance — there
 is no single `T` for it to mean.
+
+> 🧪 **Playground:** [`ex04__static-inherit.ts`](../playground/06-classes/ex04__static-inherit.ts) + [`.md`](../playground/06-classes/ex04__static-inherit.md) — `ClassName.x` vs `this.x` in a static method; a subclass write splits the counter
 
 ### `typeof Class` — the static side vs the instance side
 
@@ -796,7 +804,7 @@ can never carry code, so shared behaviour forces a class._
 
 ### `implements` — a compile-time promise
 
-> 🧪 **Playgrounds:** [`lesson__shape-check.ts`](../playground/06-classes/lesson__shape-check.ts) — three unrelated things pass as `Printable`, one class that wrote `implements` fails; [`lesson__extends-vs-implements.ts`](../playground/06-classes/lesson__extends-vs-implements.ts) — `class implements class` is legal but copies nothing.
+> 🧪 **Playgrounds:** [`lesson__shape-check.ts`](../playground/06-classes/lesson__shape-check.ts) + [`.md`](../playground/06-classes/lesson__shape-check.md) — three unrelated things pass as `Printable`, one class that wrote `implements` fails; [`lesson__extends-vs-implements.ts`](../playground/06-classes/lesson__extends-vs-implements.ts) — `class implements class` is legal but copies nothing.
 
 `implements` says "this class has at least this shape". The compiler
 checks it; nothing is inherited, nothing runs. A class may implement
@@ -911,7 +919,7 @@ distinguishing member (`readonly kind = 'email'` works well).
 ### Generic classes — the type parameter lives on the instance
 
 > 🧪 **Playground:** [`lesson__party-of-t.ts`](../playground/06-classes/lesson__party-of-t.ts) — `Party<T extends Combatant>`: a generic class with a constraint.
-> 🧪 **Playground:** [`lesson__reading-angle-brackets.ts`](../playground/06-classes/lesson__reading-angle-brackets.ts) — how to _read_ `<T extends {...}>` before Module 07: a class with a blank, then a constraint on the blank.
+> 🧪 **Playground:** [`lesson__reading-angle-brackets.ts`](../playground/06-classes/lesson__reading-angle-brackets.ts) + [`.md`](../playground/06-classes/lesson__reading-angle-brackets.md) — how to _read_ `<T extends {...}>` before Module 07: a class with a blank, then a constraint on the blank.
 
 `class Queue<T>` is one blueprint that produces many contracts:
 `Queue<number>`, `Queue<string>`. `T` is fixed when you `new`, per
@@ -979,6 +987,8 @@ new Registry<{ id: string; label: string }>();
 // ❌ error TS2344: Type 'number' does not satisfy the constraint '{ id: string; }'.
 new Registry<number>();
 ```
+
+> 🧪 **Playground:** [`lesson__generic-method-map.ts`](../playground/06-classes/lesson__generic-method-map.ts) + [`.md`](../playground/06-classes/lesson__generic-method-map.md) — class `T` fixed per instance vs method `U` chosen per call
 
 ### `this` as a return type — fluent chains that survive subclassing
 
@@ -1160,6 +1170,14 @@ function Fixed<TBase extends Constructor>(Base: TBase) {
    `this` includes `version`, `tags`, and anything another mixin added —
    whichever order the mixins were applied in.
 
+> 🧪 **Playground:** [`ex07__puzzle.ts`](../playground/06-classes/ex07__puzzle.ts) + [`.md`](../playground/06-classes/ex07__puzzle.md) — mixin construction order: why `createdAt` is missing inside the constructor
+
+> 🧪 **Playground:** [`ex07__serialize.ts`](../playground/06-classes/ex07__serialize.ts) + [`.md`](../playground/06-classes/ex07__serialize.md) — `JSON.stringify(this)` sees every mixin layer's fields
+
+> 🧪 **Playground:** [`lesson__mixin-greetable.ts`](../playground/06-classes/lesson__mixin-greetable.ts) + [`.md`](../playground/06-classes/lesson__mixin-greetable.md) — constrained mixin (TS2345); a mixin builds members, `&` only describes them
+
+> 🧪 **Playground:** [`lesson__mixin-eval/`](../playground/06-classes/lesson__mixin-eval/) + [`.md`](../playground/06-classes/lesson__mixin-eval.md) — a mixin runs once, at module load; a throwing mixin breaks every import
+
 ### Class expressions
 
 A class is a value, so it can be anonymous and assigned — exactly what a
@@ -1223,6 +1241,10 @@ const safe = counter.incArrow;
 safe(); // ✅ count is 1
 counter.inc.bind(counter)(); // ✅ also fine
 ```
+
+> 🧪 **Playground:** [`ex04__static-this.ts`](../playground/06-classes/ex04__static-this.ts) + [`.md`](../playground/06-classes/ex04__static-this.md) — detaching a static method: safe if it names the class, crashes if it uses `this`
+
+> 🧪 **Playground:** [`lesson__this-binding.ts`](../playground/06-classes/lesson__this-binding.ts) + [`.md`](../playground/06-classes/lesson__this-binding.md) — the call site sets `this`; what TS2684 does and doesn't catch
 
 ### Field semantics — `useDefineForClassFields`
 

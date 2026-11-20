@@ -87,5 +87,23 @@ with a caption, a comparison table, and gotchas.
 | 05 | `05-unions-narrowing/cp__contextual-param.md` | an unannotated arrow param takes its type from the `const`'s annotation |
 | 05 | `05-unions-narrowing/cp__never-call-narrowing.md` | a `never` helper narrows only if its type is written down |
 | 05 | `05-unions-narrowing/cp__unions-review.md` | checkpoint review: `String` vs `string`, annotate throwing helpers, check the tag |
+| 06 | `06-classes/cp__readonly-array.md` | read-only for outsiders: private `#field` + getter returning `readonly T[]` |
+| 06 | `06-classes/cp__readonly-check.md` | `@ts-expect-error` as a regression guard on the real checkpoint |
+| 06 | `06-classes/ex03__private-fields.md` | `#private` hides at runtime, `private` doesn't; TS18009 |
+| 06 | `06-classes/ex04__static-inherit.md` | `ClassName.x` vs `this.x` in a static method; a subclass write splits the counter |
+| 06 | `06-classes/ex04__static-this.md` | detaching a static method: safe if it names the class, crashes if it uses `this` |
+| 06 | `06-classes/ex07__puzzle.md` | mixin construction order: why `createdAt` is missing inside the constructor |
+| 06 | `06-classes/ex07__serialize.md` | `JSON.stringify(this)` sees every mixin layer's fields |
+| 06 | `06-classes/lesson__default-visibility.md` | no modifier means `public`; the "who reads / may it change" flowchart |
+| 06 | `06-classes/lesson__extends-vs-implements.md` | the full 7-combination `extends` / `implements` grid (TS2689, TS1176) |
+| 06 | `06-classes/lesson__generic-method-map.md` | class `T` fixed per instance vs method `U` chosen per call |
+| 06 | `06-classes/lesson__interface-extends-class.md` | a `private` member makes an interface that extends a class nominal |
+| 06 | `06-classes/lesson__mixin-eval.md` | a mixin runs once, at module load; a throwing mixin breaks every import |
+| 06 | `06-classes/lesson__mixin-greetable.md` | constrained mixin (TS2345); a mixin builds members, `&` only describes them |
 | 06 | `06-classes/lesson__party-of-t.md` | "class Party of T" — generic class with a constraint |
+| 06 | `06-classes/lesson__reading-angle-brackets.md` | reading `<T extends {...}>` as a typed blank with a rule |
+| 06 | `06-classes/lesson__shape-check.md` | the shape check compares members only; `implements` just checks early |
+| 06 | `06-classes/lesson__small-hierarchy.md` | the four arrow kinds; which ones move runtime code |
+| 06 | `06-classes/lesson__this-binding.md` | the call site sets `this`; what TS2684 does and doesn't catch |
 | 06 | `06-classes/lesson__type-predicate-recap.md` | type predicate recap |
+| 06 | `06-classes/lesson__why-interface-and-party.md` | why both `Combatant` and `Character` exist |

@@ -1,3 +1,6 @@
+// A constrained mixin, and why a mixin beats a type-level `&`.
+// Run: npm run playground lesson__mixin-greetable
+
 type Constructor<T = {}> = new (...args: any[]) => T
 
 function Greetable<TBase extends Constructor<{ name: string }>>(Base: TBase) {

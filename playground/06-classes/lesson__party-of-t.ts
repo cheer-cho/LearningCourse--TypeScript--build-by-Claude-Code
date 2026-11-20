@@ -1,3 +1,5 @@
+// Run: npm run playground lesson__party-of-t
+
 // "class Party of T" = a GENERIC class: Party<T>
 // "T must satisfy Combatant" = a CONSTRAINT: Party<T extends Combatant>
 
