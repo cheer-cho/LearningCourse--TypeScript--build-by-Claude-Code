@@ -1,5 +1,6 @@
 // 04 / ex03 — two ways to avoid the "separator on an empty tail" bug,
 // and what a tuple type buys you over an array type.
+// Run: npm run playground ex03__rest-and-tuple-spreads
 
 // ---------- 1. buildPath: branch vs. no branch ----------
 

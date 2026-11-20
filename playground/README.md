@@ -59,5 +59,20 @@ with a caption, a comparison table, and gotchas.
 | 03 | `03-objects-interfaces/ex06__merging-rules.md` | merge rules: same type collapses, different type TS2717, duplicate `type` TS2300 |
 | 03 | `03-objects-interfaces/ex06__scope-demo.md` | script vs module scope: global `const` collides, interfaces merge, `export {}` isolates |
 | 03 | `03-objects-interfaces/ex07__freshness.md` | when TS2353 fires: fresh literal vs variable, assertion, spread |
+| 04 | `04-functions/cp__default-vs-or.md` | default parameter vs `||` fallback: they differ only on `''` |
+| 04 | `04-functions/ex02__falsy-vs-missing.md` | `||` vs `??`, value by value |
+| 04 | `04-functions/ex02__presence-on-objects.md` | `in` vs `!== undefined` vs truthy on optional properties |
+| 04 | `04-functions/cp__functions-review.md` | let built-ins do it: `padStart`, `[].join`, `charAt(0)` vs `[0]` |
+| 04 | `04-functions/ex01__annotating-function-values.md` | where a function type can go, and why a declaration isn't one of them |
+| 04 | `04-functions/ex02__optional-vs-default.md` | `if (end)` vs `end !== undefined`; a default removes `\| undefined` |
+| 04 | `04-functions/ex02__three-forms.md` | optional vs default vs required-but-may-be-`undefined` |
+| 04 | `04-functions/ex03__rest-and-tuple-spreads.md` | the empty-tail `buildPath` trap; only a tuple spreads into fixed positions |
+| 04 | `04-functions/ex04__overloads.md` | union return vs exact return; the body sees only the implementation |
+| 04 | `04-functions/ex04__date-timezone.md` | `makeDate`: date-only string is UTC, `(y, m, d)` is local |
+| 04 | `04-functions/ex04__overloads2.md` | the two rules behind TS2394 and TS2769 |
+| 04 | `04-functions/ex04__why-overloads.md` | what the implementation signature alone loses |
+| 04 | `04-functions/ex04__overload-forms.md` | every place overloads can be written |
+| 04 | `04-functions/ex04__this-param.md` | a `this` parameter turns a detached-method crash into TS2684 |
+| 04 | `04-functions/ex06__void-quirk.md` | `void` on a target type is lenient; on your own signature it is strict |
 | 06 | `06-classes/lesson__party-of-t.md` | "class Party of T" — generic class with a constraint |
 | 06 | `06-classes/lesson__type-predicate-recap.md` | type predicate recap |

@@ -1,3 +1,6 @@
+// Optional `end?` vs a falsy check, and what a default does to `| undefined`.
+// Run: npm run playground ex02__optional-vs-default
+
 // 1. Truthiness vs. undefined — the falsy trap
 function rangeTruthy (start: number, end?: number): number[] {
   const out: number[] = []

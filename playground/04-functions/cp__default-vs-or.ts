@@ -1,4 +1,5 @@
 // Two ways to "fall back to a space". They differ on exactly one input.
+// Run: npm run playground cp__default-vs-or
 
 function padDefault(text: string, width: number, char = ' ') {
   return text.padStart(width, char)

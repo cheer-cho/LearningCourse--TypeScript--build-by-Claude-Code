@@ -282,6 +282,8 @@ Gotcha: `function f<T>(x: T)` is a *generic* function (module 07). If you
 see `<...>` right after a function name, read it as "introduce a type
 variable", never "use this alias".
 
+> 🧪 **Playground:** [`ex01__annotating-function-values.ts`](../playground/04-functions/ex01__annotating-function-values.ts) + [`.md`](../playground/04-functions/ex01__annotating-function-values.md) — where a function type can go, and why a declaration isn't one of them
+
 ### Optional parameters `?`
 
 `?` makes a parameter omittable by the caller. Inside the body it is
@@ -317,6 +319,8 @@ caller could never skip them.
 function bad(end?: number, text: string) {}
 ```
 
+> 🧪 **Playground:** [`ex02__three-forms.ts`](../playground/04-functions/ex02__three-forms.ts) + [`.md`](../playground/04-functions/ex02__three-forms.md) — optional vs default vs required-but-may-be-`undefined`
+
 ### Default parameters `= v`
 
 A default fills in a value when the caller passes nothing. The parameter
@@ -346,6 +350,8 @@ function clip(text: string, start = 0, end = text.length): string {
 
 Gotcha: a default can sit before a required parameter, but then callers
 must pass `undefined` to reach it. Put defaults last.
+
+> 🧪 **Playground:** [`ex02__optional-vs-default.ts`](../playground/04-functions/ex02__optional-vs-default.ts) + [`.md`](../playground/04-functions/ex02__optional-vs-default.md) — `if (end)` vs `end !== undefined`; a default removes `\| undefined`
 
 ### "Was it passed?" vs "is it truthy?"
 
@@ -395,6 +401,12 @@ including ones you probably meant to keep.*
 
 Rule: "was it passed?" ⇒ default parameter or `=== undefined`.
 "Is it null-ish?" ⇒ `??`. "Is it falsy?" ⇒ `||` — and think twice.
+
+> 🧪 **Playground:** [`cp__default-vs-or.ts`](../playground/04-functions/cp__default-vs-or.ts) + [`.md`](../playground/04-functions/cp__default-vs-or.md) — default parameter vs `||` fallback: they differ only on `''`
+
+> 🧪 **Playground:** [`ex02__falsy-vs-missing.ts`](../playground/04-functions/ex02__falsy-vs-missing.ts) + [`.md`](../playground/04-functions/ex02__falsy-vs-missing.md) — `||` vs `??`, value by value
+
+> 🧪 **Playground:** [`ex02__presence-on-objects.ts`](../playground/04-functions/ex02__presence-on-objects.ts) + [`.md`](../playground/04-functions/ex02__presence-on-objects.md) — `in` vs `!== undefined` vs truthy on optional properties
 
 ### Optional vs default vs rest — the comparison
 
@@ -493,6 +505,8 @@ Tuple element labels (`x: number`) are documentation only. A `readonly`
 tuple (`[7, 1] as const`) spreads too. Mixing is allowed: `(first: string,
 ...rest: [number, boolean])`.
 
+> 🧪 **Playground:** [`ex03__rest-and-tuple-spreads.ts`](../playground/04-functions/ex03__rest-and-tuple-spreads.ts) + [`.md`](../playground/04-functions/ex03__rest-and-tuple-spreads.md) — the empty-tail `buildPath` trap; only a tuple spreads into fixed positions
+
 ### `Parameters<typeof fn>` — a preview
 
 The built-in `Parameters` type reads a function's parameter list as a
@@ -547,6 +561,10 @@ the implementation signature is invisible to callers.*
 Order matters. Put the most specific overload first; if a wide one comes
 first it swallows every call.
 
+> 🧪 **Playground:** [`ex04__overloads.ts`](../playground/04-functions/ex04__overloads.ts) + [`.md`](../playground/04-functions/ex04__overloads.md) — union return vs exact return; the body sees only the implementation
+
+> 🧪 **Playground:** [`ex04__date-timezone.ts`](../playground/04-functions/ex04__date-timezone.ts) + [`.md`](../playground/04-functions/ex04__date-timezone.md) — `makeDate`: date-only string is UTC, `(y, m, d)` is local
+
 ### Overload errors: TS2394 and TS2769
 
 Two errors cover almost every overload mistake.
@@ -581,6 +599,8 @@ stamp(true)
 The implementation signature is not a fallback. Only the listed
 overloads exist for callers.
 
+> 🧪 **Playground:** [`ex04__overloads2.ts`](../playground/04-functions/ex04__overloads2.ts) + [`.md`](../playground/04-functions/ex04__overloads2.md) — the two rules behind TS2394 and TS2769
+
 ### Union parameter or overloads?
 
 Overloads are heavier than a union. Reach for them only when the
@@ -607,6 +627,8 @@ overloads. An implementation that is wider than any overload compiles
 fine and can hide mistakes — keep the overloads tight and the
 implementation body defensive.
 
+> 🧪 **Playground:** [`ex04__why-overloads.ts`](../playground/04-functions/ex04__why-overloads.ts) + [`.md`](../playground/04-functions/ex04__why-overloads.md) — what the implementation signature alone loses
+
 ### Overloads in interfaces and on methods
 
 Interfaces list overloads as repeated members. A function declaration
@@ -631,6 +653,8 @@ const settings: Settings = { read: readSetting }
 settings.read('theme')            // string | undefined
 settings.read('theme', 'light')   // string
 ```
+
+> 🧪 **Playground:** [`ex04__overload-forms.ts`](../playground/04-functions/ex04__overload-forms.ts) + [`.md`](../playground/04-functions/ex04__overload-forms.md) — every place overloads can be written
 
 ### Typing `this`
 
@@ -675,6 +699,8 @@ loose()
 Two helpers read the `this` type back: `ThisParameterType<typeof
 describe>` is `{ name: string }`, and `OmitThisParameter<typeof describe>`
 is `() => string` — the type of `describe.bind(obj)`.
+
+> 🧪 **Playground:** [`ex04__this-param.ts`](../playground/04-functions/ex04__this-param.ts) + [`.md`](../playground/04-functions/ex04__this-param.md) — a `this` parameter turns a detached-method crash into TS2684
 
 ### Arrow functions and lexical `this`; `this: void`
 
@@ -760,13 +786,15 @@ flowchart TD
 `undefined` has no such leniency. `() => undefined` means exactly that:
 
 ```ts
-// ❌ error TS2322: Type '() => number' is not assignable to type '() => undefined'.
+// ❌ error TS2322: Type 'number' is not assignable to type 'undefined'.
 const strict: () => undefined = () => 42
 ```
 
 Gotcha: the quirk is one-directional. A `() => void` callback's *result*
 is typed `void` and is unusable — `const x = cb()` gives you a `void`,
 not the `42`. If you need the value, type the callback's return.
+
+> 🧪 **Playground:** [`ex06__void-quirk.ts`](../playground/04-functions/ex06__void-quirk.ts) + [`.md`](../playground/04-functions/ex06__void-quirk.md) — `void` on a target type is lenient; on your own signature it is strict
 
 ### `never`-returning functions
 
@@ -1024,6 +1052,8 @@ ship.name       // 'ship'
 - `function f<Alias>()` does not apply `Alias` — it declares a new type
   parameter that shadows it.
 - A `function` that only throws infers `void`, not `never`. Annotate.
+
+> 🧪 **Playground:** [`cp__functions-review.ts`](../playground/04-functions/cp__functions-review.ts) + [`.md`](../playground/04-functions/cp__functions-review.md) — let built-ins do it: `padStart`, `[].join`, `charAt(0)` vs `[0]`
 
 ## Try it now
 

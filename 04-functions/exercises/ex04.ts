@@ -18,6 +18,8 @@
  */
 
 // TODO: add the two overload signatures above this implementation.
+export function toArray(x: string): string[]
+export function toArray(x: number): number[]
 export function toArray(x: string | number): string[] | number[] {
   if (typeof x === 'string') return x.split('')
   return [...String(x)].map(Number)
@@ -25,6 +27,18 @@ export function toArray(x: string | number): string[] | number[] {
 
 // TODO: add the two overload signatures, fix the implementation types,
 // then implement.
-export function makeDate(a: any, b?: any, c?: any): Date {
-  throw new Error('TODO: implement makeDate')
+export function makeDate(a: string): Date
+export function makeDate(a: number, b: number, c: number): Date
+export function makeDate(a: string | number, b?: number, c?: number): Date {
+  if (typeof a === 'string') {
+    // Date-only ISO strings ('2026-01-15') parse as UTC midnight; strings
+    // with a time and no offset parse as local. See ex04__date-timezone.
+    return new Date(a)
+  }
+  if (b === undefined || c === undefined) {
+    throw new Error(`
+      makeDate(number) requires year, month and day; got (${a}, ${b}, ${c})
+    `)
+  }
+  return new Date(a, b, c) // local
 }

@@ -1,3 +1,6 @@
+// Optional vs default vs required-but-may-be-undefined: who may omit the argument?
+// Run: npm run playground ex02__three-forms
+
 // A) optional        — may omit
 function a (name: string, greeting?: string) {}
 
