@@ -51,5 +51,13 @@ with a caption, a comparison table, and gotchas.
 | 02 | `02-basics/ex05__opposite-review.md` | `as Direction` switches checking off; `as const` keeps checking |
 | 02 | `02-basics/ex06__any-vs-unknown.md` | `any` = "trust me", `unknown` = "prove it first" |
 | 02 | `02-basics/ex07__never-demo.md` | exhaustive `switch` with `never`; a missed case names itself |
+| 03 | `03-objects-interfaces/cp__overrides-falsy.md` | applying optional overrides: `!== undefined` keeps `false`, a truthy guard drops it |
+| 03 | `03-objects-interfaces/ex02__readonly-existant.md` | `readonly` doesn't survive an alias; writes through a mutable name hit the original |
+| 03 | `03-objects-interfaces/ex03__split.md` | `split(' ')` vs `split(/\s+/)` vs `.filter(Boolean)` for counting words |
+| 03 | `03-objects-interfaces/ex05__type-union-vs-and.md` | `\|` vs `&` on object types; clashing literals make the intersection `never` |
+| 03 | `03-objects-interfaces/ex06__export-merge.md` | merging needs matching `export`; otherwise TS2395 and two separate halves |
+| 03 | `03-objects-interfaces/ex06__merging-rules.md` | merge rules: same type collapses, different type TS2717, duplicate `type` TS2300 |
+| 03 | `03-objects-interfaces/ex06__scope-demo.md` | script vs module scope: global `const` collides, interfaces merge, `export {}` isolates |
+| 03 | `03-objects-interfaces/ex07__freshness.md` | when TS2353 fires: fresh literal vs variable, assertion, spread |
 | 06 | `06-classes/lesson__party-of-t.md` | "class Party of T" — generic class with a constraint |
 | 06 | `06-classes/lesson__type-predicate-recap.md` | type predicate recap |

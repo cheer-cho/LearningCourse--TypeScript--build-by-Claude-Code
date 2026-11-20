@@ -1,4 +1,7 @@
 // The three rules that govern declaration merging.
+// Run: npm run playground merging-rules
+//   (type-checks clean: each expected error is claimed by a @ts-expect-error.
+//    Delete a directive to see the real error: TS2717 for B, TS2300 for C.)
 
 // 1. Same property, SAME type -> fine (duplicates collapse).
 interface A { id: string }
@@ -16,4 +19,4 @@ type C = { id: string }
 // @ts-expect-error Duplicate identifier 'C'.
 type C = { name: string }
 
-console.log(a)
+console.log('a (merged A) ->', a)

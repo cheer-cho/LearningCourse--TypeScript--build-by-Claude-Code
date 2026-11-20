@@ -13,14 +13,24 @@
  */
 
 // TODO: host and port readonly.
-export type Config = unknown
-
-// TODO: type the parameters, then implement (no mutation).
-export function withDebug(config: any, debug: any): any {
-  throw new Error('TODO: implement withDebug')
+export type Config = {
+  readonly host: string
+  readonly port: number
+  debug: boolean
 }
 
 // TODO: type the parameters, then implement (no mutation).
-export function movePort(config: any, port: any): any {
-  throw new Error('TODO: implement movePort')
+export function withDebug(config: Config, debug: boolean): Config {
+  return {
+    ...config,
+    debug
+  }
+}
+
+// TODO: type the parameters, then implement (no mutation).
+export function movePort(config: Config, port: number): Config {
+  return {
+    ...config,
+    port
+  }
 }

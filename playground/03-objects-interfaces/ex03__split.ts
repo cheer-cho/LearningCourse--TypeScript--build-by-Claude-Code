@@ -1,5 +1,5 @@
-// Playground: how split + filter handle whitespace
-// Run: npx tsx playground/03-objects-interfaces/ex03__split.ts
+// How split + filter handle whitespace (the countWords tokenizer in ex03).
+// Run: npm run playground ex03__split
 
 const samples = ['a b a', 'a  b', 'a\tb\nc', '  a b  ', '']
 
