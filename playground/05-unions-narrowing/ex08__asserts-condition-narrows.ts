@@ -1,3 +1,5 @@
+// `asserts condition` narrows by reading the expression you pass in.
+// Run: npm run playground asserts-condition-narrows
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
 }

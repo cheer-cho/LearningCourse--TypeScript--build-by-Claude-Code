@@ -74,5 +74,18 @@ with a caption, a comparison table, and gotchas.
 | 04 | `04-functions/ex04__overload-forms.md` | every place overloads can be written |
 | 04 | `04-functions/ex04__this-param.md` | a `this` parameter turns a detached-method crash into TS2684 |
 | 04 | `04-functions/ex06__void-quirk.md` | `void` on a target type is lenient; on your own signature it is strict |
+| 05 | `05-unions-narrowing/ex01__union-common-members.md` | only members every union part shares are usable (`Set` has `.size`, not `.length`) |
+| 05 | `05-unions-narrowing/ex01__narrowing-tour.md` | every narrowing tool in one file: typeof, instanceof, in, tag, predicate, truthiness, equality |
+| 05 | `05-unions-narrowing/ex04__sizeof-variants.md` | `string[]` vs `Set<string>`: `in` is fooled by an extra key, `instanceof` isn't |
+| 05 | `05-unions-narrowing/ex06__exhaustive-inline-never.md` | `assertNever` vs inline `never` vs `satisfies never` |
+| 05 | `05-unions-narrowing/ex07__predicate-wrapper.md` | TS 5.5+ infers a predicate for `(pet) => isFish(pet)` |
+| 05 | `05-unions-narrowing/ex07__predicate-wrapper-old.md` | before 5.5: a `: boolean` return throws the predicate away |
+| 05 | `05-unions-narrowing/ex08__predicate-vs-assertion.md` | predicate narrows a branch, assertion narrows the rest of the scope |
+| 05 | `05-unions-narrowing/ex08__asserts-condition-narrows.md` | `asserts condition` narrows whatever expression you pass |
+| 05 | `05-unions-narrowing/ex08__throw-travels-up.md` | an error rises through callers; rethrowing a blank `Error` loses the message |
+| 05 | `05-unions-narrowing/ex08__assert-null-guard.md` | `typeof v !== 'object' && v === null` is never true; `\|\|` is the fix |
+| 05 | `05-unions-narrowing/cp__contextual-param.md` | an unannotated arrow param takes its type from the `const`'s annotation |
+| 05 | `05-unions-narrowing/cp__never-call-narrowing.md` | a `never` helper narrows only if its type is written down |
+| 05 | `05-unions-narrowing/cp__unions-review.md` | checkpoint review: `String` vs `string`, annotate throwing helpers, check the tag |
 | 06 | `06-classes/lesson__party-of-t.md` | "class Party of T" — generic class with a constraint |
 | 06 | `06-classes/lesson__type-predicate-recap.md` | type predicate recap |

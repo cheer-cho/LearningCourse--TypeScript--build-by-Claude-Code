@@ -1,4 +1,5 @@
 // Does .length exist on every member of this union?
+// Run: npm run playground union-common-members
 function len(x: string | number[] | Set<string>): number {
   return x.length;
 }

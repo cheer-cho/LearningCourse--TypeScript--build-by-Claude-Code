@@ -1,4 +1,5 @@
 // Three ways to tell string[] from Set<string>. All narrow correctly.
+// Run: npm run playground sizeof-variants
 type Coll = string[] | Set<string>
 
 function viaIn(c: Coll): number {

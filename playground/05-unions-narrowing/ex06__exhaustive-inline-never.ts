@@ -1,4 +1,5 @@
-// Two ways to make a switch exhaustive. Both fail to COMPILE when a
+// Run: npm run playground exhaustive-inline-never
+// Three ways to make a switch exhaustive. All fail to COMPILE when a
 // variant is missing. They differ only in what happens at RUNTIME
 // when a bad value sneaks in from untyped JavaScript.
 import { type Shape, assertNever } from '../../05-unions-narrowing/exercises/ex06';

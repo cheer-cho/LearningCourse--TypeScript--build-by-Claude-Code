@@ -1,4 +1,5 @@
-// Review notes for checkpoint 5 — run: npx tsc --noEmit playground/05-unions-narrowing/cp__unions-review.ts
+// Review notes for checkpoint 5. Expect two type errors: TS2322 (section 1) and TS18046 (section 2).
+// Run: npm run playground unions-review
 
 // ── 1. `String` vs `string` ───────────────────────────────────────────
 function isStringWrapper(v: unknown): v is String {
@@ -39,4 +40,5 @@ type Msg = Chat | Notice
 function isChatByField(m: Msg): m is Chat { return 'text' in m }
 function isChatByTag(m: Msg): m is Chat { return m.type === 'chat' }
 const notice: Msg = { type: 'notice', text: 'server restarting' }
-console.log(isChatByField(notice), isChatByTag(notice))
+console.log('isChatByField(notice) ->', isChatByField(notice)) // true  <- wrong: Notice has `text` too
+console.log('isChatByTag(notice)   ->', isChatByTag(notice))   // false <- right
