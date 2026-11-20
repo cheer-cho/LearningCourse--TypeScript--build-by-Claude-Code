@@ -21,10 +21,10 @@
 
 export class Playlist {
   name: string;
-  // protected songs: string[] = [];
+  // readonly blocks REASSIGNMENT (`p.songs = []`), not mutation:
+  // `p.songs.push(...)` still works. To lock the contents, the type would
+  // need to be `readonly string[]` (see NOTES 06/ex07 follow-up).
   readonly songs: string[] = [];
-  // we can use readonly; readonly songs: string[] = []
-  // consumer can still push to it, read it, but cannot mutate it; eg reset using = []
 
   constructor(name: string) {
     this.name = name;
