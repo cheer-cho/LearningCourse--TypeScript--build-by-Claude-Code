@@ -403,6 +403,8 @@ new UserRepository();
 new Repository('x');
 ```
 
+> 🧪 **Playground:** [`lesson__private-constructors-singletons-factories.ts`](../playground/06-classes/lesson__private-constructors-singletons-factories.ts) + [`.md`](../playground/06-classes/lesson__private-constructors-singletons-factories.md) — `private` constructor (TS2673) vs `protected` (TS2674): singletons, subclass-only bases
+
 ### Parameter properties — declare and assign in one stroke
 
 Writing `id: number`, then `id: number` again in the constructor, then
@@ -597,13 +599,15 @@ const Ctor: typeof Robot = Robot; // static side (the constructor)
 type RobotInstance = InstanceType<typeof Robot>; // Robot, recovered from the ctor
 
 Ctor.factory; // 'Acme'
-// ❌ error TS2339: Property 'factory' does not exist on type 'Robot'.
+// ❌ error TS2576: Property 'factory' does not exist on type 'Robot'. Did you mean to access the static member 'Robot.factory' instead?
 unit.factory;
 ```
 
 `InstanceType<typeof X>` matters when you only hold the constructor — a
 class passed into a function, for example (see _interfaces describing
 constructors_ below).
+
+> 🧪 **Playground:** [`lesson__typeof-class-static-vs-instance.ts`](../playground/06-classes/lesson__typeof-class-static-vs-instance.ts) + [`.md`](../playground/06-classes/lesson__typeof-class-static-vs-instance.md) — `Robot` (instance) vs `typeof Robot` (constructor + statics), `InstanceType`, TS2576
 
 ### Inheritance — `extends`, `super`, and construction order
 
@@ -780,6 +784,8 @@ notifier instanceof Notifier; // true at runtime
 new Notifier();
 ```
 
+> 🧪 **Playground:** [`lesson__abstract-type-as-supertype.ts`](../playground/06-classes/lesson__abstract-type-as-supertype.ts) + [`.md`](../playground/06-classes/lesson__abstract-type-as-supertype.md) — why annotate with the abstract base instead of the concrete class: the annotation picks what the variable may hold *later* (any subclass), lets callers depend only on the contract, and hides subclass-only members until an `instanceof` guard narrows back.
+
 |                                  | `abstract class`                   | `interface`                |
 | -------------------------------- | ---------------------------------- | -------------------------- |
 | Can hold code and field values   | ✅                                 | ❌                         |
@@ -849,6 +855,9 @@ class Money implements Formatter {
 `implements` only ever talks about the **instance** side. To describe the
 constructor, write an interface with a `new` signature and pass the class
 as a value:
+
+> 🧪 **Playground:** [`lesson__construct-signatures-class-as-value.ts`](../playground/06-classes/lesson__construct-signatures-class-as-value.ts) + [`.md`](../playground/06-classes/lesson__construct-signatures-class-as-value.md) — `new (name: string): Plugin` describes the *static* side; `boot(Echo, …)` receives the class itself, any class with that constructor shape fits (with or without `implements`), and passing an instance is both a type error and a runtime crash. Also: why the file needs `export {}` (a bare `npx tsc file.ts` loads the DOM lib, which has its own global `Plugin`; the course config doesn't).
+> 🧪 **Playground:** [`lesson__construct-signatures-real-world.ts`](../playground/06-classes/lesson__construct-signatures-real-world.ts) + [`.md`](../playground/06-classes/lesson__construct-signatures-real-world.md) — where you already use this: vitest's `toThrow(RangeError)` takes the class for `instanceof`; ORM/DI style `getRepository(User)` takes the class as a key and infers `Repository<User>` from it; a runtime-chosen factory `new shapes[kind](2)`.
 
 ```ts
 interface Plugin {
