@@ -1,4 +1,4 @@
-import { circle } from "../09-modules-organization/exercises/ex02";
+import { circle } from "../../09-modules-organization/exercises/ex02";
 
 type Circle = { kind: 'circle'; radius: number; };
 type Square = { kind: 'square'; size: number; };

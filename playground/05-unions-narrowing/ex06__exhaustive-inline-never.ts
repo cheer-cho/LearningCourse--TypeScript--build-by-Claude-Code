@@ -1,7 +1,7 @@
 // Two ways to make a switch exhaustive. Both fail to COMPILE when a
 // variant is missing. They differ only in what happens at RUNTIME
 // when a bad value sneaks in from untyped JavaScript.
-import { type Shape, assertNever } from '../05-unions-narrowing/exercises/ex06';
+import { type Shape, assertNever } from '../../05-unions-narrowing/exercises/ex06';
 
 // --- Style A: helper function (what you wrote in ex06) ---------------
 function areaA(shape: Shape): number {

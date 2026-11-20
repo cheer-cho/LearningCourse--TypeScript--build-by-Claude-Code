@@ -1,4 +1,4 @@
-// Run: npx tsc --noEmit --strict playground/never-call-narrowing.ts
+// Run: npx tsc --noEmit --strict playground/05-unions-narrowing/cp__never-call-narrowing.ts
 // Question: after `if (bad) helper()`, does TS know we are still here
 // ONLY when `bad` was false?  Only if it knows helper() never returns.
 

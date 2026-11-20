@@ -1,4 +1,4 @@
-// Review notes for checkpoint 5 — run: npx tsc --noEmit playground/05-checkpoint-review.ts
+// Review notes for checkpoint 5 — run: npx tsc --noEmit playground/05-unions-narrowing/cp__unions-review.ts
 
 // ── 1. `String` vs `string` ───────────────────────────────────────────
 function isStringWrapper(v: unknown): v is String {
