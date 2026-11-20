@@ -3,7 +3,7 @@
 **This demo is meant to FAIL typecheck.** That failure is the lesson.
 
 ```bash
-npx tsc --noEmit --strict --moduleDetection auto playground/03-06__scope-demo/*.ts
+npx tsc --noEmit --strict --moduleDetection auto playground/03-objects-interfaces/ex06__scope-demo/*.ts
 ```
 
 Expected — exactly two errors, both about `shared`:

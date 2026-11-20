@@ -18,8 +18,8 @@
  * | What's checked? | is `() => number` assignable to `() => void`? | does the body match `: void`? |
  * | Result | ✅ allowed (result will be ignored) | ❌ error (body returns a value) |
  *
- * Run:  npx tsc --noEmit --strict playground/04-ex06__void-quirk.ts
- *       npx tsx playground/04-ex06__void-quirk.ts
+ * Run:  npx tsc --noEmit --strict playground/04-functions/ex06__void-quirk.ts
+ *       npx tsx playground/04-functions/ex06__void-quirk.ts
  */
 
 // ---------------------------------------------------------------

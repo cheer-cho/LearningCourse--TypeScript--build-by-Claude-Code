@@ -1,4 +1,4 @@
-// Run: npx tsc --noEmit --strict playground/contextual-param.ts
+// Run: npx tsc --noEmit --strict playground/05-unions-narrowing/cp__contextual-param.ts
 type Field = 'user' | 'text' | 'sentAt'
 
 // No annotation on `property` — the const's type supplies it.
