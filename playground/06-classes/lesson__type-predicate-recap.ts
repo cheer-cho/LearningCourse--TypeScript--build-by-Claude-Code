@@ -1,3 +1,5 @@
+// Run: npm run playground lesson__type-predicate-recap
+
 // Recap: `value is Vault` is a TYPE PREDICATE (Module 05, ex07).
 // It is a special return type. At runtime the function returns a boolean.
 // At compile time it tells the checker: "if I return true, `value` IS a Vault".

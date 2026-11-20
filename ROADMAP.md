@@ -49,9 +49,9 @@ preparation, everything after it is application.*
 - [x] ✦ Checkpoint 5 passed
 
 ### 06 — Classes
-- [ ] Lesson read
-- [ ] Exercises ex01–ex07
-- [ ] ✦ Checkpoint 6 passed
+- [x] Lesson read
+- [x] Exercises ex01–ex07
+- [x] ✦ Checkpoint 6 passed
 
 ### 07 — Generics
 - [ ] Lesson read

@@ -1,6 +1,8 @@
 # Type predicate — `value is Vault`
 
-Companion diagram for [`06-lesson__type-predicate-recap.ts`](./06-lesson__type-predicate-recap.ts).
+Demo: `npm run playground lesson__type-predicate-recap`
+
+Companion diagram for [`lesson__type-predicate-recap.ts`](./lesson__type-predicate-recap.ts).
 Preview this file in VS Code (`⇧⌘V`) to see the Mermaid render.
 
 ```mermaid

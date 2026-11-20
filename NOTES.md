@@ -38,6 +38,40 @@ that blank strings become `0`, so reject them first with
 front" (e.g. `'12px'`), `Number` = "is this text a number?".
 **Status:** open
 
+## 2026-10-10 — 06/ex07
+
+**Mistake:** Marked the mixin's `createdAt` as `private`, though the spec
+says the mixin _adds_ it for callers to read. `private` blocks every read
+from outside the class (TS2341), so `n.createdAt` failed to compile.
+Second modifier mix-up this module: ex01 first used `protected` where
+`readonly` was meant (commit 7994926).
+**Correction:** Choose a modifier by asking two questions: _who may read
+it?_ (everyone → no visibility modifier; subclasses → `protected`; this
+class only → `private`) and _may it change after construction?_ (no →
+`readonly`). Visibility and mutability are separate axes, so a public,
+never-reassigned field is `readonly`. Fixed to `readonly createdAt`. ✅
+**Follow-up (06/checkpoint, 2026-10-17):** Expected `readonly shapes: T[]`
+to stop outsiders pushing; it only blocks reassignment. Then put
+`readonly T[]` on the field itself and found the class couldn't push
+either. Learned the split: `readonly` on a _property_ locks reassignment,
+`readonly T[]` on a _type_ locks contents (for everyone), and "read-only
+for outsiders" = private mutable `#field` + getter returning `readonly T[]`.
+Fixed it on its own after a nudge. ✅
+**Status:** improving
+
+Mixin construction order (06/ex07 — `Logged = Timestamped(Serializable(Note))`):
+
+```mermaid
+sequenceDiagram
+  participant obj as the one object
+  Note over obj: new Logged('Groceries')
+  obj->>obj: Note constructor → adds title
+  obj->>obj: Serializable constructor → stringify = {"title"}  (1)
+  obj->>obj: Timestamped constructor → adds createdAt
+  Note over obj: new finishes, object is complete
+  obj->>obj: n.serialize() → {"title","createdAt"}  (2)
+```
+
 ## 2026-09-07 — 05/checkpoint
 
 **Mistake:** Wrote a guard as `value is String` (capital S). Read `String`

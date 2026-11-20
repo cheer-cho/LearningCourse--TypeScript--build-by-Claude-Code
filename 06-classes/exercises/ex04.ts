@@ -21,17 +21,19 @@
  *
  * Check: npm test -- 06 -t ex04
  */
-
-// TODO: fix modifiers/types, add the static block, implement.
 export class TicketMachine {
-  static START: any
-  static next: any
+  static readonly START: number = 100;
+  private static next: number;
 
-  static issue(): any {
-    throw new Error('TODO: implement issue')
+  static {
+    TicketMachine.next = TicketMachine.START;
   }
 
-  static reset(): any {
-    throw new Error('TODO: implement reset')
+  static issue(): number {
+    return TicketMachine.next++;
+  }
+
+  static reset(): void {
+    TicketMachine.next = TicketMachine.START;
   }
 }

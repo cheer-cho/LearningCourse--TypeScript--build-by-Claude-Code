@@ -1,3 +1,6 @@
+// Run: npm run playground lesson__shape-check
+//   (the type-check step shows the one ❌ error: TS2416 on Broken)
+
 interface Printable { print(): string }
 
 // The shape check: "does this have print(): string?"  Origin is ignored.
@@ -9,7 +12,7 @@ class Ticket {                            // 2. a class that never mentioned Pri
   print() { return "ticket" }
 }
 const note = { print: () => "note" }      // 3. a plain object literal
-function show(p: Printable) { console.log(p.print()) }
+function show(p: Printable) { console.log("show() ->", p.print()) }
 
 show(new Receipt())   // ✅ has print
 show(new Ticket())    // ✅ has print — never said implements, still passes

@@ -24,7 +24,7 @@ graph LR
 *A type satisfies the constraint when it has at least the members of
 `Combatant`. Extra members are fine. Missing members are an error.*
 
-Runnable version: `npx tsx playground/06-classes/lesson__party-of-t.ts`
+Demo: `npm run playground lesson__party-of-t`
 
 ```ts
 interface Combatant { name: string; attack(): number }

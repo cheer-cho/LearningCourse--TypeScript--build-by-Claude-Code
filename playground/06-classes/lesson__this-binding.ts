@@ -1,6 +1,6 @@
 // Dynamic `this`: a regular function's `this` is set by HOW you call it.
 // TypeScript's `this:` parameter just checks call sites at compile time.
-// Run: npx tsx playground/06-classes/lesson__this-binding.ts
+// Run: npm run playground lesson__this-binding
 
 export {}; // module scope, so `counter` doesn't clash with other playgrounds
 

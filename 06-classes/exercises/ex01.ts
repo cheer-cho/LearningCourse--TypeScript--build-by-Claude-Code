@@ -19,20 +19,22 @@
  * Check: npm test -- 06 -t ex01
  */
 
-// TODO: replace the `any`s with real types and implement.
 export class Playlist {
-  name: any
-  songs: any
+  name: string;
+  // readonly blocks REASSIGNMENT (`p.songs = []`), not mutation:
+  // `p.songs.push(...)` still works. To lock the contents, the type would
+  // need to be `readonly string[]` (see NOTES 06/ex07 follow-up).
+  readonly songs: string[] = [];
 
-  constructor(name: any) {
-    throw new Error('TODO: implement the Playlist constructor')
+  constructor(name: string) {
+    this.name = name;
   }
 
-  add(song: any): any {
-    throw new Error('TODO: implement add')
+  add(song: string): void {
+    this.songs.push(song);
   }
 
-  size(): any {
-    throw new Error('TODO: implement size')
+  size(): number {
+    return this.songs.length;
   }
 }
