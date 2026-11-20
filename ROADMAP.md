@@ -44,9 +44,9 @@ preparation, everything after it is application.*
 - [x] ✦ Checkpoint 4 passed
 
 ### 05 — Unions & Narrowing
-- [ ] Lesson read
-- [ ] Exercises ex01–ex08
-- [ ] ✦ Checkpoint 5 passed
+- [x] Lesson read
+- [x] Exercises ex01–ex08
+- [x] ✦ Checkpoint 5 passed
 
 ### 06 — Classes
 - [ ] Lesson read

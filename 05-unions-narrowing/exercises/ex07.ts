@@ -19,27 +19,27 @@
  */
 
 // Given — do not change.
-export type Fish = { name: string; swim: () => string }
-export type Bird = { name: string; fly: () => string }
+export type Fish = { name: string; swim: () => string };
+export type Bird = { name: string; fly: () => string };
 
 // Given — correct logic, but boolean narrows nothing across the call.
 export function looksLikeFish(pet: Fish | Bird): boolean {
-  return 'swim' in pet
+  return 'swim' in pet;
 }
 
 // TODO: declare as a type predicate (pet: Fish | Bird) => pet is Fish,
 // then implement.
-export function isFish(pet: any): any {
-  throw new Error('TODO: implement isFish')
+export function isFish(pet: Fish | Bird): pet is Fish {
+  return 'swim' in pet;
 }
 
 // TODO: declare as (value: unknown) => value is string, then implement.
-export function isString(value: any): any {
-  throw new Error('TODO: implement isString')
+export function isString(value: unknown): value is string {
+  return typeof value === 'string';
 }
 
 // TODO: type as (pets: (Fish | Bird)[]) => Fish[], then implement
 // with filter(isFish).
-export function swimmers(pets: any): any {
-  throw new Error('TODO: implement swimmers')
+export function swimmers(pets: (Fish | Bird)[]): Fish[] {
+  return pets.filter(isFish);
 }

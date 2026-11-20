@@ -1,4 +1,5 @@
-// Run: npx tsc --noEmit --strict playground/05-unions-narrowing/cp__contextual-param.ts
+// Contextual typing: an unannotated arrow parameter takes its type from the const's annotation.
+// Run: npm run playground contextual-param
 type Field = 'user' | 'text' | 'sentAt'
 
 // No annotation on `property` — the const's type supplies it.
@@ -9,6 +10,14 @@ const fail: (property: Field) => never = (property) => {
   throw new Error(`${property} ${check} ${wrong}`)
 }
 
-fail('user')
-// @ts-expect-error  'nope' is not a Field
-fail('nope')
+try {
+  fail('user')
+} catch (e) {
+  console.log("fail('user') ->", (e as Error).message)
+}
+try {
+  // @ts-expect-error  'nope' is not a Field
+  fail('nope')
+} catch (e) {
+  console.log("fail('nope') ->", (e as Error).message, '(types are erased; runtime does not check)')
+}

@@ -1,3 +1,5 @@
+// Same check, two signatures: `pet is Fish` (returns a boolean) vs `asserts pet is Fish` (throws).
+// Run: npm run playground predicate-vs-assertion
 type Fish = { name: string; swim: () => string };
 type Bird = { name: string; fly: () => string };
 

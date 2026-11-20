@@ -1,4 +1,5 @@
 // A tour of the narrowing diagram in 05/LESSON.md.
+// Run: npm run playground narrowing-tour
 // Each section is one branch of the flowchart, with a concrete value.
 // Hover the variables in your editor to watch the type shrink.
 

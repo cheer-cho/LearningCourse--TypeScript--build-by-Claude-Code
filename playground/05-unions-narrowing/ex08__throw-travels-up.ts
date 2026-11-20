@@ -1,4 +1,5 @@
 // How a thrown error travels up through function calls.
+// Run: npm run playground throw-travels-up
 
 function inner(): never {
   console.log('  inner: about to throw');

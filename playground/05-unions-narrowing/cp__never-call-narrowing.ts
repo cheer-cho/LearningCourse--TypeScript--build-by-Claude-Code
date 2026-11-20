@@ -1,4 +1,5 @@
-// Run: npx tsc --noEmit --strict playground/05-unions-narrowing/cp__never-call-narrowing.ts
+// Which "throwing helper" calls narrow the code after them? Expect two TS18046 errors (A and D).
+// Run: npm run playground never-call-narrowing
 // Question: after `if (bad) helper()`, does TS know we are still here
 // ONLY when `bad` was false?  Only if it knows helper() never returns.
 
@@ -46,6 +47,11 @@ function demoD() {
 function demoE() {
   if (typeof user !== 'string') return failA() // the branch now ends explicitly
   return user.toUpperCase()                  // ✓
+}
+
+// At runtime all five behave the same — the difference is only in the checker.
+for (const [label, demo] of [['A', demoA], ['B', demoB], ['C', demoC], ['D', demoD], ['E', demoE]] as const) {
+  console.log(`demo${label} ->`, demo())
 }
 
 export { demoA, demoB, demoC, demoD, demoE }

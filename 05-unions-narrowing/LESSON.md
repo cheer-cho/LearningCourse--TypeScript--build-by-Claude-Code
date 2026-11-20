@@ -115,6 +115,8 @@ Read the second line of that error message — tsc names the member that
 lacks the property (`Property 'radius' does not exist on type 'Square'`).
 That is the member you need to rule out.
 
+> 🧪 **Playground:** [`ex01__union-common-members.ts`](../playground/05-unions-narrowing/ex01__union-common-members.ts) + [`.md`](../playground/05-unions-narrowing/ex01__union-common-members.md) — only members every union part shares are usable (`Set` has `.size`, not `.length`)
+
 ### `T | undefined` vs optional `?:`
 
 `| undefined` says the value may be `undefined`. `?:` says the *key* may
@@ -758,6 +760,8 @@ Gotcha: plain object literals have no class, so `{ swim() {} } instanceof
 Fish` can never be written. Objects that are *not* class instances need
 `in`, a tag, or a predicate.
 
+> 🧪 **Playground:** [`ex04__sizeof-variants.ts`](../playground/05-unions-narrowing/ex04__sizeof-variants.ts) + [`.md`](../playground/05-unions-narrowing/ex04__sizeof-variants.md) — `string[]` vs `Set<string>`: `in` is fooled by an extra key, `instanceof` isn't
+
 ## Discriminated unions
 
 ### Discriminated unions — a shared literal tag
@@ -991,6 +995,8 @@ function feeIf(p: Payment): number {
 | `x satisfies never` | none | TS1360 at the `satisfies` |
 | explicit return type, no `default` | none | TS2366 on the function |
 
+> 🧪 **Playground:** [`ex06__exhaustive-inline-never.ts`](../playground/05-unions-narrowing/ex06__exhaustive-inline-never.ts) + [`.md`](../playground/05-unions-narrowing/ex06__exhaustive-inline-never.md) — `assertNever` vs inline `never` vs `satisfies never`
+
 ### What happens when a variant is added
 
 This is the payoff. Add a member to the union and **every** exhaustive
@@ -1134,6 +1140,10 @@ const longOnly: string[] = long
 When inference gives up, write the predicate yourself:
 `(n): n is string => n !== undefined && n.length > 3`.
 
+> 🧪 **Playground:** [`ex07__predicate-wrapper.ts`](../playground/05-unions-narrowing/ex07__predicate-wrapper.ts) + [`.md`](../playground/05-unions-narrowing/ex07__predicate-wrapper.md) — TS 5.5+ infers a predicate for `(pet) => isFish(pet)`
+
+> 🧪 **Playground:** [`ex07__predicate-wrapper-old.ts`](../playground/05-unions-narrowing/ex07__predicate-wrapper-old.ts) + [`.md`](../playground/05-unions-narrowing/ex07__predicate-wrapper-old.md) — before 5.5: a `: boolean` return throws the predicate away
+
 ### The compiler trusts your predicate
 
 A predicate is a *promise*. TypeScript never checks the body against the
@@ -1155,6 +1165,8 @@ double('abc')             // NaN, no error anywhere
 
 Rule: keep predicate bodies tiny and obvious, and test them at runtime
 like any other function. The type system amplifies whatever they say.
+
+> 🧪 **Playground:** [`cp__unions-review.ts`](../playground/05-unions-narrowing/cp__unions-review.ts) + [`.md`](../playground/05-unions-narrowing/cp__unions-review.md) — checkpoint review: `String` vs `string`, annotate throwing helpers, check the tag
 
 ## Assertion functions
 
@@ -1206,6 +1218,12 @@ function firstWord(text: string | undefined): string {
 it were inside `if (condition) { … }`. Node's `assert` module is typed
 this way.
 
+> 🧪 **Playground:** [`ex08__predicate-vs-assertion.ts`](../playground/05-unions-narrowing/ex08__predicate-vs-assertion.ts) + [`.md`](../playground/05-unions-narrowing/ex08__predicate-vs-assertion.md) — predicate narrows a branch, assertion narrows the rest of the scope
+
+> 🧪 **Playground:** [`ex08__asserts-condition-narrows.ts`](../playground/05-unions-narrowing/ex08__asserts-condition-narrows.ts) + [`.md`](../playground/05-unions-narrowing/ex08__asserts-condition-narrows.md) — `asserts condition` narrows whatever expression you pass
+
+> 🧪 **Playground:** [`ex08__throw-travels-up.ts`](../playground/05-unions-narrowing/ex08__throw-travels-up.ts) + [`.md`](../playground/05-unions-narrowing/ex08__throw-travels-up.md) — an error rises through callers; rethrowing a blank `Error` loses the message
+
 ### Assertions need an explicit annotation — TS2775
 
 Two rules. Without `asserts` in the signature the throw is real but
@@ -1247,6 +1265,10 @@ function shoutTyped(input: unknown): string {
 
 Simplest fix: write assertion functions as `function` declarations.
 
+> 🧪 **Playground:** [`cp__contextual-param.ts`](../playground/05-unions-narrowing/cp__contextual-param.ts) + [`.md`](../playground/05-unions-narrowing/cp__contextual-param.md) — an unannotated arrow param takes its type from the `const`'s annotation
+
+> 🧪 **Playground:** [`cp__never-call-narrowing.ts`](../playground/05-unions-narrowing/cp__never-call-narrowing.ts) + [`.md`](../playground/05-unions-narrowing/cp__never-call-narrowing.md) — a `never` helper narrows only if its type is written down
+
 ### Never cast the input to the target type inside a guard
 
 A guard's job is to *earn* the type. Casting the input to the target type
@@ -1278,6 +1300,8 @@ unknown" — which is the truth. The narrowing to `Account` is what the
 **signature** earns after the checks, never what a cast grants before
 them.
 
+> 🧪 **Playground:** [`ex08__assert-null-guard.ts`](../playground/05-unions-narrowing/ex08__assert-null-guard.ts) + [`.md`](../playground/05-unions-narrowing/ex08__assert-null-guard.md) — `typeof v !== 'object' && v === null` is never true; `\|\|` is the fix
+
 ## Beyond the exercises
 
 ### Narrowing decision flowchart
@@ -1307,6 +1331,8 @@ flowchart TD
 what kind of value remains — primitives, arrays, class instances, tagged
 objects, keyed objects — and wrap the check in a predicate or assertion
 when you need it in more than one place.*
+
+> 🧪 **Playground:** [`ex01__narrowing-tour.ts`](../playground/05-unions-narrowing/ex01__narrowing-tour.ts) + [`.md`](../playground/05-unions-narrowing/ex01__narrowing-tour.md) — every narrowing tool in one file: typeof, instanceof, in, tag, predicate, truthiness, equality
 
 ### `NonNullable`, `Exclude`, `Extract` — utilities on unions
 

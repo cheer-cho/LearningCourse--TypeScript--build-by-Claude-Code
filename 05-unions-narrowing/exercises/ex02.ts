@@ -20,16 +20,19 @@ export type Identified = { id: number }
 export type Serializable = { serialize: () => string }
 
 // TODO: Identified & Serializable
-export type Entity = unknown
+export type Entity = Identified & Serializable
 
 // TODO: ('a' | 'b') & ('b' | 'c')
-export type Overlap = unknown
+export type Overlap = ('a' | 'b') & ('b' | 'c')
 
 // TODO: string & number
-export type Impossible = unknown
+export type Impossible = string & number
 
 // TODO: type the parameters (number, string) and return (Entity),
 // then implement.
-export function makeEntity(id: any, payload: any): any {
-  throw new Error('TODO: implement makeEntity')
+export function makeEntity(id: number, payload: string): Entity {
+  return {
+    id,
+    serialize: () => `${id}:${payload}`
+  }
 }
