@@ -1,6 +1,6 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 import { z } from 'zod'
-import { loadSettings, SettingsSchema, type Result, type Settings } from './checkpoint'
+import { loadSettings, SettingsSchema, type Result, type Settings } from './checkpoint_12'
 
 describe('✦ checkpoint 12 — real-world typescript', () => {
   it('Settings is fully resolved: apiUrl is required, not optional', () => {

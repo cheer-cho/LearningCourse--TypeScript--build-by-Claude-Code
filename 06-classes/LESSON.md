@@ -1337,5 +1337,5 @@ class.
 
 ## Try it now
 
-→ `exercises/ex01_class_basics.ts` through `ex07_mixins.ts`, then `checkpoint.ts`.
+→ `exercises/ex01_class_basics.ts` through `ex07_mixins.ts`, then `checkpoint_06.ts`.
 Check with `npm test -- 06`.

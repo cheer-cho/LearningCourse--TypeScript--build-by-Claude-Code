@@ -9,7 +9,7 @@ import {
   type Err,
   type Ok,
   type Result,
-} from './checkpoint'
+} from './checkpoint_10'
 
 describe('✦ checkpoint 10 — async & error handling', () => {
   it('TimeoutError carries ms and builds its message/name', () => {

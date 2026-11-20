@@ -63,7 +63,7 @@ reading long documents.
   - SUMMARY.md — one-page cheat-sheet recap of the module: key syntax,
     rules, gotchas, a Mermaid mindmap of the concepts, and a 5–10
     question self-quiz.
-  - checkpoint.ts — a graded checkpoint exercise combining everything
+  - checkpoint_NN.ts — a graded checkpoint exercise combining everything
     in the module. Passing its tests = module complete.
 - In every stub file (exercises and checkpoints), each declaration
   carries its own plain-English comment directly above it: what the

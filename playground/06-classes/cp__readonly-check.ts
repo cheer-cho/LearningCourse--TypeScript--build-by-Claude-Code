@@ -1,6 +1,6 @@
 // Regression guard on the REAL checkpoint: outsiders can read `shapes` but not push.
 // Run: npm run playground cp__readonly-check
-import { Circle, ShapeCollection } from "../../06-classes/checkpoint";
+import { Circle, ShapeCollection } from "../../06-classes/checkpoint_06";
 
 // Compile-time check: outsiders can read `shapes` but not change it.
 // If the getter ever returns a mutable T[] again, the directive below

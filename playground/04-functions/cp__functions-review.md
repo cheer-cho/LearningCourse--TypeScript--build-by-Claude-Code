@@ -2,7 +2,7 @@
 
 Demo: `npm run playground cp__functions-review`
 
-This came from reviewing `04-functions/checkpoint.ts` (`pad`, `joinWith`,
+This came from reviewing `04-functions/checkpoint_04.ts` (`pad`, `joinWith`,
 `firstOf`). It best fits `## Common gotchas` in `04-functions/LESSON.md`.
 
 Three small facts about built-in methods. Each one removes a branch you

@@ -8,7 +8,7 @@ import {
   type TaskEvent,
   type TaskId,
   type TaskState,
-} from './checkpoint'
+} from './checkpoint_11'
 
 describe('✦ checkpoint 11 — advanced patterns', () => {
   it('TaskId is a branded string; raw strings are not assignable', () => {

@@ -1068,5 +1068,5 @@ finished evaluating.
 ## Try it now
 
 → `exercises/ex01_type_only_imports.ts` through `ex06_esm_cjs_interop.ts` (ex04 lives in
-`exercises/mathlib.d.ts`), then `checkpoint.ts`.
+`exercises/mathlib.d.ts`), then `checkpoint_09.ts`.
 Check with `npm test -- 09`.

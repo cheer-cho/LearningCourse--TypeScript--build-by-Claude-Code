@@ -2,7 +2,7 @@
  * ✦ CAPSTONE A — Typed CLI Task Manager (library core)
  *
  * This is a project, not a drill: build the in-memory core of a task
- * manager CLI. There is no `checkpoint.ts` for this module — this file
+ * manager CLI. There is no `checkpoint_13.ts` for this module — this file
  * IS the graded work. It draws on almost every earlier module:
  *   - 02 literal unions & exhaustive switches
  *   - 05 discriminated unions & narrowing

@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { DURATIONS, LIGHTS, next, simulate, type Light } from './checkpoint'
+import { DURATIONS, LIGHTS, next, simulate, type Light } from './checkpoint_02'
 
 describe('✦ checkpoint 2 — basics', () => {
   it('Light is the three-state union', () => {

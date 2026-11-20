@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { Circle, Rectangle, Shape, ShapeCollection, type HasArea } from './checkpoint'
+import { Circle, Rectangle, Shape, ShapeCollection, type HasArea } from './checkpoint_06'
 
 describe('✦ checkpoint 6 — classes', () => {
   it('Shape cannot be instantiated directly', () => {

@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { average, parseCelsius, readingAt, type Reading } from './checkpoint'
+import { average, parseCelsius, readingAt, type Reading } from './checkpoint_01'
 
 describe('✦ checkpoint 1 — setup & tooling', () => {
   it('Reading models the shape (sensor optional)', () => {

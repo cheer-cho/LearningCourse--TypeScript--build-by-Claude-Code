@@ -8,7 +8,7 @@ with the `readonly` — write once, and only shallowly section of
 
 [`cp__readonly-array`](./cp__readonly-array.md) teaches the pattern on a
 toy `Playlist`. This file does one different thing: it imports the
-**real** `ShapeCollection` from `06-classes/checkpoint.ts` and fails
+**real** `ShapeCollection` from `06-classes/checkpoint_06.ts` and fails
 type-checking if the pattern ever breaks.
 
 The trick is `// @ts-expect-error`. It says "the next line must be a

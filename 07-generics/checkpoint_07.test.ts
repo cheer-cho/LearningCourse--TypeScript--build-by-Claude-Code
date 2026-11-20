@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { err, firstWhere, ok, Store, type Result } from './checkpoint'
+import { err, firstWhere, ok, Store, type Result } from './checkpoint_07'
 
 type Product = { id: number; title: string; price: number }
 

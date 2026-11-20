@@ -1443,5 +1443,5 @@ and in memory. And it is why an `interface` can never be on the right of
 
 ## Try it now
 
-→ `exercises/ex01_unions.ts` through `ex08_assertion_functions.ts`, then `checkpoint.ts`.
+→ `exercises/ex01_unions.ts` through `ex08_assertion_functions.ts`, then `checkpoint_05.ts`.
 Check with `npm test -- 05`.

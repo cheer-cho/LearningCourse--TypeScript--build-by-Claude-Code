@@ -2,7 +2,7 @@
 
 Demo: `npm run playground unions-review`
 
-These are the review points from checkpoint 5 (`checkpoint.ts`, the
+These are the review points from checkpoint 5 (`checkpoint_05.ts`, the
 chat-message pipeline). They belong with "The compiler trusts your
 predicate" in `05-unions-narrowing/LESSON.md`: in each one, the code
 runs, but a type says something slightly untrue.
