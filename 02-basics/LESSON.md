@@ -1204,5 +1204,5 @@ JSON.stringify(prefs)             // '{"level":1,"tags":["a"]}' — note is drop
 
 ## Try it now
 
-→ `exercises/ex01.ts` through `ex08.ts`, then `checkpoint.ts`.
+→ `exercises/ex01_primitives.ts` through `ex08_inference.ts`, then `checkpoint_02.ts`.
 Check with `npm test -- 02`.

@@ -42,7 +42,7 @@ When the student asks to check an exercise:
 
 ## Checkpoints & progress
 
-- When the student passes a module's `checkpoint.ts` tests, tick the
+- When the student passes a module's `checkpoint_NN.ts` tests, tick the
   corresponding boxes in `ROADMAP.md` yourself and suggest what's next.
 - The maintenance command `npm run verify:solutions -- <NN>` checks the
   reference solutions themselves — it is for course upkeep, not grading.

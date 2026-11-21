@@ -1,5 +1,5 @@
 // Helper module for ex05 — complete, DO NOT EDIT.
-// ex05.ts augments EventMap below with a new event via `declare module`.
+// ex05_module_augmentation.ts augments EventMap below with a new event via `declare module`.
 
 export interface EventMap {
   click: { x: number; y: number }

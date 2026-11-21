@@ -33,10 +33,10 @@ for (const mod of moduleDirs) {
   if (!existsSync(solutions)) continue
   for (const file of readdirSync(solutions)) {
     if (!file.endsWith('.ts')) continue
-    const target =
-      file === 'checkpoint.ts'
-        ? path.join(verifyDir, mod, 'checkpoint.ts')
-        : path.join(verifyDir, mod, 'exercises', file)
+    // checkpoint_NN.ts sits at the module root; everything else is an exercise.
+    const target = /^checkpoint_\d{2}\.ts$/.test(file)
+      ? path.join(verifyDir, mod, file)
+      : path.join(verifyDir, mod, 'exercises', file)
     cpSync(path.join(solutions, file), target)
   }
 }

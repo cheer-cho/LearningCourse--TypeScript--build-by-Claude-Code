@@ -39,10 +39,13 @@ Lessons use Mermaid diagrams heavily. To see them rendered:
 3. Read `LESSON.md` — diagram-first, one section per concept. Its
    "Map of this module" table tells you which section prepares which
    exercise, so you can read it front to back or jump in as needed.
-4. Work through `exercises/ex01.ts`, `ex02.ts`, … in order. Each file has
-   instructions in comments and `TODO` stubs for you to fill in.
+4. Work through `exercises/ex01_<topic>.ts`, `ex02_<topic>.ts`, … in order
+   (e.g. `ex01_annotations.ts`). Each file has instructions in comments and
+   `TODO` stubs for you to fill in; its tests sit beside it in
+   `ex01_<topic>.test.ts`.
 5. Check yourself: `npm test -- 01` (replace `01` with the module number).
-6. Finish the module with `checkpoint.ts` — passing its tests means the
+6. Finish the module with `checkpoint_NN.ts` (e.g. `checkpoint_01.ts`) —
+   passing its tests means the
    module is complete. Your instructor will tick it off in the roadmap.
 7. Skim `SUMMARY.md` as a cheat-sheet and take its self-quiz.
 
@@ -86,9 +89,9 @@ your TypeScript teacher. Useful things to say:
 ```
 01-setup-tooling/     one folder per module
   LESSON.md           concise, diagram-first explanation
-  exercises/          ex01.ts, ex02.ts, ... + their tests
+  exercises/          ex01_<topic>.ts, ... + ex01_<topic>.test.ts
   solutions/          reference solutions — don't peek, ask for hints instead
-  checkpoint.ts       graded checkpoint; passing it = module complete
+  checkpoint_01.ts    graded checkpoint (+ checkpoint_01.test.ts); passing it = module complete
   SUMMARY.md          cheat-sheet + mindmap + self-quiz
 playground/           scratch space for experiments with your instructor
                       (each LESSON.md links its playgrounds under a 🧪 line)

@@ -1268,5 +1268,5 @@ const b: Report = loadC('r1', true)
 
 ## Try it now
 
-→ `exercises/ex01.ts` through `ex07.ts`, then `checkpoint.ts`.
+→ `exercises/ex01_branded_types.ts` through `ex07_handler_maps.ts`, then `checkpoint_11.ts`.
 Check with `npm test -- 11`.

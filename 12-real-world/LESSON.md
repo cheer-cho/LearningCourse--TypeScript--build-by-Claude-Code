@@ -1171,5 +1171,5 @@ expectTypeOf(load).returns.resolves.toEqualTypeOf<Page<number>>()   // a type as
 
 ## Try it now
 
-→ `exercises/ex01.ts` through `ex06.ts`, then `checkpoint.ts`.
+→ `exercises/ex01_react_types.ts` through `ex06_declaration_driven.ts`, then `checkpoint_12.ts`.
 Check with `npm test -- 12`.

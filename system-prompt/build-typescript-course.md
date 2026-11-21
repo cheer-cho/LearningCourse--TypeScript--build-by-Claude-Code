@@ -50,7 +50,8 @@ reading long documents.
   - LESSON.md — concise, diagram-first concept explanation following
     the readability rules above (short — teach the minimum needed to
     attempt exercises).
-  - exercises/ — numbered exercise files (ex01.ts, ex02.ts, ...) with
+  - exercises/ — numbered exercise files named by topic (ex01_primitives.ts,
+    ex02_arrays.ts, ...), each with an exNN_<topic>.test.ts, and
     TODO stubs and clear instructions in comments. Many exercises per
     topic, progressing from simple to hard.
   - solutions/ — reference solutions, kept out of my way (I should not
@@ -62,7 +63,7 @@ reading long documents.
   - SUMMARY.md — one-page cheat-sheet recap of the module: key syntax,
     rules, gotchas, a Mermaid mindmap of the concepts, and a 5–10
     question self-quiz.
-  - checkpoint.ts — a graded checkpoint exercise combining everything
+  - checkpoint_NN.ts — a graded checkpoint exercise combining everything
     in the module. Passing its tests = module complete.
 - In every stub file (exercises and checkpoints), each declaration
   carries its own plain-English comment directly above it: what the
