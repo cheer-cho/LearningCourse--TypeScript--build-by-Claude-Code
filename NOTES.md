@@ -12,6 +12,21 @@ quizzes and reviews. Format:
 
 ---
 
+## 2026-11-22 — 07/ex02
+
+**Mistake:** In `flatten<T>(nested: Array<T[]>)`, wrapped the inner loop in
+`if (item instanceof Array)`. The parameter type already promises every
+element is a `T[]`, so the check re-proves at runtime what the compiler
+has already checked. Worse, if it ever *were* false it would silently drop
+data instead of failing. (First attempt also delegated to `.map`/`.filter`/
+`.flat` despite the "use loops" rule; fixed after review.)
+**Correction:** Trust the types the signature declares; check at runtime only at
+**trust boundaries** where the type is `unknown` (JSON, user input). There,
+use `Array.isArray`, not `instanceof Array` (which fails across realms such as
+iframes and workers). Removed the check after one review, and also switched
+to `T[][]` and renamed the loop variable to `inner`. ✅
+**Status:** improving
+
 ## 2026-11-20 — 04/ex04
 
 **Mistake:** `makeDate(iso: string)` returned `new Date()` (now), ignoring

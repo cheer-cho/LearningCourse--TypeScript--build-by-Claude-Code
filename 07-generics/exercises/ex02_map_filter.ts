@@ -19,16 +19,33 @@
  */
 
 // TODO: two type parameters — element in, result out.
-export function mapArray<T, R>(items: T, fn: (input: T) => R): R {
-  return fn(items);
+export function mapArray<T, R>(items: T[], fn: (item: T, index: number) => R): R[] {
+  const results: R[] = [];
+  items.forEach((item, index) => {
+    results.push(fn(item, index));
+  });
+
+  return results;
 }
 
 // TODO: one type parameter is enough here — why?
-export function filterArray(items: any, pred: any): any {
-
+export function filterArray<T>(items: T[], pred: (item: T, index: number) => boolean): T[] {
+  const results: T[] = [];
+  items.forEach((item, index) => {
+    if (pred(item, index)) {
+      results.push(item);
+    }
+  });
+  return results;
 }
 
 // TODO: the parameter is an array OF arrays of T.
-export function flatten(nested: any): any {
-  throw new Error('TODO: implement flatten');
+export function flatten<T>(nested: T[][]): T[] {
+  const results: T[] = [];
+  for (const inner of nested) {
+    for (const item of inner) {
+      results.push(item);
+    }
+  }
+  return results;
 }
