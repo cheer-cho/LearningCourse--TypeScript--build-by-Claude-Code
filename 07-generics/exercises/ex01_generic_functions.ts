@@ -17,17 +17,26 @@
  */
 
 // TODO: add a type parameter and use it for the param and return type.
-export function identity(value: any): any {
-  throw new Error('TODO: implement identity')
+export function identity<T>(value: T): T {
+  return value;
 }
+
+const identity_1 = identity(42);
+const identity_2 = identity(['a', 'b']);
 
 // TODO: generic over the element type; remember strict indexing means
 // items[0] is already T | undefined.
-export function firstItem(items: any): any {
-  throw new Error('TODO: implement firstItem')
+export function firstItem<T>(items: T[]): T | undefined {
+  return items[0];
 }
+const firstItem_1 = firstItem([1, 2, 3]);
+const firstItem_2 = firstItem(['1', '2', '3']);
+const firstItem_3 = firstItem([1, '2', '3']);
 
 // TODO: generic — the array's element type must be the value's type.
-export function wrapInArray(value: any): any {
-  throw new Error('TODO: implement wrapInArray')
+export function wrapInArray<T>(value: T): T[] {
+  return [value];
 }
+
+const wrapInArray_1 = wrapInArray(5);
+const wrapInArray_2 = wrapInArray('5');
