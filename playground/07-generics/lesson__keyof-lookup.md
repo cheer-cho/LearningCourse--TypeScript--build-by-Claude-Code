@@ -27,7 +27,7 @@ flowchart LR
     K --> Check{"is 'age' in<br/>keyof T?"}
     Check -- "yes" --> Look["T[K] = T['age']"]
     Check -- "no" --> Err["❌ TS2345"]
-    Look --> Ret["returns number"]
+    Look --> Ret["return type: number"]
 ```
 
 *Caption: the arguments set T and K, the constraint checks K, and
@@ -38,20 +38,89 @@ because it is constrained to `keyof T`, which is a union of literals.
 
 ## Why a separate `K`?
 
-```mermaid
-flowchart TD
-    A["key: K<br/>(K = 'name')"] --> A2["T['name']<br/>= string ✅"]
-    B["key: keyof T<br/>(the whole union)"] --> B2["T[keyof T]<br/>= string | number | boolean 😕"]
+You pass `'name'` to both versions below. The question is whether the
+signature has a **slot** that records it.
+
+```ts
+const user = { name: 'Ada', age: 36, admin: true }
+
+function wide<T>(obj: T, key: keyof T) {
+  return obj[key]
+}
+const w = wide(user, 'name')         // type: string | number | boolean
+
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key]
+}
+const g = getProperty(user, 'name')  // type: string
 ```
 
-*Caption: a separate K remembers WHICH key you passed. Without it,
-TypeScript only knows "some key", so the result is every value type.*
+Reminder: `: T[K]` after the `)` is the **return type**, the type of
+what comes out. `return obj[key]` in the body is the **value** that comes out.
 
-| Signature | Rejects `'email'`? | Return type for `'name'` |
-| --- | --- | --- |
-| `(obj: Record<string, unknown>, key: string)` | no | `unknown` |
-| `<T>(obj: T, key: keyof T)` | yes | `string \| number \| boolean` |
-| `<T, K extends keyof T>(obj: T, key: K): T[K]` | yes | `string` ✅ |
+In `wide`, the type of `key` is fixed by the signature as `keyof T`,
+which is `'name' | 'age' | 'admin'`. TypeScript checks that `'name'`
+fits, then forgets it. The return type is `T[keyof T]`, the value at
+*some* key, so you get all three value types.
+
+In `getProperty`, `K` is a **type parameter**, an empty slot. Inference
+fills it from the argument, just as it fills `T`
+(see `lesson__how-T-is-picked.md`, step 2): argument `'name'` vs
+parameter `K` gives `K = 'name'`. So `T[K]` is `T['name']`, which is `string`.
+
+```mermaid
+flowchart TD
+    subgraph W["wide(user, 'name')"]
+        W1["key: keyof T<br/>(fixed by the signature)"] --> W2["'name' fits? ✅<br/>...then forgotten"]
+        W2 --> W3["return type: T[keyof T]<br/>= string | number | boolean"]
+    end
+    subgraph G["getProperty(user, 'name')"]
+        G1["key: K<br/>(a type parameter, an empty slot)"] --> G2["inference fills the slot:<br/>K = 'name'"]
+        G2 --> G3["return type: T[K] = T['name']<br/>= string"]
+    end
+```
+
+*Caption: both versions check the key. Only the one with a type
+parameter K remembers WHICH key it was.*
+
+Same idea, simpler:
+
+```ts
+function plain(x: number) {
+  return x
+}
+const p = plain(5)   // type: number (checked, then forgotten)
+
+function echo<X>(x: X) {
+  return x
+}
+const e = echo(5)    // type: 5 (captured)
+```
+
+`key: keyof T` is like `plain`. `key: K` is like `echo`.
+
+| Part of `K extends keyof T` | Job |
+| --- | --- |
+| `K` | the slot that **remembers** which key you passed |
+| `extends keyof T` | the rule that **checks** it's a real key |
+
+## Three versions compared
+
+`wide` and `getProperty` are defined above. Here is the third version,
+which has no generics at all:
+
+```ts
+function getLoose(obj: Record<string, unknown>, key: string): unknown {
+  return obj[key]
+}
+const l = getLoose(user, 'email')    // no error, type: unknown
+```
+
+| Function | `key` parameter type | Rejects `'email'`? | Return type for `'name'` |
+| --- | --- | --- | --- |
+| `getLoose` | `string` | no | `unknown` |
+| `wide` | `keyof T` | yes | `string \| number \| boolean` |
+| `getProperty` | `K` (with `K extends keyof T`) | yes | `string` ✅ |
 
 ## Gotchas
 

@@ -299,9 +299,53 @@ const pair = tuple(['a', 1]); // readonly ['a', 1]
 const check: readonly ['a', 1] = pair; // ✅ literals and tuple shape kept
 ```
 
-Gotcha: `<const T>` only affects _inference_. It does not make `T`
-readonly by itself — that is why the constraint says `readonly
-unknown[]`, so callers may pass any array.
+Why `readonly` in the constraint? `const` is what keeps the literals.
+`readonly` decides two other things: whether the result is read-only,
+and which arrays callers may pass in.
+
+```ts
+function ro<const T extends readonly unknown[]>(items: T): T {
+  return items;
+}
+function mut<const T extends unknown[]>(items: T): T {
+  return items;
+}
+function plain<T extends readonly unknown[]>(items: T): T {
+  return items;
+}
+
+const r: readonly ['a', 1] = ro(['a', 1]); // ✅ literals, tuple, readonly
+const m: ['a', 1] = mut(['a', 1]); // ✅ literals, tuple, mutable (TS 5.3+)
+const p: (string | number)[] = plain(['a', 1]); // no const → widened
+
+const fixed = ['x', 2] as const; // readonly ['x', 2]
+ro(fixed); // ✅ a readonly constraint accepts any array
+// ❌ error TS2345: Argument of type 'readonly ["x", 2]' is not assignable to parameter of type 'unknown[]'.
+mut(fixed);
+```
+
+| Signature                               | Inferred `T`           | Literals | Readonly | Accepts readonly input |
+| --------------------------------------- | ---------------------- | -------- | -------- | ---------------------- |
+| `const T extends readonly unknown[]`    | `readonly ['a', 1]`    | ✅       | ✅       | ✅                     |
+| `const T extends unknown[]`             | `['a', 1]`             | ✅       | ❌       | ❌                     |
+| `T extends readonly unknown[]` (no `const`) | `(string \| number)[]` | ❌   | ❌       | ✅                     |
+
+```mermaid
+flowchart LR
+    M["mutable array<br/>string[]"] -->|assignable| R["readonly array<br/>readonly string[]"]
+    R -.->|NOT assignable| M
+```
+
+_What to notice: a mutable array fits where a readonly one is expected,
+never the reverse. So a `readonly` constraint is the looser one — it
+welcomes every caller._
+
+Gotcha: in TS 5.0–5.2, `const T extends unknown[]` silently lost the
+literals. `const` wanted `readonly ['a', 1]`, that failed the mutable
+constraint, and inference fell back to `(string | number)[]`. TS 5.3
+fixed it, but most code you read still pairs `const` with `readonly`.
+Rule of thumb: if a function only _reads_ its array, constrain it to
+`readonly` — that promise is what lets callers pass any array.
 
 ### Inference from context: the return position counts too
 

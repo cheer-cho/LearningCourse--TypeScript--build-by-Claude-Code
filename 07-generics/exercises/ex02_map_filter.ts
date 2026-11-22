@@ -19,16 +19,16 @@
  */
 
 // TODO: two type parameters — element in, result out.
-export function mapArray(items: any, fn: any): any {
-  throw new Error('TODO: implement mapArray')
+export function mapArray<T, R>(items: T, fn: (input: T) => R): R {
+  return fn(items);
 }
 
 // TODO: one type parameter is enough here — why?
 export function filterArray(items: any, pred: any): any {
-  throw new Error('TODO: implement filterArray')
+
 }
 
 // TODO: the parameter is an array OF arrays of T.
 export function flatten(nested: any): any {
-  throw new Error('TODO: implement flatten')
+  throw new Error('TODO: implement flatten');
 }
