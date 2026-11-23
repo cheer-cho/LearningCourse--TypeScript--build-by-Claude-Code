@@ -187,3 +187,16 @@ new edge-case tests (`firstOrDefault([''], 'z')`, `describeBook` with
 `author: ''`) failed on the original `||` code. All fixed to `??`. Module 01
 LESSON now teaches `??` vs `||` right where the first fallback is needed.
 **Status:** improving
+
+## 2026-11-23 — 07/ex07
+
+**Mistake:** Wrote `Dict<K extends string, V = string>` when the spec fixed
+the key type to `string`. The extra required `K` meant plain `Dict` no longer
+compiled, and `Dict<number>` put `number` into the `K` slot (error: does not
+satisfy `string`).
+**Correction:** Type arguments fill slots **by position**, and any slot
+without a default is required. Make something a type parameter only if callers
+need to choose it. Here the key is always `string`, so `Dict<V = string> =
+Record<string, V>`.
+**Status:** fixed after one nudge. Quiz target: "what does `Dict<number>`
+bind, and why must defaulted params come last?"

@@ -19,14 +19,14 @@
  */
 
 // TODO: type parameter with a default.
-export type Dict = unknown
+export type Dict<V = string> = Record<string, V>;
 
 // TODO: add <T = string>; return a new empty array.
-export function emptyList(): any {
-  throw new Error('TODO: implement emptyList')
+export function emptyList<T = string>(): T[] {
+  return [];
 }
 
 // TODO: add <T = unknown>; JSON.parse the string and cast.
-export function parseAs(json: string): any {
-  throw new Error('TODO: implement parseAs')
+export function parseAs<T = unknown>(json: string): T {
+  return JSON.parse(json) as T;
 }
