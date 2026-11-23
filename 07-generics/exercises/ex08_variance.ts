@@ -15,12 +15,12 @@
  * Check: npm test -- 07 -t ex08
  */
 
-export type Animal = { name: string }
-export type Dog = { name: string; breed: string }
+export type Animal = { name: string; };
+export type Dog = { name: string; breed: string; };
 
 // TODO: parameter type readonly Animal[], return the names.
-export function describeAll(animals: any): any {
-  throw new Error('TODO: implement describeAll')
+export function describeAll(animals: readonly Animal[]): string[] {
+  return animals.map(animal => animal.name);
 }
 
 // Quiz — does each snippet COMPILE? Answer 'yes' or 'no'.
@@ -35,15 +35,15 @@ export function describeAll(animals: any): any {
 //   q5:  const takesAnimal: (a: Animal) => void =
 //          (d: Dog) => d.breed.length
 export const quiz: {
-  q1: 'yes' | 'no'
-  q2: 'yes' | 'no'
-  q3: 'yes' | 'no'
-  q4: 'yes' | 'no'
-  q5: 'yes' | 'no'
+  q1: 'yes' | 'no';
+  q2: 'yes' | 'no';
+  q3: 'yes' | 'no';
+  q4: 'yes' | 'no';
+  q5: 'yes' | 'no';
 } = {
-  q1: 'no', // TODO
-  q2: 'no', // TODO
-  q3: 'yes', // TODO
-  q4: 'no', // TODO
-  q5: 'yes', // TODO
-}
+  q1: 'yes', // Arrays are covariant: Dog[] → Animal[]
+  q2: 'yes', // ...and that's unsound. TS trades safety for convenience here
+  q3: 'no', // readonly prevent direct push
+  q4: 'yes', // Parameters are contravariant: an Animal-handler can handle any Dog
+  q5: 'no' // strictFunctionTypes blocks it: a Dog-handler would read .breed on a plain Animal
+};
