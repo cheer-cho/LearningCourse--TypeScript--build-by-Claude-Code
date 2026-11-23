@@ -19,16 +19,16 @@
  */
 
 // TODO: add the length constraint, then implement.
-export function longest(a: any, b: any): any {
-  throw new Error('TODO: implement longest')
+export function longest<T extends { length: number; }>(a: T, b: T): T {
+  return a.length >= b.length ? a : b;
 }
 
 // TODO: K must be a key of T; return type is the lookup T[K].
-export function getProperty(obj: any, key: any): any {
-  throw new Error('TODO: implement getProperty')
+export function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
 }
 
 // TODO: same constraint as getProperty, mapped over an array.
-export function pluck(items: any, key: any): any {
-  throw new Error('TODO: implement pluck')
+export function pluck<T, K extends keyof T>(items: T[], key: K): T[K][] {
+  return items.map((item) => item[key]);
 }
