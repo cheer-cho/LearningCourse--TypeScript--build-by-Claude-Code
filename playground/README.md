@@ -114,3 +114,4 @@ with a caption, a comparison table, and gotchas.
 | 06 | `06-classes/lesson__why-interface-and-party.md` | why both `Combatant` and `Character` exist |
 | 07 | `07-generics/lesson__how-T-is-picked.md` | how the compiler picks `T` (explicit → args → target → default → unknown) |
 | 07 | `07-generics/lesson__keyof-lookup.md` | `K extends keyof T` + `T[K]` typed property lookup |
+| 07 | `07-generics/ex04__default-type-param.md` | `E = Error` is a fallback: used only when `E` is left out; erased at runtime |

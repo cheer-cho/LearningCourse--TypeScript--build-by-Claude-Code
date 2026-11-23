@@ -38,4 +38,23 @@ describe('ex07/ex04 — generic type aliases & interfaces', () => {
     expect(unwrapOr(safeDivide(0, 5), -1)).toBe(0)
     expect(unwrapOr({ ok: true, value: '' } as const, 'fallback')).toBe('')
   })
+
+  it('unwrapOr is generic in E too, and the fallback must match T', () => {
+    // unwrapOr must not be tied to string errors — an Error object works too
+    const parsed: Result<number, Error> = { ok: false, error: new Error('bad input') }
+    const n = unwrapOr(parsed, 0)
+    expect(n).toBe(0)
+    expectTypeOf(n).toEqualTypeOf<number>()
+
+    // any error type works — here a union of status codes
+    const fetched: Result<string, 404 | 500> = { ok: false, error: 404 }
+    const s = unwrapOr(fetched, 'none')
+    expect(s).toBe('none')
+    expectTypeOf(s).toEqualTypeOf<string>()
+
+    // a fallback of a different type is a bug, not a reason to return a union
+    const age: Result<number, string> = { ok: true, value: 30 }
+    // @ts-expect-error — string fallback for a number Result must be rejected
+    unwrapOr(age, 'N/A')
+  })
 })

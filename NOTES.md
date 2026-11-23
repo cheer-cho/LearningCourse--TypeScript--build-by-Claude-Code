@@ -12,6 +12,24 @@ quizzes and reviews. Format:
 
 ---
 
+## 2026-11-23 — 07/ex04
+
+**Mistake:** Made `unwrapOr` half-generic: `<V, F>(result: Result<V, string>,
+fallback: F): V | F`. The error type stayed hard-coded to `string`, so the
+function rejects a `Result<number>` (whose `E` is `Error`). The type
+parameters were also spent on the wrong things: `F` lets the fallback be
+any type, so `unwrapOr(ages, 'N/A')` quietly returns `number | string`
+instead of flagging the mismatch. (First attempt hard-coded everything to
+`number`/`string`.)
+**Correction:** Give a type parameter to every type the *caller* decides
+(here `T` and `E`), and tie together the slots that must match (`fallback: T`,
+return `T`). Before calling a generic done, ask: "Is any concrete type left in
+the signature? Would a caller with a different type be rejected?"
+Fixed after one review to `<V, E>(result: Result<V, E>, fallback: V)`. A new
+ex04 test now guards both gaps. Leftover polish: `V | V` → `V`, and use `T` to
+match `Result<T, E>`.
+**Status:** improving
+
 ## 2026-11-22 — 07/ex02
 
 **Mistake:** In `flatten<T>(nested: Array<T[]>)`, wrapped the inner loop in
