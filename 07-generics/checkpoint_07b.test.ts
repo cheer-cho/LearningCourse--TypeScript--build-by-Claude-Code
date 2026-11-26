@@ -7,7 +7,7 @@ import {
   partition,
 } from './checkpoint_07b';
 
-type Person = { id: number; name: string; age: number };
+type Person = { id: number; name: string; age: number; };
 
 const people: readonly Person[] = [
   { id: 1, name: 'Ana', age: 31 },

@@ -26,8 +26,20 @@
 //   groupBy(['a', 'bb'], s => s.length)  -> Map<number, string[]>
 // A key must be a string or a number. Returning an object from `keyOf`
 // is a compile error.
-export function groupBy(items: any, keyOf: any): any {
-  throw new Error('TODO: implement groupBy');
+export function groupBy<T, L extends string | number>(items: readonly T[], keyOf: (item: T) => L): Map<L, T[]> {
+  const groups = new Map<L, T[]>();
+
+  items.forEach(item => {
+    const key = keyOf(item);
+    const groupItems = groups.get(key);
+    if (groupItems === undefined) {
+      groups.set(key, [item]);
+    } else {
+      groupItems.push(item);
+    }
+  });
+
+  return groups;
 }
 
 // ── indexBy ──────────────────────────────────────────────────────────
@@ -36,8 +48,14 @@ export function groupBy(items: any, keyOf: any): any {
 //   indexBy(people, 'id')   -> Map<number, Person>
 //   indexBy(people, 'name') -> Map<string, Person>
 //   indexBy(people, 'email') -> compile error
-export function indexBy(items: any, key: any): any {
-  throw new Error('TODO: implement indexBy');
+export function indexBy<T, K extends keyof T>(items: readonly T[], key: K): Map<T[K], T> {
+  const indexes = new Map<T[K], T>();
+
+  items.forEach(item => {
+    indexes.set(item[key], item);
+  });
+
+  return indexes;
 }
 
 // ── partition ────────────────────────────────────────────────────────
@@ -48,8 +66,28 @@ export function indexBy(items: any, key: any): any {
 //   partition(mixed, (x): x is string => typeof x === 'string')
 //     -> [string[], (string | number)[]]
 // (One function, two call shapes. Remember overloads from module 04.)
-export function partition(items: any, pred: any): any {
-  throw new Error('TODO: implement partition');
+export function partition<T, S extends T>(
+  items: readonly T[],
+  pred: (item: T) => item is S,
+): [pass: S[], fail: T[]];
+export function partition<T>(
+  items: readonly T[],
+  pred: (item: T) => boolean,
+): [pass: T[], fail: T[]];
+export function partition<T>(
+  items: readonly T[],
+  pred: (item: T) => boolean,
+): [pass: T[], fail: T[]] {
+  const pass: T[] = [];
+  const fail: T[] = [];
+  for (const item of items) {
+    if (pred(item)) {
+      pass.push(item);
+    } else {
+      fail.push(item);
+    }
+  }
+  return [pass, fail];
 }
 
 // ── coalesce ─────────────────────────────────────────────────────────
@@ -60,8 +98,8 @@ export function partition(items: any, pred: any): any {
 //   const level: 'info' | 'warn' | undefined = ...
 //   coalesce(level, 'info')  -> 'info' | 'warn'
 //   coalesce(level, 'debug') -> compile error ('debug' is not a level)
-export function coalesce(value: any, fallback: any): any {
-  throw new Error('TODO: implement coalesce');
+export function coalesce<T>(value: T | null | undefined, fallback: NoInfer<T>): T {
+  return value ?? fallback;
 }
 
 // ── Collection<T> ────────────────────────────────────────────────────
@@ -80,39 +118,44 @@ export function coalesce(value: any, fallback: any): any {
 //   - toArray(): readonly T[], a copy. Pushing onto it at runtime must
 //     not change the collection.
 export class Collection<T> {
-  constructor(items: any) {
-    throw new Error('TODO: implement constructor');
+  private readonly items: T[];
+  constructor(items: readonly T[]) {
+    this.items = [...items];
   }
 
-  static of(...items: any[]): any {
-    throw new Error('TODO: implement of');
+  static of<U>(...items: U[]): Collection<U> {
+    return new Collection(items);
   }
 
-  get size(): any {
-    throw new Error('TODO: implement size');
+  get size(): number {
+    return this.items.length;
   }
 
-  first(): any {
-    throw new Error('TODO: implement first');
+  first(): T | undefined {
+    return this.items[0];
   }
 
-  map(fn: any): any {
-    throw new Error('TODO: implement map');
+  map<R>(fn: (item: T, index: number) => R): Collection<R> {
+    return new Collection(this.items.map((item, i) => fn(item, i)));
   }
 
-  filter(pred: any): any {
-    throw new Error('TODO: implement filter');
+  filter(pred: (item: T) => boolean): Collection<T> {
+    return new Collection(this.items.filter(item => pred(item)));
   }
 
-  pluck(key: any): any {
-    throw new Error('TODO: implement pluck');
+  pluck<K extends keyof T>(key: K): Collection<T[K]> {
+    const results: T[K][] = [];
+    this.items.forEach(item => {
+      results.push(item[key]);
+    });
+    return new Collection(results);
   }
 
-  reduce(fn: any, initial: any): any {
-    throw new Error('TODO: implement reduce');
+  reduce<Acc>(fn: (acc: Acc, n: T) => Acc, initial: Acc): Acc {
+    return this.items.reduce((acc, n) => fn(acc, n), initial);
   }
 
-  toArray(): any {
-    throw new Error('TODO: implement toArray');
+  toArray(): readonly T[] {
+    return [...this.items];
   }
 }

@@ -57,7 +57,7 @@ preparation, everything after it is application.*
 - [x] Lesson read
 - [x] Exercises ex01–ex08
 - [x] ✦ Checkpoint 7 passed
-- [ ] ✦ Bonus Checkpoint 7b passed (applied: precise collection toolkit)
+- [x] ✦ Bonus Checkpoint 7b passed (applied: precise collection toolkit)
 - [ ] ✦ Bonus Checkpoint 7c passed (expert: variance, constructors, `const T`, recursion, growing types)
 
 ### 08 — Type System Deep-Dive

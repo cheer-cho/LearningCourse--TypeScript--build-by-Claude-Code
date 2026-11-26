@@ -200,3 +200,31 @@ need to choose it. Here the key is always `string`, so `Dict<V = string> =
 Record<string, V>`.
 **Status:** fixed after one nudge. Quiz target: "what does `Dict<number>`
 bind, and why must defaulted params come last?"
+
+## 2026-11-25 — 07/checkpoint 7b (groupBy)
+
+**Mistake 1:** Typed the key callback as `K extends keyof T` (with
+`items: T`), mixing up a key *function* (`p => ...`) with a key *name*
+(`'age'`, as in `pluck`/`indexBy`).
+**Correction:** A callback is typed `(item: T) => K`. `K` is inferred from
+what the callback returns, and the rule on it goes on the type parameter
+(`K extends string | number`). See `playground/07-generics/cp__callback-key.md`.
+**Mistake 2:** `map.has(k) ? map.get(k) : ...` gave TS2345 (`T[] | undefined`).
+**Correction:** `has` doesn't narrow `get`, because they are two separate
+calls. Call `get` once, store it in a `const`, and narrow that `const`.
+**Status:** both fixed after hints. Still writes `get(k) || []`: harmless for
+arrays, but it's the same `||` habit as the falsy ≠ missing entry. Quiz
+target: "why doesn't `has()` narrow `get()`?"
+
+## 2026-11-25 — 07/checkpoint 7b (partition)
+
+**Gap:** Couldn't connect module 04 overloads with module 05 type guards.
+Asked for the full solution for the guard overload.
+**Correction:** The kind of predicate picks the overload. Put the
+`(item: T) => item is S` overload first, then the plain `boolean` one. The
+implementation is hidden from callers, so every allowed call shape needs its
+own overload line, even one that looks exactly like the implementation.
+See `playground/07-generics/cp__guard-overload.md`.
+**Status:** understood after the solution was explained. Quiz target: "why does
+the guard overload go first?" and "what breaks if you delete the
+overload that matches the implementation?"
