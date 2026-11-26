@@ -11,26 +11,33 @@
 // An operation that either succeeded with a value or failed with an
 // error. E defaults to string.
 //   Result<T, E = string> = { ok: true; value: T } | { ok: false; error: E }
-export type Result<T, E = string> = unknown
+export type Result<T, E = string> =
+  { ok: true; value: T; }
+  | { ok: false; error: E; };
 
 // Build the success case.
 //   ok<T>(value): Result<T, never>       ok(42) -> { ok: true, value: 42 }
-export function ok(value: any): any {
-  throw new Error('TODO: implement ok')
+export function ok<T>(value: T): Result<T, never> {
+  return { ok: true, value };
 }
 
 // Build the failure case.
 //   err<E>(error): Result<never, E>      err('x') -> { ok: false, error: 'x' }
-export function err(error: any): any {
-  throw new Error('TODO: implement err')
+export function err<E>(error: E): Result<never, E> {
+  return { ok: false, error };
 }
 
 // The first element matching `pred`, as an ok-Result — or err('not
 // found') when nothing matches. Generic in T; takes a READONLY array.
 //   firstWhere([1, 2, 3], n => n > 1) -> ok(2)
 //   Signature: (items: readonly T[], pred: (item: T) => boolean) => Result<T>
-export function firstWhere(items: any, pred: any): any {
-  throw new Error('TODO: implement firstWhere')
+export function firstWhere<T>(items: readonly T[], pred: (item: T) => boolean): Result<T> {
+  for (let i = 0; i < items.length; i++) {
+    if (pred(items[i]!)) {
+      return ok(items[i]!);
+    }
+  }
+  return { ok: false, error: 'not found' };
 }
 
 // A tiny typed store. Constrain T so every item has a numeric id:
@@ -41,20 +48,26 @@ export function firstWhere(items: any, pred: any): any {
 //   - getAll(): readonly T[]
 //   - pluck(key): that property from every stored item (keyof
 //     constraint, like ex06) — pluck('title') -> string[]
-export class Store<T> {
-  add(item: any): any {
-    throw new Error('TODO: implement add')
+export class Store<T extends { id: number; }> {
+  private items: T[] = [];
+  add(item: T): T {
+    this.items.push(item);
+    return item;
   }
 
-  get(id: any): any {
-    throw new Error('TODO: implement get')
+  get(id: number): Result<T> {
+    const item = this.items.find(({ id: itemId }) => itemId === id);
+    if (!item) {
+      return { ok: false, error: 'not found' };
+    }
+    return { ok: true, value: item };
   }
 
-  getAll(): any {
-    throw new Error('TODO: implement getAll')
+  getAll(): readonly T[] {
+    return this.items;
   }
 
-  pluck(key: any): any {
-    throw new Error('TODO: implement pluck')
+  pluck<K extends keyof T>(key: K): T[K][] {
+    return this.items.map(item => item[key]);
   }
 }
