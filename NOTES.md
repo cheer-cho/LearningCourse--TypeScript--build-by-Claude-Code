@@ -12,6 +12,39 @@ quizzes and reviews. Format:
 
 ---
 
+## 2026-11-23 — 07/ex04
+
+**Mistake:** Made `unwrapOr` half-generic: `<V, F>(result: Result<V, string>,
+fallback: F): V | F`. The error type stayed hard-coded to `string`, so the
+function rejects a `Result<number>` (whose `E` is `Error`). The type
+parameters were also spent on the wrong things: `F` lets the fallback be
+any type, so `unwrapOr(ages, 'N/A')` quietly returns `number | string`
+instead of flagging the mismatch. (First attempt hard-coded everything to
+`number`/`string`.)
+**Correction:** Give a type parameter to every type the *caller* decides
+(here `T` and `E`), and tie together the slots that must match (`fallback: T`,
+return `T`). Before calling a generic done, ask: "Is any concrete type left in
+the signature? Would a caller with a different type be rejected?"
+Fixed after one review to `<V, E>(result: Result<V, E>, fallback: V)`. A new
+ex04 test now guards both gaps. Leftover polish: `V | V` → `V`, and use `T` to
+match `Result<T, E>`.
+**Status:** improving
+
+## 2026-11-22 — 07/ex02
+
+**Mistake:** In `flatten<T>(nested: Array<T[]>)`, wrapped the inner loop in
+`if (item instanceof Array)`. The parameter type already promises every
+element is a `T[]`, so the check re-proves at runtime what the compiler
+has already checked. Worse, if it ever *were* false it would silently drop
+data instead of failing. (First attempt also delegated to `.map`/`.filter`/
+`.flat` despite the "use loops" rule; fixed after review.)
+**Correction:** Trust the types the signature declares; check at runtime only at
+**trust boundaries** where the type is `unknown` (JSON, user input). There,
+use `Array.isArray`, not `instanceof Array` (which fails across realms such as
+iframes and workers). Removed the check after one review, and also switched
+to `T[][]` and renamed the loop variable to `inner`. ✅
+**Status:** improving
+
 ## 2026-11-20 — 04/ex04
 
 **Mistake:** `makeDate(iso: string)` returned `new Date()` (now), ignoring
@@ -154,3 +187,44 @@ new edge-case tests (`firstOrDefault([''], 'z')`, `describeBook` with
 `author: ''`) failed on the original `||` code. All fixed to `??`. Module 01
 LESSON now teaches `??` vs `||` right where the first fallback is needed.
 **Status:** improving
+
+## 2026-11-23 — 07/ex07
+
+**Mistake:** Wrote `Dict<K extends string, V = string>` when the spec fixed
+the key type to `string`. The extra required `K` meant plain `Dict` no longer
+compiled, and `Dict<number>` put `number` into the `K` slot (error: does not
+satisfy `string`).
+**Correction:** Type arguments fill slots **by position**, and any slot
+without a default is required. Make something a type parameter only if callers
+need to choose it. Here the key is always `string`, so `Dict<V = string> =
+Record<string, V>`.
+**Status:** fixed after one nudge. Quiz target: "what does `Dict<number>`
+bind, and why must defaulted params come last?"
+
+## 2026-11-25 — 07/checkpoint 7b (groupBy)
+
+**Mistake 1:** Typed the key callback as `K extends keyof T` (with
+`items: T`), mixing up a key *function* (`p => ...`) with a key *name*
+(`'age'`, as in `pluck`/`indexBy`).
+**Correction:** A callback is typed `(item: T) => K`. `K` is inferred from
+what the callback returns, and the rule on it goes on the type parameter
+(`K extends string | number`). See `playground/07-generics/cp__callback-key.md`.
+**Mistake 2:** `map.has(k) ? map.get(k) : ...` gave TS2345 (`T[] | undefined`).
+**Correction:** `has` doesn't narrow `get`, because they are two separate
+calls. Call `get` once, store it in a `const`, and narrow that `const`.
+**Status:** both fixed after hints. Still writes `get(k) || []`: harmless for
+arrays, but it's the same `||` habit as the falsy ≠ missing entry. Quiz
+target: "why doesn't `has()` narrow `get()`?"
+
+## 2026-11-25 — 07/checkpoint 7b (partition)
+
+**Gap:** Couldn't connect module 04 overloads with module 05 type guards.
+Asked for the full solution for the guard overload.
+**Correction:** The kind of predicate picks the overload. Put the
+`(item: T) => item is S` overload first, then the plain `boolean` one. The
+implementation is hidden from callers, so every allowed call shape needs its
+own overload line, even one that looks exactly like the implementation.
+See `playground/07-generics/cp__guard-overload.md`.
+**Status:** understood after the solution was explained. Quiz target: "why does
+the guard overload go first?" and "what breaks if you delete the
+overload that matches the implementation?"

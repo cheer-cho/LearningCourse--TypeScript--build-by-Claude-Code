@@ -14,24 +14,36 @@
  *
  * Check: npm test -- 07 -t ex04
  */
-
 // TODO: give Box a type parameter and the value property.
-export type Box<T> = unknown
+export type Box<T> = {
+  value: T;
+};
 
 // TODO: infer T from the argument, return Box<T>.
-export function boxOf(value: any): any {
-  throw new Error('TODO: implement boxOf')
+export function boxOf<T>(value: T): Box<T> {
+  return {
+    value
+  };
 }
 
 // TODO: the two-armed union described above.
-export type Result<T, E> = unknown
+export type Result<T, E = Error> =
+  { ok: true, value: T; }
+  | { ok: false; error: E; };
 
 // TODO: return type Result<number, string>, then implement.
-export function safeDivide(a: number, b: number): any {
-  throw new Error('TODO: implement safeDivide')
+export function safeDivide(a: number, b: number): Result<number, string> {
+  if (b == 0) {
+    return { ok: false, error: 'division by zero' };
+  }
+  return { ok: true, value: a / b };
 }
 
 // TODO: two type parameters; narrow on result.ok.
-export function unwrapOr(result: any, fallback: any): any {
-  throw new Error('TODO: implement unwrapOr')
+export function unwrapOr<T, E>(result: Result<T, E>, fallback: T): T {
+  if (!result.ok) {
+    return fallback;
+  }
+
+  return result.value;
 }

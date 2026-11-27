@@ -20,16 +20,28 @@
  */
 
 // TODO: two type parameters, tuple pairs out.
-export function zip(as: any, bs: any): any {
-  throw new Error('TODO: implement zip')
+export function zip<A, B>(as: A[], bs: B[]): Array<[A, B]> {
+  const length = Math.min(as.length, bs.length);
+  const pairs: Array<[A, B]> = [];
+  for (let i = 0; i < length; i++) {
+    pairs.push([as[i]!, bs[i]!]);
+  }
+  return pairs;
 }
 
 // TODO: tuple [A, B] in, tuple [B, A] out.
-export function swap(pair: any): any {
-  throw new Error('TODO: implement swap')
+export function swap<A, B>(pair: [A, B]): [B, A] {
+  return [pair[1], pair[0]];
 }
 
 // TODO: three type parameters — keys, values in, values out.
-export function mapObject(obj: any, fn: any): any {
-  throw new Error('TODO: implement mapObject')
+export function mapObject<K extends string, V, R>(
+  obj: Record<K, V>,
+  fn: (value: V, key: K) => R,
+): Record<K, R> {
+  const results = {} as Record<K, R>;
+  for (const [key, value] of Object.entries(obj)) {
+    results[key as K] = fn(value as V, key as K);
+  }
+  return results;
 }

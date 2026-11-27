@@ -9,13 +9,21 @@
     "typecheck": "tsc --noEmit",
     "playground": "node scripts/playground.mjs",
     "verify:solutions": "node scripts/verify-solutions.mjs",
-    "verify:lessons": "node scripts/verify-lessons.mjs"
+    "verify:lessons": "node scripts/verify-lessons.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint ."
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^24.0.0",
     "@types/react": "^19.2.18",
+    "eslint": "^10.15.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.10.1",
     "tsx": "^4.19.0",
     "typescript": "^5.9.0",
+    "typescript-eslint": "^8.73.0",
     "vitest": "^3.2.0",
     "zod": "^4.4.3"
   }

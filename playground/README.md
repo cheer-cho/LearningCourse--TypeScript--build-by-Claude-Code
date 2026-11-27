@@ -112,3 +112,12 @@ with a caption, a comparison table, and gotchas.
 | 06 | `06-classes/lesson__type-predicate-recap.md` | type predicate recap |
 | 06 | `06-classes/lesson__typeof-class-static-vs-instance.md` | `Robot` (instance) vs `typeof Robot` (constructor + statics), `InstanceType`, TS2576 |
 | 06 | `06-classes/lesson__why-interface-and-party.md` | why both `Combatant` and `Character` exist |
+| 07 | `07-generics/lesson__how-T-is-picked.md` | how the compiler picks `T` (explicit → args → target → default → unknown) |
+| 07 | `07-generics/lesson__keyof-lookup.md` | `K extends keyof T` + `T[K]` typed property lookup |
+| 07 | `07-generics/ex04__default-type-param.md` | `E = Error` is a fallback: used only when `E` is left out; erased at runtime |
+| 07 | `07-generics/ex04__type-param-naming.md` | `T`/`U`/`K`/`V`/`E`/`R`/`A` conventions, when to use `TData`-style names, shadowing trap |
+| 07 | `07-generics/ex06__keyof-no-undefined.md` | why `T[K]` needs no `\| undefined`; optional props; the index-signature gap |
+| 07 | `07-generics/lesson__variance.md` | covariant (outputs), contravariant (inputs), bivariant (method/array holes), invariant (read+write) |
+| 07 | `07-generics/cp__callback-key.md` | key name (`K extends keyof T`) vs key function (`(item: T) => K`); constrain the return |
+| 07 | `07-generics/cp__guard-overload.md` | overloads that react to a type guard: `item is S` overload first, plain `boolean` second |
+| 07 | `07-generics/cp__static-factory.md` | static factory on a generic class: statics can't see `T` (TS2302), declare `<U>`, return `new` |

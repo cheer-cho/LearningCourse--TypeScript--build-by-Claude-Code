@@ -1,0 +1,5 @@
+node_modules
+.verify*
+dist
+package-lock.json
+*.md

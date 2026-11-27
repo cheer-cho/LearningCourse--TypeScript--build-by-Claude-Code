@@ -19,22 +19,21 @@
  */
 
 export class Stack<T> {
-  // TODO: private items field
+  private readonly items: T[] = [];
 
-  // TODO: fix the types, then implement.
-  push(item: any): void {
-    throw new Error('TODO: implement push')
+  push(item: T): void {
+    this.items.push(item);
   }
 
-  pop(): any {
-    throw new Error('TODO: implement pop')
+  pop(): T | undefined {
+    return this.items.pop();
   }
 
-  peek(): any {
-    throw new Error('TODO: implement peek')
+  peek(): T | undefined {
+    return this.items.at(-1);
   }
 
   get size(): number {
-    throw new Error('TODO: implement size')
+    return this.items.length;
   }
 }
